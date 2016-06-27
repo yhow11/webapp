@@ -1,0 +1,130 @@
+<md-container layout="column" layout-wrap layout-align="center">
+<form name="registraionForm">
+	<div>
+
+		<md-toolbar>
+		<div class="md-toolbar-tools" layout="row">
+			<div layout-gt-sm="row" layout-align="end end">
+				<md-button ui-sref="encoding">
+				<ng-md-icon style="fill:white;" icon="clear" size="24"></ng-md-icon></md-button>
+			</div>
+			<span flex></span>
+			<h3 class="md-title j-color-white">Profile</h3>
+			<span flex></span>
+			<div layout-gt-sm="row" layout-align="end end">
+				<md-button>
+				<ng-md-icon style="fill:white;" icon="check" size="24"></ng-md-icon></md-button>
+			</div>
+		</div>
+		</md-toolbar>
+		<md-content layout-padding>
+		<div layout="row" layout-padding>
+			<label class="j-color-grey-hue-1">Basic Information</label>
+		</div>
+		<div layout-padding>
+
+			<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+				<label>Dcode</label> <input name="dcode" ng-model="member.dcode"
+					ng-pattern="/^\d+$/">
+				<div ng-messages="registraionForm.dcode.$error">
+					<div ng-message="pattern">Please enter numeric values only.</div>
+				</div>
+				</md-input-container>
+				<md-input-container class="md-block" flex-gt-sm>
+				<label>Lcode</label> <input name="lcode"
+					ng-model="member.lcode" ng-pattern="/^\d+$/">
+				<div ng-messages="registraionForm.lcode.$error">
+					<div ng-message="pattern">Please enter numeric values only.</div>
+				</div>
+				</md-input-container>
+				<md-input-container class="md-block" flex-gt-sm>
+				<label>Area No</label> <input name="area" ng-model="member.area"
+					ng-pattern="/^\d+$/">
+				<div ng-messages="registraionForm.area.$error">
+					<div ng-message="pattern">Please enter numeric values only.</div>
+				</div>
+				</md-input-container>
+				<md-input-container class="md-block" flex-gt-sm>
+				<label>Group No</label> <input name="group"
+					ng-model="member.group" ng-pattern="/^\d+$/">
+				<div ng-messages="registraionForm.group.$error">
+					<div ng-message="pattern">Please enter numeric values only.</div>
+				</div>
+				</md-input-container>
+			</div>
+			<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+				<label>Name</label> <input ng-model="member.name">
+				</md-input-container>
+				<md-input-container class="md-block" flex-gt-sm>
+				<label>Reference No</label> <input name="reference" ng-model="member.reference"
+					ng-pattern="/^\d+$/">
+				<div ng-messages="registraionForm.reference.$error">
+					<div ng-message="pattern">Please enter numeric values only.</div>
+				</div>
+				</md-input-container>
+			</div>
+			<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+				<label>Address</label> <input ng-model="member.address"> </md-input-container>
+			</div>
+		</div>
+		</md-content>
+
+	</div>
+
+	<div>
+		<md-content layout-padding>
+		<div>
+			<div layout-gt-sm="column" layout-align="center">
+				<div layout="row" layout-padding>
+					<label class="j-color-grey-hue-1">R3-10 Monitoring</label>
+				</div>
+				<div layout="row" layout-wrap>
+					<md-datepicker flex="25" ng-model="r310.datepicker"
+						ng-repeat="r310 in member.r310" md-placeholder="test">
+					</md-datepicker>
+				</div>
+			</div>
+		</div>
+		</md-content>
+	</div>
+
+	<div>
+		<md-content layout-padding>
+		<div>
+			<div layout-gt-sm="column" layout-align="center">
+				<div layout="row" layout-padding>
+					<label class="j-color-grey-hue-1">R3-05 Monitoring</label>
+				</div>
+				<div layout="row" layout-wrap>
+					<md-datepicker flex="25" ng-model="r305.datepicker"
+						ng-repeat="r305 in member.r305" md-placeholder="test">
+					</md-datepicker>
+				</div>
+			</div>
+		</div>
+
+		</md-content>
+	</div>
+
+	<div>
+		<md-content layout-padding>
+		<div>
+			<div layout-gt-sm="column" layout-align="center">
+				<div layout="row" layout-padding>
+					<label class="j-color-grey-hue-1">R3-09 Monitoring</label>
+				</div>
+				<div layout="row" layout-wrap>
+					<md-datepicker flex="25" ng-model="r309.datepicker"
+						ng-repeat="r309 in member.r309" md-placeholder="test">
+					</md-datepicker>
+				</div>
+			</div>
+		</div>
+
+		</md-content>
+	</div>
+</form>
+</md-container>

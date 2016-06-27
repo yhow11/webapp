@@ -1,0 +1,69 @@
+<div  layout="column" layout-fill >
+	<md-content class="md-padding"  layout="column" layout-fill >
+	    <md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect layout="column" layout-fill >
+	      <md-tab ng-repeat="tab in tabs"
+	              label="{{tab.title}}" ng-disabled="tab.disable" layout="column" layout-fill>
+	              <div ng-include src="tab.template" layout="column" layout-fill></div>
+	      </md-tab>
+	    </md-tabs>
+	</md-content>
+	<!-- <div  layout="column" flex="15">
+		<md-input-container class="md-block" flex-gt-sm>
+					<label>1.Web Application</label>
+					<md-contact-chips
+				        ng-model="webapplication.selected"
+				        md-contacts="webapplication.query($query)"
+				        md-contact-name="name"
+				        md-contact-image="image"
+				        md-contact-email="email"
+				        md-require-match="true"
+				        md-highlight-flags="i"
+				        filter-selected="webapplication.filterSelected"
+				        >
+				   </md-contact-chips>
+		</md-input-container>
+	  	<md-input-container class="md-block" flex-gt-sm>
+					<label>2.Organization</label>
+					<md-contact-chips
+				        ng-model="organization.selected"
+				        md-contacts="organization.query($query)"
+				        md-contact-name="name"
+				        md-contact-image="image"
+				        md-contact-email="url"
+				        md-require-match="true"
+				        md-highlight-flags="i"
+				        filter-selected="organization.filterSelected">
+				   </md-contact-chips>
+		</md-input-container>
+	   <md-input-container class="md-block" flex-gt-sm>
+					<label>3.Workspace</label>
+					<md-contact-chips
+				        ng-model="organization.selected"
+				        md-contacts="organization.query($query)"
+				        md-contact-name="name"
+				        md-contact-image="image"
+				        md-contact-email="url"
+				        md-require-match="true"
+				        md-highlight-flags="i"
+				        filter-selected="organization.filterSelected">
+				   </md-contact-chips>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+					<label>4.Application</label>
+					<md-contact-chips
+				        ng-model="organization.selected"
+				        md-contacts="organization.query($query)"
+				        md-contact-name="name"
+				        md-contact-image="image"
+				        md-contact-email="url"
+				        md-require-match="true"
+				        md-highlight-flags="i"
+				        filter-selected="organization.filterSelected">
+				   </md-contact-chips>
+		</md-input-container>
+	</div>
+	<div flex></div> -->
+</div>
+
+
+

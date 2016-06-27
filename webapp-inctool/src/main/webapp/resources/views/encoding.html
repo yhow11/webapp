@@ -1,0 +1,90 @@
+<md-card layout="column" layout-wrap layout-align="center">
+		<md-button class="md-fab md-warn position-fix-left-bottom" ng-click="goTo('membership', null)" aria-label="Use Android">
+	          <md-icon style="color: white;"
+		            aria-label="add"
+		            class="material-icons step">
+		             add
+		        </md-icon>
+        </md-button>
+        
+          <!-- <mdt-table>
+			    <mdt-header-row>
+			      <mdt-column align-rule="left">name</mdt-column>
+			      <mdt-column align-rule="right">area</mdt-column>
+			      <mdt-column align-rule="right">group</mdt-column>
+			      <mdt-column align-rule="right">dcode</mdt-column>
+			      <mdt-column align-rule="right">lcode</mdt-column>
+			      <mdt-column align-rule="right">attended</mdt-column>
+			      <mdt-column align-rule="right">absent/s</mdt-column>
+			      <mdt-column align-rule="right">completion date</mdt-column>
+			      <mdt-column align-rule="right">actions</mdt-column>
+			    </mdt-header-row>
+			    <mdt-row ng-repeat="member in members">
+			      <mdt-cell>{{member.name}}</mdt-cell>
+			      <mdt-cell>{{member.area}}</mdt-cell>
+			      <mdt-cell>{{member.group}}</mdt-cell>
+			      <mdt-cell>{{member.dcode}}</mdt-cell>
+			      <mdt-cell>{{member.lcode}}</mdt-cell>
+			      <mdt-cell>{{member.present}}</mdt-cell>
+			      <mdt-cell>{{member.absent}}</mdt-cell>
+			      <mdt-cell>{{member.completionDate | date:'yyyy-MM-dd'}}</mdt-cell>
+			      <mdt-cell  html-content="true">
+			      	
+			      		
+				  </mdt-cell>
+			    </mdt-row>
+			  </mdt-table> -->
+   		<md-data-table-toolbar class="toolbar-with-fab" ng-hide="search" layout="row">
+		    <h4 class="md-title j-color-grey">Members</h4>
+		    <span flex-gt-sm></span>
+		    <md-button class="md-icon-button" ng-click="search = true">
+		      <md-icon>filter_list</md-icon>
+		    </md-button>
+		</md-data-table-toolbar>
+		<md-data-table-toolbar class="toolbar-with-fab" ng-show="search" layout="row" layout-padding>
+		    <md-input-container class="md-block" flex-gt-sm>
+				<label>Search</label> <input 
+					ng-model="searchValue" >
+			</md-input-container>
+		    <md-button class="md-icon-button" ng-click="search = false">
+		      <md-icon>close</md-icon>
+		    </md-button>
+		</md-data-table-toolbar>
+		<md-data-table-container>
+		  <table md-data-table md-row-select="selected" md-progress="deffered" sortable-columns="true">
+		    <thead>
+		      <tr>
+		      	<th name="name"></th>
+		      	<th name="area"></th>
+		        <th name="group"></th>
+		        <th numeric name="dcode" hide-sm></th>
+		        <th numeric name="lcode" hide-sm></th>
+		        <th name="attended" hide-sm></th>
+		        <th name="absent/s" hide-sm></th>
+		        <th name="completion date" hide-sm></th>
+		        <th name="actions"></th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr md-auto-select ng-repeat="member in members | filter : searchValue">
+		      	<td>{{member.name}}</td>
+		        <td>{{member.area}}</td>
+		        <td>{{member.group}}</td>
+		        <td hide-sm>{{member.dcode}}</td>
+		        <td hide-sm>{{member.lcode}}</td>
+		        <td hide-sm>{{member.present}}</td>
+		        <td hide-sm>{{member.absent}}</td>
+		        <td hide-sm>{{member.completionDate | date:'yyyy-MM-dd'}}</td>
+		        <td>
+				  <md-select ng-model="member.name" placeholder="Edit">
+				    <md-option ng-repeat="action in member.actions" ng-click="actions(action, member)" >{{action.name}}</md-option>
+				  </md-select>
+				</td>
+		      </tr>
+		    </tbody>
+		  </table>
+		</md-data-table-container>	
+		<md-data-table-pagination md-limit="3" md-page="1" md-total="9"></md-data-table-pagination>
+
+</md-card>
+			

@@ -1,0 +1,36 @@
+
+<div layout="row" layout-fill layout-align="center">
+	<div flex="50" layout="column">
+		<div flex="5"></div>
+		<div>
+			<div ng-bind="tab.content"></div>
+			<md-input-container class="md-block" >
+						<md-contact-chips
+					        ng-model="webapplication.selected"
+					        md-contacts="webapplication.query($query)"
+					        md-contact-name="name"
+					        md-contact-image="image"
+					        md-contact-email="email"
+					        md-require-match="true"
+					        md-highlight-flags="i"
+					        filter-selected="webapplication.filterSelected">
+					   </md-contact-chips>
+			</md-input-container>
+		</div>
+		<div>
+			<md-list class="fixedRows">
+		      <md-subheader class="md-no-sticky">Web Applications</md-subheader>
+		      <md-list-item class="md-2-line contact-item" ng-repeat="webapp in webapplication.data" >
+		        <img ng-src="{{contact.image}}" class="md-avatar" alt="{{webapp.name}}" />
+		        <div class="md-list-item-text compact">
+		          <h3>{{webapp.name}}</h3>
+		          <p>{{webapp.email}}</p>
+		        </div>
+		      </md-list-item>
+		    </md-list>
+		    <div layout="row" layout-align="end"><md-button class="md-primary"  ng-click="next()">Next</md-button></div>
+		</div>
+	</div>
+
+</div>
+	

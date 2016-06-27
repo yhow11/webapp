@@ -1,0 +1,42 @@
+<md-container layout="column" layout-wrap layout-align="center">
+
+		<md-button class="md-fab fab-default fab-left md-warn" ng-click="goTo('membership', null)" aria-label="Use Android">
+	          <ng-md-icon class="j-color-white" icon="add" size="24"></ng-md-icon>
+        </md-button>
+      		<md-data-table-toolbar class="toolbar-with-fab">
+		    <h4 class="md-title j-color-grey">Triggers</h4>
+		</md-data-table-toolbar>
+		<md-data-table-container>
+		  <table md-data-table md-row-select="selected" md-progress="deffered">
+		    <thead>
+		      <tr>
+		        <th numeric name="dcode"></th>
+		        <th numeric name="lcode"></th>
+		        <th name="area"></th>
+		        <th name="group"></th>
+		        <th name="reference"></th>
+		        <th name="name"></th>
+		        <th name="actions"></th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr md-auto-select ng-repeat="trigger in tiggers">
+		        <td>{{member.dcode}}</td>
+		        <td>{{member.lcode}}</td>
+		        <td>{{member.area}}</td>
+		        <td>{{member.group}}</td>
+		        <td>{{member.reference}}</td>
+		        <td>{{member.name}}</td>
+		        <td>
+				  <md-select ng-model="member.name" placeholder="Edit">
+				    <md-option ng-repeat="action in member.actions" ui-sref="membership({ id:member.reference })">{{action.name}}</md-option>
+				  </md-select>
+				</td>
+		      </tr>
+		    </tbody>
+		  </table>
+		</md-data-table-container>	
+		<md-data-table-pagination md-limit="3" md-page="1" md-total="9"></md-data-table-pagination>
+
+</md-container>
+			

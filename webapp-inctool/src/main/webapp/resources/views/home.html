@@ -1,0 +1,57 @@
+<md-card flex-gt-sm layout="column" layout="center" layout-padding>
+	<md-input-container class="md-block" flex-gt-sm>
+		<label>Category By:</label> 
+		<md-select ng-model="monthyCandidatesOfCompletionCategory" placeholder="Choose category" >
+	    	<md-option ng-repeat="chartCategory in chartCategories" ng-click="releoadMonthyCandidatesOfCompletion(chartCategory)" >{{chartCategory}}</md-option>
+	  	</md-select>
+	</md-input-container>
+	<div flex layout-margin><highchart config="chartConfig"></highchart></div>
+</md-card>
+<!-- <hc-pie-chart title="Browser usage" data="pieData">Placeholder for pie chart</hc-pie-chart>
+<hc-chart options="columnData">Placeholder for generic chart</hc-chart> -->
+<!-- 
+
+<div layout="row"  layout-wrap layout-align="center" >
+	<div flex="45" layout="column" layout-align="center">
+		<div flex layout-margin><highchart config="chartConfig"></highchart></div>
+		<div flex layout-margin><highchart config="pieChart"></highchart></div>
+	</div>
+	<div flex="45" layout="column" layout-align="center">
+		
+		<div flex layout-margin><highchart config="lineChartConfig"></highchart></div>
+		<div flex layout-margin>
+				<md-container layout="column">
+		       		<md-data-table-toolbar class="toolbar-with-fab">
+					  <h3 class="md-title">New Workers</h3>
+					</md-data-table-toolbar>
+					<md-data-table-container>
+					  <table md-data-table md-row-select="selected" md-progress="deferred">
+					    <thead>
+					      <tr>
+					        <th name="Name"></th>
+					        <th numeric name="Age"></th>
+					        <th name="Email"></th>
+					        <th name="Actions"></th>
+					      </tr>
+					    </thead>
+					    <tbody>
+					      <tr md-auto-select ng-repeat="item in table">
+					        <td>{{item.name}}</td>
+					        <td>{{item.age}}</td>
+					        <td>{{item.email}}</td>
+					        <td>
+							  <md-select ng-model="item.name" placeholder="Edit">
+							    <md-option >Edit</md-option>
+							  </md-select>
+							</td>
+					      </tr>
+					    </tbody>
+					  </table>
+					</md-data-table-container>	
+					<md-data-table-pagination md-limit="3" md-page="1" md-total="9"></md-data-table-pagination>
+		        </md-container>
+		</div>
+		
+	</div>
+	
+</div> -->

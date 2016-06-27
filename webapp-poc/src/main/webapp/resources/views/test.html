@@ -1,0 +1,27 @@
+
+<md-card flex-gt-sm layout="column" layout="center" layout-padding>
+	
+	 <md-toolbar class="md-primary">
+	    <div class="md-toolbar-tools j-fill-white">
+	     <h2 class="j-color-green">Visitor Event Tracking</h2>
+	   </div>
+	 </md-toolbar>
+	 
+	 <md-container layout="row" >
+	 	<span flex="5"></span>
+	 	<div layout="column">
+	 		<label>Browser FingerPrint <b > {{data.browserFP}} </b></label> 
+	 	 	<label>Device FingerPrint <b > {{data.deviceFP}} </b></label> 
+	 	 	<label>TimeStamp <b> {{data.timeStamp}} </b></label>
+	 	 	<label>GUID <b> {{data.sessionID}} </b></label>
+	 	</div>
+	</md-container>
+	 <md-container layout="row"  layout-align="center center" layout-margin layout-padding>
+	     
+		 <a flex title="google.com" href="http://www.google.com"><img src="resources/img/test/google.png" ></a>
+		 <a flex title="yahoo.com" href="http://www.yahoo.com"><img src="resources/img/test/yahoo.jpg"></a>
+	 </md-container>
+   
+</md-card>
+
+

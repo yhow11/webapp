@@ -1,0 +1,92 @@
+
+
+<md-dialog aria-label="Mango (Fruit)" flex="95">
+  <form name="registraionForm">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2 class="j-color-white">Registration</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content" layout="column" ng-cloak class="md-inline-form">
+       	<md-content layout-padding>
+       		<div>
+	       		<div layout-gt-sm="row">
+		          <md-input-container class="md-block" flex-gt-sm>
+		            <label>Member ID</label>
+		            <input name="id" ng-model="member.id" ng-pattern="/^\d+$/">
+		            <div ng-messages="registraionForm.id.$error">
+		              <div ng-message="pattern">Please enter numeric values only.</div>
+		            </div>
+		          </md-input-container>
+		          <md-input-container class="md-block" flex-gt-sm>
+		            <label>Reference ID</label>
+		            <input name="refID" ng-model="member.refID" ng-pattern="/^\d+$/">
+		             <div ng-messages="registraionForm.refID.$error">
+		              <div ng-message="pattern">Please enter numeric values only.</div>
+		            </div>
+		          </md-input-container>
+		        </div>
+	       		<div layout-gt-sm="row">
+		          <md-input-container class="md-block" flex-gt-sm>
+		            <label>First name</label>
+		            <input ng-model="user.firstName">
+		          </md-input-container>
+		          <md-input-container class="md-block" flex-gt-sm>
+		            <label>Last Name</label>
+		            <input ng-model="theMax">
+		          </md-input-container>
+		        </div>
+		        <div layout-gt-sm="row">
+		          <md-input-container class="md-block" flex="40">
+		            <label>Mobile No.</label>
+		            <input name="mobileNo" ng-model="member.mobileNo" ng-pattern="/^\d+$/">
+		             <div ng-messages="registraionForm.mobileNo.$error">
+		              <div ng-message="pattern">Please enter numeric values only.</div>
+		            </div>
+		          </md-input-container>
+		          <md-input-container class="md-block" flex="25">
+		            <label>Age</label>
+		            <input name="age" ng-model="member.age" ng-pattern="/^\d+$/">
+		             <div ng-messages="registraionForm.age.$error">
+		              <div ng-message="pattern">Please enter numeric values only.</div>
+		            </div>
+		          </md-input-container>
+		          <md-input-container class="md-block" flex="25">
+		            <md-datepicker ng-model="user.submissionDate" md-placeholder="Birthday">
+          		    </md-datepicker>
+		          </md-input-container>
+		        </div>
+		        <div layout-gt-sm="column">
+		          <h2>Attendance</h2>
+		          <div layout="row">
+		           <md-datepicker flex ng-model="user.submissionDate" ng-repeat="attendance in member.attendances" md-placeholder="test">
+          		   </md-datepicker>
+		          </div>
+		        </div>
+		        <div layout-gt-sm="row" layout-align="end end">
+		          <md-button>Save</md-button>
+		        </div>
+	        </div>
+  		</md-content>
+      </div>
+    </md-dialog-content>
+    <!-- <md-dialog-actions layout="row">
+      <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
+        More on Wikipedia
+      </md-button>
+      <span flex></span>
+      <md-button ng-click="answer('not useful')">
+       Not Useful
+      </md-button>
+      <md-button ng-click="answer('useful')" style="margin-right:20px;">
+        Useful
+      </md-button>
+    </md-dialog-actions> -->
+  </form>
+</md-dialog>
+
