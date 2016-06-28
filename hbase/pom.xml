@@ -29,7 +29,7 @@
 		    <groupId>jdk.tools</groupId>
 		    <artifactId>jdk.tools</artifactId>
 		    <scope>system</scope>
-		    <systemPath>C:\Program Files\Java\jdk1.8.0_91\lib\tools.jar</systemPath>
+		    <systemPath>/usr/jdk64/jdk1.8.0_60/lib/tools.jar</systemPath>
 		    <version>1.8</version>
 		</dependency>
 		<dependency>
@@ -55,7 +55,7 @@
             <version>3.1</version>
             <configuration>
                 <fork>true</fork>
-                	<executable>C:\Program Files\Java\jdk1.8.0_91\bin\javac.exe</executable>
+                	<executable>/usr/jdk64/jdk1.8.0_60/bin/javac</executable>
             </configuration>
         </plugin>
 	 	</plugins>
