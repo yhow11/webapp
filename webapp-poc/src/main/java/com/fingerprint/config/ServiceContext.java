@@ -7,12 +7,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.fingerprint.event.service.EventService;
-import com.fingerprint.event.service.impl.EventServiceImpl;
 import com.fingerprint.management.service.JUserService;
 import com.fingerprint.management.service.impl.UserDetailsServiceImpl;
 import com.fingerprint.management.service.impl.UserServiceImpl;
 import com.fingerprint.util.service.impl.KafkaService;
+
+import usertracker.browser.service.VisitorLogService;
+import usertracker.browser.service.impl.VisitorLogServiceImpl;
 
 @Configuration
 @PropertySource({"classpath:com/fingerprint/properties/application.properties",
@@ -51,7 +52,7 @@ public class ServiceContext {
 	}
 	
 	@Bean
-	public EventService eventService() throws Exception{
-		return new EventServiceImpl(context.eventDao());
+	public VisitorLogService visitorLogService() throws Exception{
+		return new VisitorLogServiceImpl(context.visitorLogDao());
 	}
 }

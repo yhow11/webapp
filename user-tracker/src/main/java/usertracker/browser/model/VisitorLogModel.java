@@ -1,12 +1,12 @@
-package com.fingerprint.event.model;
+package usertracker.browser.model;
 
 import java.io.Serializable;
 
 import hbase.annotation.HBaseColumnAnnotation;
 import hbase.annotation.HBaseTableAnnotation;
 
-@HBaseTableAnnotation(tablename="events")
-public class EventModel  implements Serializable{
+@HBaseTableAnnotation(tablename="visitorLog")
+public class VisitorLogModel  implements Serializable{
 	/**
 	 * 
 	 */

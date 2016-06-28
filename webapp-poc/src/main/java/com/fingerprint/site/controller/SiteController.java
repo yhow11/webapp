@@ -1,7 +1,5 @@
 package com.fingerprint.site.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fingerprint.event.model.EventModel;
-import com.fingerprint.event.service.EventService;
+import usertracker.browser.service.VisitorLogService;
 
 @Controller
 public class SiteController {
 
 	@Autowired
-	private EventService eventService;
+	private VisitorLogService visitorLogService;
 
 	@RequestMapping(value = "users", method = RequestMethod.GET)
 	public ModelAndView getUsersView() {
