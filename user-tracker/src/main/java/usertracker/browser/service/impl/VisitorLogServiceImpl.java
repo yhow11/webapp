@@ -40,6 +40,18 @@ public class VisitorLogServiceImpl implements VisitorLogService {
 		return visitorLogDao.getAll(VisitorLogModel.class, limit, null, null);
 	}
 
+	@Override
+	public void creatTable() throws Exception {
+		// TODO Auto-generated method stub
+		visitorLogDao.creatTable();
+	}
+
+	@Override
+	public void save(VisitorLogModel model) throws Exception {
+		// TODO Auto-generated method stub
+		visitorLogDao.save(model);;
+	}
+
 	
 	
 }

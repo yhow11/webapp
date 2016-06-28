@@ -9,4 +9,8 @@ public interface VisitorLogDao {
 	public List<VisitorLogModel> getAll (Class<VisitorLogModel> clazz, Integer limit, String startRow, String lastRow)  throws Exception ;
 	   
 	public List<VisitorLogModel> find(String word, String column) throws Exception;
+	
+	public void creatTable() throws Exception;
+	
+	public void save(VisitorLogModel model )  throws Exception; 
 }

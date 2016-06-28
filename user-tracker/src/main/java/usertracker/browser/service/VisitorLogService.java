@@ -9,4 +9,6 @@ public interface VisitorLogService {
 	public List<VisitorLogModel> getAll()  throws Exception;
 	public List<VisitorLogModel> getAll(Integer limit, String startRow, String lastRow)  throws Exception;
 	public List<VisitorLogModel> find(String word, String column) throws Exception;
+	public void creatTable() throws Exception;
+	public void save(VisitorLogModel model) throws Exception;
 }
