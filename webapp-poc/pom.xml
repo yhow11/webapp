@@ -35,7 +35,7 @@
 	<dependencies>
 		<dependency>
 	      <groupId>com.jofel</groupId>
-	      <artifactId>hbase</artifactId>
+	      <artifactId>user-tracker</artifactId>
 	      <version>0.0.1-SNAPSHOT</version>
 	    </dependency>
 	    

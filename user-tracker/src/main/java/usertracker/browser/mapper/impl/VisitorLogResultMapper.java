@@ -1,4 +1,4 @@
-package com.fingerprint.event.mapper.impl;
+package usertracker.browser.mapper.impl;
 
 import java.io.Serializable;
 
@@ -7,11 +7,11 @@ import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 
-import com.fingerprint.event.mapper.JMapper;
-import com.fingerprint.event.model.EventModel;
+import usertracker.browser.mapper.VisitorLogMapper;
+import usertracker.browser.model.VisitorLogModel;
 
 
-public class EventResultMapper implements JMapper<Result, EventModel>, Serializable {
+public class VisitorLogResultMapper implements VisitorLogMapper<Result, VisitorLogModel>, Serializable {
 
 	/**
 	 * 
@@ -19,21 +19,21 @@ public class EventResultMapper implements JMapper<Result, EventModel>, Serializa
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public EventModel map(Result t) throws Exception {
+	public VisitorLogModel map(Result t) throws Exception {
 		// TODO Auto-generated method stub
-		EventModel event = new EventModel();
+		VisitorLogModel log = new VisitorLogModel();
 		for(Cell cell :t.listCells()){
 			String qualifier = Bytes.toString(cell.getQualifier());
 			if(qualifier.equals("linkCount")) {
 				try {
-					PropertyUtils.setProperty(event, qualifier,Long.valueOf(Bytes.toString(cell.getValue())));
+					PropertyUtils.setProperty(log, qualifier,Long.valueOf(Bytes.toString(cell.getValue())));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else {
 				try {
-					PropertyUtils.setProperty(event, qualifier,Bytes.toString(cell.getValue()));
+					PropertyUtils.setProperty(log, qualifier,Bytes.toString(cell.getValue()));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -41,11 +41,11 @@ public class EventResultMapper implements JMapper<Result, EventModel>, Serializa
 			}
 		}
 
-		return event;
+		return log;
 	}
 
 	@Override
-	public Result unmap(EventModel e) {
+	public Result unmap(VisitorLogModel e) {
 		// TODO Auto-generated method stub
 		return null;
 	}

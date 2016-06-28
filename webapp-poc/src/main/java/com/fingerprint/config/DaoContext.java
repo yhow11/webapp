@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import com.fingerprint.event.dao.EventDao;
-import com.fingerprint.event.dao.impl.EventDaoImpl;
+import usertracker.browser.dao.VisitorLogDao;
+import usertracker.browser.dao.impl.VisitorLogDaoImpl;
 
 @Configuration
 @PropertySource("classpath:com/fingerprint/properties/application.properties")
@@ -23,7 +23,7 @@ public class DaoContext {
 	}
 	
 	@Bean
-	public EventDao eventDao() throws Exception{
-		return new EventDaoImpl(HBaseDao());
+	public VisitorLogDao visitorLogDao() throws Exception{
+		return new VisitorLogDaoImpl(HBaseDao());
 	}
 }

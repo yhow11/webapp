@@ -1,8 +1,6 @@
 package com.fingerprint.event.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -17,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.fingerprint.event.model.EventModel;
-import com.fingerprint.event.service.EventService;
 import com.fingerprint.object.ResponseForm;
 import com.fingerprint.util.model.EventCountModel;
 import com.fingerprint.util.object.EventRequestObject;
 import com.fingerprint.util.service.impl.KafkaService;
-import com.mongodb.DBObject;
+
+import usertracker.browser.model.VisitorLogModel;
+import usertracker.browser.service.VisitorLogService;
 
 @Controller
 public class EventsController {
@@ -32,17 +30,17 @@ public class EventsController {
 	private KafkaService kafkaService;
 
 	@Autowired
-	private EventService eventService;
+	private VisitorLogService visitorLogService;
 	
 	@Autowired
 	private SimpMessagingTemplate template;
 	
 	@RequestMapping(value = "event/getAll", method = RequestMethod.GET)
-	public @ResponseBody  ResponseForm<EventModel> getAll() throws Exception {
+	public @ResponseBody  ResponseForm<VisitorLogModel> getAll() throws Exception {
 		
-		ResponseForm<EventModel> response = new ResponseForm<>();
+		ResponseForm<VisitorLogModel> response = new ResponseForm<>();
 		try{
-			List<EventModel> events = eventService.getAll();
+			List<VisitorLogModel> events = visitorLogService.getAll();
 			response.setStatus(true);
 			response.setData(events);
 		}catch( Exception e) {
@@ -54,9 +52,9 @@ public class EventsController {
 		return response;
 	}
 	@RequestMapping(value = "event/test", method = RequestMethod.GET)
-	public @ResponseBody  ResponseForm<EventModel> test() throws Exception {
-		List<EventModel> events = eventService.find("visited","type");
-		ResponseForm<EventModel> response = new ResponseForm<>();
+	public @ResponseBody  ResponseForm<VisitorLogModel> test() throws Exception {
+		List<VisitorLogModel> events = visitorLogService.find("visited","type");
+		ResponseForm<VisitorLogModel> response = new ResponseForm<>();
 		
         RestTemplate rt = new RestTemplate();
 
@@ -71,7 +69,7 @@ public class EventsController {
 		return response;
 	}
 	@RequestMapping(value = "notifyEvents", method = RequestMethod.POST)
-	public String notifyEvents(@RequestBody List<EventModel> events) throws Exception {
+	public String notifyEvents(@RequestBody List<VisitorLogModel> events) throws Exception {
 		template.convertAndSend("/event/notifyReceivers",events);
 		return "success";
 	}

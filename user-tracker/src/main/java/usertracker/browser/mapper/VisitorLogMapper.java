@@ -1,6 +1,6 @@
-package com.fingerprint.event.mapper;
+package usertracker.browser.mapper;
 
-public interface JMapper<T, E> {
+public interface VisitorLogMapper<T, E> {
 
    public E map(T t) throws Exception ;
    public T unmap(E e) throws Exception ;

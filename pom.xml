@@ -14,5 +14,6 @@
     <module>webapp-mapper</module>
     <module>webapp-poc</module>
     <module>hbase</module>
+    <module>user-tracker</module>
   </modules>
 </project>
