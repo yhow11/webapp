@@ -34,11 +34,16 @@
 
 	<dependencies>
 		<dependency>
-	      <groupId>com.jofel</groupId>
-	      <artifactId>user-tracker</artifactId>
-	      <version>0.0.1-SNAPSHOT</version>
-	    </dependency>
-	    
+			<groupId>com.jofel</groupId>
+			<artifactId>user-tracker</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>12.0</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -447,18 +452,18 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
-		
+
 	</dependencies>
 	<repositories>
-    <repository>
-        <id>spring-snapshots</id>
-        <name>Spring Snapshots</name>
-        <url>http://repo.spring.io/snapshot</url>
-        <snapshots>
-            <enabled>true</enabled>
-        </snapshots>
-    </repository>
-</repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<build>
 		<finalName>webapp-poc</finalName>
 		<plugins>
@@ -476,7 +481,7 @@
 				<version>3.1</version>
 				<configuration>
 					<fork>true</fork>
-					<executable>/usr/jdk64/jdk1.8.0_60/bin/javac</executable>
+					<executable>C:\Program Files\Java\jdk1.8.0_91\bin\javac.exe</executable>
 				</configuration>
 			</plugin>
 		</plugins>

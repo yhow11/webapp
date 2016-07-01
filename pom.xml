@@ -16,5 +16,8 @@
     <module>hbase</module>
     <module>user-tracker</module>
     <module>sparkapp-collation-receiver</module>
+    <module>marketo</module>
+    <module>helper-mongodb</module>
+    <module>plugin-highchart</module>
   </modules>
 </project>
