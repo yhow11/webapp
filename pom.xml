@@ -5,6 +5,14 @@
   <artifactId>webapp</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
+  
+  <properties>
+      <javac.path>C:\Program Files\Java\jdk1.8.0_91\bin\javac.exe</javac.path>
+      <tools.path>C:\Program Files\Java\jdk1.8.0_91\lib\tools.jar</tools.path>
+     <!--  <javac.path>/usr/jdk64/jdk1.8.0_60/bin/javac.exe</javac.path> -->
+<!--            <tools.path>/usr/jdk64/jdk1.8.0_60/lib/tools.jar</tools.path> -->
+  </properties>
+  
   <modules>
   	<module>webapp-services</module>
   	<module>webapp-data</module>
