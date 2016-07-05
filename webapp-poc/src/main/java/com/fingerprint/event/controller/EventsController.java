@@ -40,7 +40,7 @@ public class EventsController {
 		
 		ResponseForm<VisitorLogModel> response = new ResponseForm<>();
 		try{
-			List<VisitorLogModel> events = visitorLogService.getAll();
+			List<VisitorLogModel> events = visitorLogService.getAll(VisitorLogModel.class);
 			response.setStatus(true);
 			response.setData(events);
 		}catch( Exception e) {
@@ -53,7 +53,7 @@ public class EventsController {
 	}
 	@RequestMapping(value = "event/test", method = RequestMethod.GET)
 	public @ResponseBody  ResponseForm<VisitorLogModel> test() throws Exception {
-		List<VisitorLogModel> events = visitorLogService.find("visited","type");
+		List<VisitorLogModel> events = visitorLogService.find(VisitorLogModel.class, "visited","type");
 		ResponseForm<VisitorLogModel> response = new ResponseForm<>();
 		
         RestTemplate rt = new RestTemplate();

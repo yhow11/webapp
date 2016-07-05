@@ -2,12 +2,12 @@ package sparkapp.collation.receiver;
 
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -31,7 +31,12 @@ import sparkapp.collation.receiver.config.DaoConfig;
 import sparkapp.collation.receiver.config.MapperConfig;
 import sparkapp.collation.receiver.config.ServiceConfig;
 import usertracker.browser.mapper.impl.VisitorLogStringMapper;
+import usertracker.browser.model.AnonymousVisitorModel;
+import usertracker.browser.model.BrowserFPModel;
+import usertracker.browser.model.DeviceFPModel;
+import usertracker.browser.model.SessionModel;
 import usertracker.browser.model.VisitorLogModel;
+import usertracker.browser.model.WebEventModel;
 import usertracker.browser.service.VisitorLogService;
 public class Main {
 
@@ -68,7 +73,13 @@ public class Main {
 				StringDecoder.class, StringDecoder.class, kafkaParams, topicsSet);
 		
 		if(createNewTable(args)){
-			visitorLogService.creatTable();
+			visitorLogService.creatTable(VisitorLogModel.class);
+			visitorLogService.creatTable(AnonymousVisitorModel.class);
+			visitorLogService.creatTable(BrowserFPModel.class);
+			visitorLogService.creatTable(DeviceFPModel.class);
+			visitorLogService.creatTable(SessionModel.class);
+			visitorLogService.creatTable(WebEventModel.class);
+			
 		}
 		
 
@@ -83,15 +94,42 @@ public class Main {
 				return visitorLogStringMapper.map(item);
 			});
 
-			List<VisitorLogModel> events = rowRDD.collect();
-			for (VisitorLogModel event : events) {
+			List<VisitorLogModel> visitorLogModels = rowRDD.collect();
+			for (VisitorLogModel visitorLogModel : visitorLogModels) {
 				System.out.println("Saving..");
-				event.setId(String.valueOf(new Date().getTime()));
-				visitorLogService.save(event);
+				visitorLogModel.setId(UUID.randomUUID().toString());
+				visitorLogService.save(VisitorLogModel.class, visitorLogModel);
+				
+				AnonymousVisitorModel av = null;
+				BrowserFPModel browserFP = null;
+				DeviceFPModel deviceFP = null;
+				SessionModel sessionModel = visitorLogService.getOne(SessionModel.class, visitorLogModel.getSessionID());
+				
+				av = findAV(visitorLogService, sessionModel, visitorLogModel);
+				
+				if(sessionModel == null){
+					sessionModel.setId(UUID.randomUUID().toString());
+					sessionModel.setAnonymousVisitorID(av.getId());
+					visitorLogService.save(SessionModel.class, sessionModel);
+					System.out.println("Created New Session "+sessionModel.getId());
+				} 
+				
+				browserFP = findBrowserFP(visitorLogService, av, visitorLogModel);
+				deviceFP = findDeviceFP(visitorLogService, av, visitorLogModel);
+				
+				WebEventModel webEvent = new WebEventModel();
+				webEvent.setAnonymousVisitorID(av.getId());
+				webEvent.setBrowserFPID(browserFP.getId());
+				webEvent.setDeviceFPID(deviceFP.getId());
+				webEvent.setTimeStamp(visitorLogModel.getTimeStamp());
+				webEvent.setTitle(visitorLogModel.getTitle());
+				webEvent.setType(visitorLogModel.getType());
+				visitorLogService.save(WebEventModel.class, webEvent);
+				System.out.println("Created New WebEvent "+webEvent.getId());
 			}
 
 			
-			if (events.size() > 0 && broadcast(args)) {
+			if (visitorLogModels.size() > 0 && broadcast(args)) {
 				try{
 					RestTemplate rt = new RestTemplate();
 
@@ -101,7 +139,7 @@ public class Main {
 
 					String uri = new String("http://103.253.145.213:8191/webapp-poc/notifyEvents");
 
-					String result = rt.postForObject(uri, events, String.class);
+					String result = rt.postForObject(uri, visitorLogModels, String.class);
 				}catch(Exception e){
 					
 				}
@@ -110,6 +148,58 @@ public class Main {
 		});
 		jssc.start();
 		jssc.awaitTermination();
+	}
+	public static BrowserFPModel findBrowserFP(VisitorLogService visitorLogService, AnonymousVisitorModel av,  VisitorLogModel visitorLogModel) throws Exception{
+		BrowserFPModel browserFP = visitorLogService.getOne(BrowserFPModel.class, visitorLogModel.getWebFP());
+		if(browserFP == null) {
+			browserFP = new BrowserFPModel();
+			browserFP.setAnonymousVisitorID(av.getId());
+			browserFP.setId(visitorLogModel.getWebFP());
+			visitorLogService.save(BrowserFPModel.class, browserFP);
+			System.out.println("Created Browser FP "+browserFP.getId());
+		} else {
+			System.out.println("Browser FP Found. "+browserFP.getId());
+		}
+		return browserFP;
+	}
+	public static DeviceFPModel findDeviceFP(VisitorLogService visitorLogService, AnonymousVisitorModel av,  VisitorLogModel visitorLogModel)  throws Exception{
+		DeviceFPModel deviceFP = visitorLogService.getOne(DeviceFPModel.class, visitorLogModel.getDeviceFP());
+		if(deviceFP == null) {
+			deviceFP = new DeviceFPModel();
+			deviceFP.setAnonymousVisitorID(av.getId());
+			deviceFP.setId(visitorLogModel.getDeviceFP());
+			visitorLogService.save(DeviceFPModel.class, deviceFP);
+			System.out.println("Created Device FP "+deviceFP.getId());
+		}  else {
+			System.out.println("Device FP Found. "+deviceFP.getId());
+		}
+		return deviceFP;
+	}
+	public static AnonymousVisitorModel findAV(VisitorLogService visitorLogService, SessionModel sessionModel,VisitorLogModel visitorLogModel) throws Exception{
+		AnonymousVisitorModel av = null;
+		if(sessionModel != null) {
+			System.out.println("Finding Anonymous Visitor by session..");
+			av = visitorLogService.getOne(AnonymousVisitorModel.class, sessionModel.getAnonymousVisitorID());
+			if(av != null) {
+				System.out.println("Anonymous Vistor Found.");
+				return av;
+			}
+		}
+		if(av == null) {
+			BrowserFPModel browserFP = visitorLogService.getOne(BrowserFPModel.class, visitorLogModel.getWebFP());
+			if(browserFP != null) {
+				System.out.println("Finding Anonymous Visitor by Browser FP..");
+				av = visitorLogService.getOne(AnonymousVisitorModel.class, browserFP.getAnonymousVisitorID());
+			} else {
+				
+				av = new AnonymousVisitorModel();
+				av.setId(UUID.randomUUID().toString());
+				visitorLogService.save(AnonymousVisitorModel.class, av);
+				System.out.println("Created New Anonymous Visitor "+av.getId());
+				
+			}
+		}
+		return av;
 	}
 	public static boolean createNewTable(String[] args){
 		if(args.length > 2){

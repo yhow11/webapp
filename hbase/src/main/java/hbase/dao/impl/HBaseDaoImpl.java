@@ -10,7 +10,6 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
-import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.MasterNotRunningException;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.ZooKeeperConnectionException;
@@ -116,17 +115,16 @@ public class HBaseDaoImpl implements HBaseDao {
 	/**
 	 * Get a row
 	 */
-	public void getOneRecord(String tableName, String rowKey) throws IOException {
-		Table table = conn.getTable(TableName.valueOf(tableName));
+	public <T> T getOneRecord(Class<T> clazz, String rowKey) throws Exception {
+		Table table = conn.getTable(TableName.valueOf(clazz.getAnnotation(HBaseTableAnnotation.class).tablename()));
 		Get get = new Get(rowKey.getBytes());
 		Result rs = table.get(get);
-		for (KeyValue kv : rs.raw()) {
-			System.out.print(new String(kv.getRow()) + " ");
-			System.out.print(new String(kv.getFamily()) + ":");
-			System.out.print(new String(kv.getQualifier()) + " ");
-			System.out.print(kv.getTimestamp() + " ");
-			System.out.println(new String(kv.getValue()));
+		if(rs != null) {
+			return map(rs, clazz);
+		} else {
+			return null;
 		}
+		
 	}
 
 	/**
@@ -152,31 +150,34 @@ public class HBaseDaoImpl implements HBaseDao {
 		Iterator<Result> iterator = ss.iterator();
 		List<T> results = new ArrayList<T>();
 		while (iterator.hasNext()) {
-			Object newInstance = clazz.newInstance();
-			for (Cell cell : iterator.next().listCells()) {
-				String qualifier = Bytes.toString(cell.getQualifier());
-				if (qualifier.equals("linkCount")) {
-					try {
-						PropertyUtils.setProperty(newInstance, qualifier,
-								Long.valueOf(Bytes.toString(cell.getValue())));
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				} else {
-					try {
-						PropertyUtils.setProperty(newInstance, qualifier, Bytes.toString(cell.getValue()));
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-			results.add((T) newInstance);
+			results.add(map(iterator.next(), clazz));
 		}
 		return results;
 	}
-
+	private <T> T map(Result result, Class<T> clazz) throws Exception {
+		Object newInstance = clazz.newInstance();
+		for (Cell cell : result.listCells()) {
+			String qualifier = Bytes.toString(cell.getQualifier());
+			if (qualifier.equals("linkCount")) {
+				try {
+					PropertyUtils.setProperty(newInstance, qualifier,
+							Long.valueOf(Bytes.toString(cell.getValue())));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					PropertyUtils.setProperty(newInstance, qualifier, Bytes.toString(cell.getValue()));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		PropertyUtils.setProperty(newInstance, "id", Bytes.toString(result.getRow()));
+		return (T) newInstance;
+	}
 	public Connection getConnection() {
 		// TODO Auto-generated method stub
 		return conn;

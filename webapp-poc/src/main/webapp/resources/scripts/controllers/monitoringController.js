@@ -17,7 +17,7 @@ angular.module('fingerPrintApp').controller(
 			
 			$rootScope.$on("stomReceiversConnected", function(event, next,
 					current) {
-				$rootScope.stompClient.subscribe('/event/notifyReceivers', function(
+				$rootScope.stompReceivers.subscribe('/event/notifyReceivers', function(
 						data) {
 					$scope.events = JSON.parse(data.body).concat($scope.events);
 					$scope.$apply();

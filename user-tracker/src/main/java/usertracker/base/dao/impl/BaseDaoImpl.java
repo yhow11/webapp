@@ -22,7 +22,11 @@ protected HBaseDao hbaseDao;
 	}
 	
 	public <T> T save(Object object, Class<T> t) throws Exception {
-		String tableName = t.getClass().getAnnotation(HBaseTableAnnotation.class).tablename();
+		
+		
+		System.out.println(t);
+		System.out.println(t.getAnnotation(HBaseTableAnnotation.class).tablename());
+		String tableName = t.getAnnotation(HBaseTableAnnotation.class).tablename();
 		Field[] fields = t.getDeclaredFields();
 		System.out.println(fields.length);
 		for (Field field : fields) {
