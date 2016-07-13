@@ -52,7 +52,7 @@ public class EventsController {
 	public @ResponseBody  ResponseForm<VisitorLogModel> getAll(@RequestParam("start") String start) throws Exception {
 		
 		ResponseForm<VisitorLogModel> response =  new ResponseForm<VisitorLogModel>();
-		List<VisitorLogModel> events =  visitorLogService.getAll(VisitorLogModel.class, "timeStamp"
+		List<VisitorLogModel> events =  visitorLogService.getAll(VisitorLogModel.class, "timestamp"
 				,String.valueOf(Utilities.getDate(new Date(Long.valueOf(start)), -3).getTime()) , String.valueOf(new Date(Long.valueOf(start)).getTime()), "desc");
 
 		response.setStatus(true);
@@ -64,16 +64,23 @@ public class EventsController {
 	}
 	
 	@RequestMapping(value = "event/getWebEvents", method = RequestMethod.GET)
-	public @ResponseBody  ResponseForm<WebEventModel> getWebEvents(@RequestParam("start") String start) throws Exception {
+	public @ResponseBody  ResponseForm<WebEventModel> getWebEvents(@RequestBody FingerPrintFormParam fingerPrintFormParam, @RequestParam("start") String start) throws Exception {
 		
 		ResponseForm<WebEventModel> response =  new ResponseForm<WebEventModel>();
-		List<WebEventModel> events =  visitorLogService.getAll(WebEventModel.class, "timestamp"
-				,String.valueOf(Utilities.getDate(new Date(Long.valueOf(start)), -3).getTime()) , String.valueOf(new Date(Long.valueOf(start)).getTime()), "desc");
+		SessionModel session =  visitorLogService.getOne(SessionModel.class, fingerPrintFormParam.getSessionID());
 
-		response.setStatus(true);
-		response.setData(events);
-		
-		
+		if(session != null) {
+			List<WebEventModel> events =  visitorLogService.findWebEvents(session.getAnonymousVisitorID(),String.valueOf(Utilities.getDate(new Date(Long.valueOf(start)), -3).getTime()) , String.valueOf(new Date(Long.valueOf(start)).getTime()), "desc");
+			response.setStatus(true);
+			response.setData(events);
+		} else {
+			BrowserFPModel browserFP = visitorLogService.getOne(BrowserFPModel.class, fingerPrintFormParam.getBrowserFP());
+		    if(browserFP != null) {
+		    	List<WebEventModel> events =  visitorLogService.findWebEvents(browserFP.getAnonymousVisitorID(),String.valueOf(Utilities.getDate(new Date(Long.valueOf(start)), -3).getTime()) , String.valueOf(new Date(Long.valueOf(start)).getTime()), "desc");
+				response.setStatus(true);
+				response.setData(events);
+		    }
+		}
 		
 		return response;
 	}

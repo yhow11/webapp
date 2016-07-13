@@ -3,6 +3,7 @@ package usertracker.browser.service.impl;
 import java.util.List;
 
 import usertracker.browser.dao.VisitorLogDao;
+import usertracker.browser.model.WebEventModel;
 import usertracker.browser.service.VisitorLogService;
 
 public class VisitorLogServiceImpl implements VisitorLogService {
@@ -55,6 +56,12 @@ public class VisitorLogServiceImpl implements VisitorLogService {
 	public List<String> findColumnValues(Class<?> clazz, String columnReturn, String column, String word) throws Exception {
 		// TODO Auto-generated method stub
 		return visitorLogDao.findColumnValues(clazz, columnReturn, column, word);
+	}
+
+	@Override
+	public List<WebEventModel> findWebEvents(String av, String start, String last, String orderby) throws Exception {
+		// TODO Auto-generated method stub
+		return visitorLogDao.findWebEvents(av, start, last, orderby);
 	}
 
 	

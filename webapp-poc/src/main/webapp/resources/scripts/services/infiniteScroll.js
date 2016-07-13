@@ -18,11 +18,12 @@ angular.module('fingerPrintApp').
 		if(data.data.status) {
 			var items = data.data.data;
 			if(items.length > 1) {
+				 this.after = items[items.length - 1].timeStamp;
 				 for (var i = 0; i < items.length; i++) {
 					 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL")
 			    	  this.items.push(items[i]);
 			      }
-		      this.after = this.items[this.items.length - 1].id;
+		     
 			}
 			
 			this.busy = false;
@@ -36,15 +37,16 @@ angular.module('fingerPrintApp').
     if (this.busy) return;
     this.busy = true;
     
-    eventService.getAllWebEvents(this.after).then(function(data){
+    eventService.getAllWebEvents(fingerPrintData, this.after).then(function(data){
 		if(data.data.status) {
 			var items = data.data.data;
 			if(items.length > 1) {
+				  this.after = items[items.length - 1].timeStamp;
 				 for (var i = 0; i < items.length; i++) {
 					 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL")
 			    	  this.items.push(items[i]);
 			      }
-		      this.after = this.items[this.items.length - 1].id;
+		    
 			}
 			
 			this.busy = false;

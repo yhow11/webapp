@@ -1,12 +1,19 @@
 package usertracker.browser.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.Type;
 import org.jooq.impl.DefaultDSLContext;
 
+import helper.phoenix.annotation.PhoenixTableAnnotation;
 import helper.phoenix.dao.impl.PhoenixDaoImpl;
+import helper.phoenix.util.PhoenixUtil;
 import usertracker.browser.dao.VisitorLogDao;
+import usertracker.browser.model.WebEventModel;
 
 
 public class VisitorLogDaoImpl extends PhoenixDaoImpl implements VisitorLogDao {
@@ -59,5 +66,24 @@ public class VisitorLogDaoImpl extends PhoenixDaoImpl implements VisitorLogDao {
 	public List<String> findColumnValues(Class<?> clazz, String columnReturn, String column, String word) throws Exception {
 		// TODO Auto-generated method stub
 		return super.findColumnValues(clazz, columnReturn, column, word);
+	}
+	@Override
+	public List<WebEventModel> findWebEvents(String av, String start, String last, String orderby) throws Exception {
+		// TODO Auto-generated method stub
+		String queryStr = "select * from "+WebEventModel.class.getAnnotation(PhoenixTableAnnotation.class).table();
+		queryStr += " where timestamp > :start and timestamp < :end and anonymousvisitorid =:av ";
+		if(orderby != null){
+			queryStr += " order by timestamp "+orderby;
+		} 
+		SQLQuery query  = getSessionFactory().getCurrentSession().createSQLQuery(queryStr);
+		query.setParameter("start", Long.valueOf(start));
+		query.setParameter("end", Long.valueOf(last));
+		query.setParameter("av", av);
+		query.setResultTransformer( Transformers.aliasToBean(WebEventModel.class));
+		Map<String, Type> fields = PhoenixUtil.getFieldNamesWithType(WebEventModel.class);
+		for(String key: fields.keySet()) {
+			query.addScalar(key, fields.get(key));
+		}
+		return query.list();
 	}
 }
