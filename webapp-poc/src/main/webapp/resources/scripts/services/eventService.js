@@ -17,7 +17,7 @@ angular.module('fingerPrintApp')
            return $http.get('event/getAll?start='+start).then(handleSuccess, handleError('Error getting all users'));
        },
        getAllWebEvents: function(data, start) {
-           return $http.get('event/getWebEvents?start='+start, data).then(handleSuccess, handleError('Error getting all users'));
+           return $http.post('event/getWebEvents?start='+start, data).then(handleSuccess, handleError('Error getting all users'));
        },
        getAnonymousUser: function(data) {
            return $http.post('event/getAnonymousUser', data).then(handleSuccess, handleError('Error getting all users'));

@@ -37,7 +37,7 @@ angular.module('fingerPrintApp').
     if (this.busy) return;
     this.busy = true;
     
-    eventService.getAllWebEvents(fingerPrintData, this.after).then(function(data){
+    eventService.getAllWebEvents(FingerPrint.getData(), this.after).then(function(data){
 		if(data.data.status) {
 			var items = data.data.data;
 			if(items.length > 1) {

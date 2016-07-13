@@ -63,7 +63,7 @@ public class EventsController {
 		return response;
 	}
 	
-	@RequestMapping(value = "event/getWebEvents", method = RequestMethod.GET)
+	@RequestMapping(value = "event/getWebEvents", method = RequestMethod.POST)
 	public @ResponseBody  ResponseForm<WebEventModel> getWebEvents(@RequestBody FingerPrintFormParam fingerPrintFormParam, @RequestParam("start") String start) throws Exception {
 		
 		ResponseForm<WebEventModel> response =  new ResponseForm<WebEventModel>();
