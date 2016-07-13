@@ -18,7 +18,7 @@ angular.module('fingerPrintApp').controller(
 						$scope.reddit.items = JSON.parse(response.data).concat($scope.reddit.items);
 						$scope.$apply();
 					} else {
-						if(JSON.parse(response).type == "VisitorLogModel"){
+						if(JSON.parse(response).type == "WebEventModel"){
 							var items = JSON.parse(response).data;
 							for (var i = 0; i < items.length; i++) {
 								 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL");

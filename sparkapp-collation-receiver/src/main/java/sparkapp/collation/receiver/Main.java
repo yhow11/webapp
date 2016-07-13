@@ -1,6 +1,7 @@
 package sparkapp.collation.receiver;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -98,6 +99,7 @@ public class Main {
 			});
 
 			List<VisitorLogModel> visitorLogModels = rowRDD.collect();
+			List<WebEventModel> webEventModels = new ArrayList<>();
 			for (VisitorLogModel visitorLogModel : visitorLogModels) {
 				System.out.println("Saving..");
 				visitorLogModel.setId(UUID.randomUUID().toString());
@@ -132,28 +134,31 @@ public class Main {
 				webEvent.setTitle(visitorLogModel.getTitle());
 				webEvent.setType(visitorLogModel.getType());
 				webEvent.setUrl(visitorLogModel.getUrl());
+				webEventModels.add(webEvent);
 				visitorLogService.save(WebEventModel.class, webEvent);
 				System.out.println("Created New WebEvent "+webEvent.getId());
-				if (webEvent != null && broadcast(args)) {
-					try{
-						RestTemplate rt = new RestTemplate();
-
-						rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-
-						rt.getMessageConverters().add(new StringHttpMessageConverter());
-
-						String uri = new String("http://103.253.145.213:8191/webapp-poc/notifyEvents");
-						UserParam<WebEventModel> data = new UserParam<WebEventModel>();
-						data.setType(WebEventModel.class.getSimpleName());
-						data.getData().add(webEvent);
-						String result = rt.postForObject(uri, data, String.class);
-					}catch(Exception e){
-						System.out.print(e.getMessage());
-					}
-					
-				}
+				
 			}
 
+			
+			if (webEventModels.size() > 0 && broadcast(args)) {
+				try{
+					RestTemplate rt = new RestTemplate();
+
+					rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+					rt.getMessageConverters().add(new StringHttpMessageConverter());
+
+					String uri = new String("http://103.253.145.213:8191/webapp-poc/notifyEvents");
+					UserParam<WebEventModel> data = new UserParam<WebEventModel>();
+					data.setType(WebEventModel.class.getSimpleName());
+					data.getData().addAll(webEventModels);
+					String result = rt.postForObject(uri, data, String.class);
+				}catch(Exception e){
+					System.out.print(e.getMessage());
+				}
+				
+			}
 			
 			if (visitorLogModels.size() > 0 && broadcast(args)) {
 				try{
