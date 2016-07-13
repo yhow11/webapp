@@ -26,6 +26,7 @@ import com.fingerprint.util.Utilities;
 import com.fingerprint.util.object.EventRequestObject;
 import com.fingerprint.util.service.impl.KafkaService;
 
+import usertracker.base.UserParam;
 import usertracker.browser.model.BrowserFPModel;
 import usertracker.browser.model.DeviceFPModel;
 import usertracker.browser.model.SessionModel;
@@ -128,7 +129,7 @@ public class EventsController {
 		return response;
 	}
 	@RequestMapping(value = "notifyEvents", method = RequestMethod.POST)
-	public String notifyEvents(@RequestBody Map<String, Object> data) throws Exception {
+	public String notifyEvents(@RequestBody UserParam<?> data) throws Exception {
 		template.convertAndSend("/event/notifyReceivers",data);
 		return "success";
 	}

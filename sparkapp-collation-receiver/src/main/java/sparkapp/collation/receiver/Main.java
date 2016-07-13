@@ -32,6 +32,7 @@ import sparkapp.collation.receiver.config.DaoConfig;
 import sparkapp.collation.receiver.config.MapperConfig;
 import sparkapp.collation.receiver.config.PhoenixContext;
 import sparkapp.collation.receiver.config.ServiceConfig;
+import usertracker.base.UserParam;
 import usertracker.browser.mapper.impl.VisitorLogStringMapper;
 import usertracker.browser.model.AnonymousVisitorModel;
 import usertracker.browser.model.BrowserFPModel;
@@ -142,8 +143,9 @@ public class Main {
 						rt.getMessageConverters().add(new StringHttpMessageConverter());
 
 						String uri = new String("http://103.253.145.213:8191/webapp-poc/notifyEvents");
-						Map<String, Object> data = new HashMap<String, Object>();
-						data.put(WebEventModel.class.getName(), webEvent);
+						UserParam<WebEventModel> data = new UserParam<WebEventModel>();
+						data.setType(WebEventModel.class.getName());
+						data.getData().add(webEvent);
 						String result = rt.postForObject(uri, data, String.class);
 					}catch(Exception e){
 						System.out.print(e.getMessage());
@@ -162,8 +164,9 @@ public class Main {
 					rt.getMessageConverters().add(new StringHttpMessageConverter());
 
 					String uri = new String("http://103.253.145.213:8191/webapp-poc/notifyEvents");
-					Map<String, Object> data = new HashMap<String, Object>();
-					data.put(VisitorLogModel.class.getName(), visitorLogModels);
+					UserParam<VisitorLogModel> data = new UserParam<VisitorLogModel>();
+					data.setType(VisitorLogModel.class.getName());
+					data.getData().addAll(visitorLogModels);
 					String result = rt.postForObject(uri, data, String.class);
 				}catch(Exception e){
 					System.out.print(e.getMessage());
