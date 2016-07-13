@@ -13,8 +13,9 @@ angular.module('fingerPrintApp').controller(
 					current) {
 				$rootScope.stompReceivers.subscribe('/event/notifyReceivers', function(
 						data) {
-					if(data.body && data.body.type == "VisitorLogModel"){
-						$scope.reddit.items = JSON.parse(data.body.data).concat($scope.reddit.items);
+					var response =  JSON.parse(data.body);
+					if(response && response.type == "VisitorLogModel"){
+						$scope.reddit.items = JSON.parse(response.data).concat($scope.reddit.items);
 						$scope.$apply();
 					}
 					
