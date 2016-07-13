@@ -144,7 +144,7 @@ public class Main {
 
 						String uri = new String("http://103.253.145.213:8191/webapp-poc/notifyEvents");
 						UserParam<WebEventModel> data = new UserParam<WebEventModel>();
-						data.setType(WebEventModel.class.getName());
+						data.setType(WebEventModel.class.getSimpleName());
 						data.getData().add(webEvent);
 						String result = rt.postForObject(uri, data, String.class);
 					}catch(Exception e){
@@ -165,7 +165,7 @@ public class Main {
 
 					String uri = new String("http://103.253.145.213:8191/webapp-poc/notifyEvents");
 					UserParam<VisitorLogModel> data = new UserParam<VisitorLogModel>();
-					data.setType(VisitorLogModel.class.getName());
+					data.setType(VisitorLogModel.class.getSimpleName());
 					data.getData().addAll(visitorLogModels);
 					String result = rt.postForObject(uri, data, String.class);
 				}catch(Exception e){
