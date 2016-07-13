@@ -14,7 +14,7 @@ angular
 				'fingerPrintApp',
 				[ 'chart.js', 'oc.lazyLoad', 'ui.router', 'ngStorage',
 						'md.data.table', 'ngMaterial', 'ngMessages',
-						'ngMdIcons', 'highcharts-ng' ])
+						'ngMdIcons', 'highcharts-ng', 'infinite-scroll' ])
 		.config(
 				[
 						'$mdThemingProvider',
@@ -141,6 +141,29 @@ angular
 
 											})
 									.state(
+									'profile',
+									{
+										url : '/profile',
+										controller : 'ProfileController',
+										templateUrl : 'resources/views/profile.html',
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+																	'resources/scripts/services/eventService.js',
+																	'resources/scripts/services/infiniteScroll.js',
+																	'resources/scripts/controllers/profileController.js',
+
+															]
+														})
+											}
+										}
+
+									})
+									.state(
 											'monitoring',
 											{
 												url : '/monitoring',
@@ -154,6 +177,7 @@ angular
 																	name : 'fingerPrintApp',
 																	files : [
 																			'resources/scripts/services/eventService.js',
+																			'resources/scripts/services/infiniteScroll.js',
 																			'resources/scripts/controllers/monitoringController.js',
 
 																	]

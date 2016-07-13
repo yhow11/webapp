@@ -13,17 +13,10 @@ import usertracker.browser.dao.impl.VisitorLogDaoImpl;
 public class DaoContext {
 
 	@Autowired
-	private ConfigContext configContext;
-	
-	@Bean
-	public  hbase.dao.HBaseDao HBaseDao() throws Exception {
-
-		return new hbase.dao.impl.HBaseDaoImpl(configContext.hbaseConfig());
-
-	}
+	private PhoenixContext phoenixContext;
 	
 	@Bean
 	public VisitorLogDao visitorLogDao() throws Exception{
-		return new VisitorLogDaoImpl(HBaseDao());
+		return new VisitorLogDaoImpl(phoenixContext.defaultDSLContext(), phoenixContext.sessionFactory());
 	}
 }

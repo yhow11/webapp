@@ -70,20 +70,20 @@
 		          <md-icon md-svg-icon="resources/img/icons/home.svg"></md-icon>
 		        </md-button>
 		        <md-button ui-sref="test" class="md-icon-button" aria-label="Testing Section">
-		          <md-icon md-svg-icon="resources/img/icons/fingerprint.svg"></md-icon>
+		          <md-icon md-svg-icon="resources/img/icons/test.svg"></md-icon>
 		        </md-button>
+		        <md-button ui-sref="profile" class="md-icon-button" aria-label="Profile">
+		          <md-icon md-svg-icon="resources/img/icons/fingerprint.svg"></md-icon>
+		          </md-button>
 		        <md-button ui-sref="monitoring" class="md-icon-button" aria-label="Monitoring">
 		          <md-icon md-svg-icon="resources/img/icons/monitor.svg"></md-icon>
-		        </md-button>
-		        <md-button ui-sref="reports" class="md-icon-button" aria-label="Reports">
-		          <md-icon md-svg-icon="resources/img/icons/reports.svg"></md-icon>
 		        </md-button>
 		      </div>
 		    </md-toolbar>
 		    <md-progress-linear class="md-warn" md-mode="determinate" ng-show="showLoading" value="{{determinateValue}}"></md-progress-linear>
-		    <md-content flex layout="row" class="j-fill-grey " layout-align="center" >
-		    	<div ui-view  flex-gt-sm="80" flex-sm="95" ></div>
-		    </md-content>
+		    <div flex layout="row" class="j-fill-grey "  layout-align="center" >
+		    	<div ui-view  flex="100" ></div>
+		    </div>
 	    <!-- <section layout="column" layout-fill>
 	    	<md-toolbar flex>
 		      <div class="md-toolbar-tools">
@@ -200,7 +200,9 @@
 		src="resources/vendors/websocket/sockjs.js"></script>
 	<script
 		src="resources/vendors/websocket/stomp.js"></script>
+		<script src="resources/vendors/moment/moment.js"></script>
 	<script src="resources/vendors/fingerprint/fingerprint2.js"></script>
+	<script src="resources/vendors/infinitescroll/ng-infinite-scroll.min.js"></script>
 	<script src="<c:url value="resources/scripts/app.js"/>"></script>
 	<script
 		src="resources/scripts/directives/charts/chart.js"></script>

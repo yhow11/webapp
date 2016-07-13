@@ -27,7 +27,7 @@ public class ConfigContext {
 		config.set("hbase.zookeeper.property.clientPort", "2181");
 		// config.set("hbase.client.scanner.timeout.period", "90000");
 		// config.set("hbase.master", "103.253.145.213:16000");
-		config.set("zookeeper.znode.parent", "/hbase-unsecure");
+		config.set("zookeeper.znode.parent", "/hbase");
 		return config;
 	}
 
@@ -45,4 +45,15 @@ public class ConfigContext {
 		kafkaProps.put("linger.ms", 5);
 		return kafkaProps;
 	}
+	@Bean
+	public Properties hibernateProperties() {
+	    Properties properties = new Properties();
+	    properties.put("hibernate.show_sql", "true");
+	    properties.put("hibernate.format_sql", "true");
+	    properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+//	    properties.put("hibernate.hbm2ddl.auto", "create-drop");
+	    
+	    return properties;
+	}
+	
 }

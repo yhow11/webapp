@@ -2,20 +2,20 @@ package usertracker.browser.model;
 
 import java.io.Serializable;
 
-import hbase.annotation.HBaseColumnAnnotation;
-import hbase.annotation.HBaseTableAnnotation;
+import helper.phoenix.annotation.PhoenixFieldAnnotation;
+import helper.phoenix.annotation.PhoenixTableAnnotation;
 
-@HBaseTableAnnotation(tablename="session")
+@PhoenixTableAnnotation(table="sessions")
 public class SessionModel  implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@HBaseColumnAnnotation(name="id", family="metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(255)" , primary=true)
 	private String id;
 	
-	@HBaseColumnAnnotation(name="anonymousVisitorID", family="metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(255)")
 	private String anonymousVisitorID;
 
 	public String getId() {

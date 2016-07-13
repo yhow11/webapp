@@ -155,28 +155,33 @@ public class HBaseDaoImpl implements HBaseDao {
 		return results;
 	}
 	private <T> T map(Result result, Class<T> clazz) throws Exception {
-		Object newInstance = clazz.newInstance();
-		for (Cell cell : result.listCells()) {
-			String qualifier = Bytes.toString(cell.getQualifier());
-			if (qualifier.equals("linkCount")) {
-				try {
-					PropertyUtils.setProperty(newInstance, qualifier,
-							Long.valueOf(Bytes.toString(cell.getValue())));
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
-				try {
-					PropertyUtils.setProperty(newInstance, qualifier, Bytes.toString(cell.getValue()));
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		
+		if(result.listCells() != null && result.listCells().size() > 0){
+			Object newInstance = clazz.newInstance();
+			for (Cell cell : result.listCells()) {
+				String qualifier = Bytes.toString(cell.getQualifier());
+				if (qualifier.equals("linkCount")) {
+					try {
+						PropertyUtils.setProperty(newInstance, qualifier,
+								Long.valueOf(Bytes.toString(cell.getValue())));
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					try {
+						PropertyUtils.setProperty(newInstance, qualifier, Bytes.toString(cell.getValue()));
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
+			PropertyUtils.setProperty(newInstance, "id", Bytes.toString(result.getRow()));
+			return (T) newInstance;
+		} else {
+			return null;
 		}
-		PropertyUtils.setProperty(newInstance, "id", Bytes.toString(result.getRow()));
-		return (T) newInstance;
 	}
 	public Connection getConnection() {
 		// TODO Auto-generated method stub

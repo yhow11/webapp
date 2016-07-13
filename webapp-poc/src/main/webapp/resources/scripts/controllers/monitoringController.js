@@ -6,21 +6,18 @@
  */
 angular.module('fingerPrintApp').controller(
 		'MonitoringController',
-		function($rootScope, $scope, eventService) {
-			
-			$scope.selected = [];
-			 eventService.getAll().then(function(data){
-				if(data.data.status) {
-					$scope.events = data.data.data;
-				}
-			});
+		function($rootScope, $scope, eventService, Reddit) {
+			$scope.reddit = new Reddit();
 			
 			$rootScope.$on("stomReceiversConnected", function(event, next,
 					current) {
 				$rootScope.stompReceivers.subscribe('/event/notifyReceivers', function(
 						data) {
-					$scope.events = JSON.parse(data.body).concat($scope.events);
-					$scope.$apply();
+					if(data.body && data.body.type == "VisitorLogModel"){
+						$scope.events = JSON.parse(data.body.data).concat($scope.events);
+						$scope.$apply();
+					}
+					
 				});
 			});
 			

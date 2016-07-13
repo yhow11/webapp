@@ -1,0 +1,89 @@
+
+<div flex-lt-sm="100" layout-lt-sm="column" layout-gt-sm="row">
+	 <div flex-gt-sm="50">
+	 	<md-card >
+				<md-card-content layout="column" layout-align="center center" >
+					<div class="md-media-lg card-media">
+						<img class="height-inherit" src="resources/img/profile-img.png" />
+					</div>
+					<div>
+						<label>ID: <span class="md-subhead j-color-grey">{{fingerPrintData.anonymousUserID}}</span></label>
+					</div>
+					<div>
+						<label>Last action: 2016-11-12 12:00:00</label>
+					</div>
+				</md-card-content>
+				
+	       </md-card>
+	 	
+       <md-card>
+				<md-data-table-toolbar class="toolbar-with-fab" ng-hide="searchFP" layout="row">
+					<span class="md-headline">FingerPrints</span>
+				    <span flex-gt-sm></span>
+				    <md-button class="md-icon-button" ng-click="searchFP = true">
+				      <md-icon>filter_list</md-icon>
+				    </md-button>
+				</md-data-table-toolbar>
+				<md-data-table-toolbar class="toolbar-with-fab" ng-show="searchFP" layout="row" layout-padding>
+				    <md-input-container class="md-block" flex-gt-sm>
+						<label>Search</label> <input 
+							ng-model="searchFPValue" >
+					</md-input-container>
+				    <md-button class="md-icon-button" ng-click="searchFP = false">
+				      <md-icon>close</md-icon>
+				    </md-button>
+				</md-data-table-toolbar>
+				<div layout="column" layout-gt-md="row" layout-align="center"  >
+			      <div  layout="column" layout-padding >
+			      	<h5 class="md-subhead j-color-grey">Browser</h5>
+			      	<span ng-repeat='browserFP in fingerPrintData.browserFPs | filter:searchFPValue' flex class='score'>{{browserFP.id}}</span>
+		      	  </div>
+			      <div  layout="column" layout-padding >
+			      	<h5 class="md-subhead j-color-grey">Device</h5>
+			      	<span ng-repeat='deviceFP in fingerPrintData.deviceFPs | filter:searchFPValue' flex class='score'>{{deviceFP.id}}</span>
+		      	  </div>
+			    </div>
+		</md-card>
+	 </div>
+	 
+<!--   <md-card flex-gt-sm="35" layout="column" layout-align="center" layout-padding>
+			<md-data-table-toolbar class="toolbar-with-fab" ng-hide="search" layout="row">
+			    <h4 class="md-subhead j-color-grey">User: {{fingerPrintData.anonymousUserID}}</h4>
+			</md-data-table-toolbar>
+	</md-card>
+	 -->
+	  <div flex-gt-sm="50" >
+	  	<md-card >
+	  		<md-data-table-toolbar class="toolbar-with-fab" ng-hide="searchWE" layout="row">
+					<span class="md-headline">Web Events</span>
+				    <span flex-gt-sm></span>
+				    <md-button class="md-icon-button" ng-click="searchWE = true">
+				      <md-icon>filter_list</md-icon>
+				    </md-button>
+			</md-data-table-toolbar>
+			<md-data-table-toolbar class="toolbar-with-fab" ng-show="searchWE" layout="row" layout-padding>
+				    <md-input-container class="md-block" flex-gt-sm>
+						<label>Search</label> <input 
+							ng-model="searchValue" >
+					</md-input-container>
+				    <md-button class="md-icon-button" ng-click="searchWE = false">
+				      <md-icon>close</md-icon>
+				    </md-button>
+			</md-data-table-toolbar>
+			<div  infinite-scroll='reddit.nextWebEventPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='0.6'>
+			    <div layout="row" layout-align="center"   ng-repeat='item in reddit.items | filter:searchValue'>
+			      <span flex class='score'>{{item.timeStamp}}&nbsp;</span>
+			      <span flex class='score'>{{item.type}}</span>
+			      <span flex class='score'>{{item.url}}</span>
+			      <span flex class='score'>{{item.title}}&nbsp;</span>
+			    </div>
+			    
+			      <div style='clear: both;'></div>		     
+			    <div ng-show='reddit.busy'>Loading data...</div>
+			  </div>
+		</md-card>
+	  </div>
+	
+</div>
+
+ 

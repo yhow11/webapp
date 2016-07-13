@@ -2,39 +2,34 @@ package usertracker.browser.model;
 
 import java.io.Serializable;
 
-import hbase.annotation.HBaseColumnAnnotation;
-import hbase.annotation.HBaseTableAnnotation;
+import helper.phoenix.annotation.PhoenixFieldAnnotation;
+import helper.phoenix.annotation.PhoenixTableAnnotation;
 
-@HBaseTableAnnotation(tablename="visitorLog")
+@PhoenixTableAnnotation(table="visitorLog")
 public class VisitorLogModel  implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@HBaseColumnAnnotation(name="id", family="metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(255)", primary=true)
 	private String id;
-	@HBaseColumnAnnotation(name="fp", family="metadata")
-	private String fp;
-	@HBaseColumnAnnotation(name="webFP", family="metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(255)")
 	private String webFP;
-	@HBaseColumnAnnotation(name="deviceFP", family="metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(255)")
 	private String deviceFP;
-	@HBaseColumnAnnotation(name="leadID", family="metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(255)")
 	private String leadID;
-	@HBaseColumnAnnotation(name="timeStamp", family="metadata")
-	private String timeStamp;
-	@HBaseColumnAnnotation(name="timeStampStr", family="metadata")
-	private String timeStampStr;
-	@HBaseColumnAnnotation(name="type", family="metadata")
+	@PhoenixFieldAnnotation(type="BIGINT")
+	private Long timeStamp;
+	@PhoenixFieldAnnotation(type="VARCHAR(255)")
 	private String type;
-	@HBaseColumnAnnotation(name="url", family="metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(255)")
 	private String url;
-	@HBaseColumnAnnotation(name="title", family="metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(255)")
 	private String title;
-	@HBaseColumnAnnotation(name="sessionID", family="metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(255)")
 	private String sessionID;
-	private Long linkCount;
 	
 	
 	public String getSessionID() {
@@ -43,29 +38,11 @@ public class VisitorLogModel  implements Serializable{
 	public void setSessionID(String sessionID) {
 		this.sessionID = sessionID;
 	}
-	public String getTimeStampStr() {
-		return timeStampStr;
-	}
-	public void setTimeStampStr(String timeStampStr) {
-		this.timeStampStr = timeStampStr;
-	}
 	public String getLeadID() {
 		return leadID;
 	}
 	public void setLeadID(String leadID) {
 		this.leadID = leadID;
-	}
-	public Long getLinkCount() {
-		return linkCount;
-	}
-	public void setLinkCount(Long linkCount) {
-		this.linkCount = linkCount;
-	}
-	public String getFp() {
-		return fp;
-	}
-	public void setFp(String fp) {
-		this.fp = fp;
 	}
 	public String getId() {
 		return id;
@@ -85,10 +62,10 @@ public class VisitorLogModel  implements Serializable{
 	public void setDeviceFP(String deviceFP) {
 		this.deviceFP = deviceFP;
 	}
-	public String getTimeStamp() {
+	public Long getTimeStamp() {
 		return timeStamp;
 	}
-	public void setTimeStamp(String timeStamp) {
+	public void setTimeStamp(Long timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 	

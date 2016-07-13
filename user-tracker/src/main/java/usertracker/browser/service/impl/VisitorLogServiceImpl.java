@@ -2,7 +2,6 @@ package usertracker.browser.service.impl;
 
 import java.util.List;
 
-import hbase.annotation.HBaseTableAnnotation;
 import usertracker.browser.dao.VisitorLogDao;
 import usertracker.browser.service.VisitorLogService;
 
@@ -16,36 +15,27 @@ public class VisitorLogServiceImpl implements VisitorLogService {
 	}
 
 	@Override
-	public <T> List<T>  getAll(Class<T> clazz) throws Exception {
+	public <T> List<T> getAll(Class<T> clazz, String column, String start, String last) throws Exception {
 		// TODO Auto-generated method stub
-		return visitorLogDao.getAll(clazz, null, null, null);
+		return visitorLogDao.getAll(clazz, column, start, last);
 	}
 
 	@Override
-	public <T> List<T>  find(Class<T> clazz, String word, String column) throws Exception {
+	public <T> T getOne(Class<T> clazz, String id) throws Exception {
+		// TODO Auto-generated method stub
+		return visitorLogDao.getOne(clazz, id);
+	}
+
+	@Override
+	public <T> List<T> find(Class<T> clazz, String word, String column) throws Exception {
 		// TODO Auto-generated method stub
 		return visitorLogDao.find(clazz, word, column);
 	}
 
 	@Override
-	public <T> List<T> getAll(Class<T> clazz, Integer limit, String startRow, String lastRow)
-			throws Exception {
+	public void creatTable(Class<?> clazz) throws Exception {
 		// TODO Auto-generated method stub
-		return visitorLogDao.getAll(clazz, limit, startRow, lastRow);
-	}
-
-	@Override
-	public <T> List<T>  getAll(Class<T> clazz, Integer limit) throws Exception {
-		// TODO Auto-generated method stub
-		return visitorLogDao.getAll(clazz, limit, null, null);
-	}
-
-	@Override
-	public <T> T creatTable(Class<T> clazz) throws Exception {
-		// TODO Auto-generated method stub
-		visitorLogDao.creatTable(clazz.getAnnotation(HBaseTableAnnotation.class).tablename());
-		
-		return null;
+		visitorLogDao.creatTable(clazz);
 	}
 
 	@Override
@@ -55,9 +45,16 @@ public class VisitorLogServiceImpl implements VisitorLogService {
 	}
 
 	@Override
-	public <T> T getOne(Class<T> clazz, String id) throws Exception {
+	public <T> List<T> getAll(Class<T> clazz, String column, String start, String last, String orderby)
+			throws Exception {
 		// TODO Auto-generated method stub
-		return visitorLogDao.getOne(clazz, id);
+		return visitorLogDao.getAll(clazz, column, start, last, orderby);
+	}
+
+	@Override
+	public List<String> findColumnValues(Class<?> clazz, String columnReturn, String column, String word) throws Exception {
+		// TODO Auto-generated method stub
+		return visitorLogDao.findColumnValues(clazz, columnReturn, column, word);
 	}
 
 	

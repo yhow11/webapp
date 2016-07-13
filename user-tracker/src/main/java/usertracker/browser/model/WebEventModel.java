@@ -2,55 +2,48 @@ package usertracker.browser.model;
 
 import java.io.Serializable;
 
-import hbase.annotation.HBaseColumnAnnotation;
-import hbase.annotation.HBaseTableAnnotation;
+import helper.phoenix.annotation.PhoenixFieldAnnotation;
+import helper.phoenix.annotation.PhoenixTableAnnotation;
 
-@HBaseTableAnnotation(tablename = "webEvent")
+@PhoenixTableAnnotation(table="webEvent")
 public class WebEventModel implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@HBaseColumnAnnotation(name = "id", family = "metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(100)", primary=true)
 	private String id;
 
-	@HBaseColumnAnnotation(name = "anonymousVisitorID", family = "metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(100)")
 	private String anonymousVisitorID;
 
-	@HBaseColumnAnnotation(name = "browserFPID", family = "metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(100)")
 	private String browserFPID;
 
-	@HBaseColumnAnnotation(name = "deviceFPID", family = "metadata")
+	@PhoenixFieldAnnotation(type="VARCHAR(100)")
 	private String deviceFPID;
 
-	@HBaseColumnAnnotation(name = "timeStamp", family = "metadata")
-	private String timeStamp;
-	@HBaseColumnAnnotation(name = "timeStampStr", family = "metadata")
-	private String timeStampStr;
-	@HBaseColumnAnnotation(name = "type", family = "metadata")
+	@PhoenixFieldAnnotation(type="BIGINT")
+	private Long timeStamp;
+	
+	@PhoenixFieldAnnotation(type="VARCHAR(100)")
 	private String type;
-	@HBaseColumnAnnotation(name = "url", family = "metadata")
+	
+	@PhoenixFieldAnnotation(type="VARCHAR(100)")
 	private String url;
-	@HBaseColumnAnnotation(name = "title", family = "metadata")
+	
+	@PhoenixFieldAnnotation(type="VARCHAR(100)")
 	private String title;
 
 	
 	
-	public String getTimeStamp() {
+	public Long getTimeStamp() {
 		return timeStamp;
 	}
 
-	public void setTimeStamp(String timeStamp) {
+	public void setTimeStamp(Long timeStamp) {
 		this.timeStamp = timeStamp;
-	}
-
-	public String getTimeStampStr() {
-		return timeStampStr;
-	}
-
-	public void setTimeStampStr(String timeStampStr) {
-		this.timeStampStr = timeStampStr;
 	}
 
 	public String getType() {

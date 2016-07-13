@@ -1,12 +1,14 @@
 package com.fingerprint.object;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResponseForm<T> {
 
+	public static final String NO_DATA = "No data found.";
 	private boolean status;
 	private String message;
-	private List<T> data;
+	private List<T> data = new ArrayList<T>();
 	
 	public boolean isStatus() {
 		return status;

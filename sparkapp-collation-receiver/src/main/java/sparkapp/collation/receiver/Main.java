@@ -27,8 +27,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import kafka.serializer.StringDecoder;
+import sparkapp.collation.receiver.config.ConfigContext;
 import sparkapp.collation.receiver.config.DaoConfig;
 import sparkapp.collation.receiver.config.MapperConfig;
+import sparkapp.collation.receiver.config.PhoenixContext;
 import sparkapp.collation.receiver.config.ServiceConfig;
 import usertracker.browser.mapper.impl.VisitorLogStringMapper;
 import usertracker.browser.model.AnonymousVisitorModel;
@@ -48,7 +50,7 @@ public class Main {
 		Logger.getLogger("org.apache.spark.streaming.DStreamGraph").setLevel(Level.INFO);
 		Logger.getLogger("org.apache.spark.streaming.scheduler.JobGenerator").setLevel(Level.INFO);
 
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(DaoConfig.class, ServiceConfig.class, MapperConfig.class);
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigContext.class, DaoConfig.class, ServiceConfig.class, MapperConfig.class, PhoenixContext.class);
 
 		VisitorLogService visitorLogService = (VisitorLogService) ctx.getBean("visitorLogService");
 		VisitorLogStringMapper visitorLogStringMapper = (VisitorLogStringMapper) ctx.getBean("visitorLogStringMapper");
@@ -104,28 +106,50 @@ public class Main {
 				BrowserFPModel browserFP = null;
 				DeviceFPModel deviceFP = null;
 				SessionModel sessionModel = visitorLogService.getOne(SessionModel.class, visitorLogModel.getSessionID());
-				
+				System.out.println(sessionModel);
 				av = findAV(visitorLogService, sessionModel, visitorLogModel);
 				
 				if(sessionModel == null){
-					sessionModel.setId(UUID.randomUUID().toString());
+					sessionModel = new SessionModel();
+					sessionModel.setId(visitorLogModel.getSessionID());
 					sessionModel.setAnonymousVisitorID(av.getId());
 					visitorLogService.save(SessionModel.class, sessionModel);
 					System.out.println("Created New Session "+sessionModel.getId());
-				} 
+				} else {
+					System.out.println("Session Found. "+sessionModel.getId());
+				}
 				
 				browserFP = findBrowserFP(visitorLogService, av, visitorLogModel);
 				deviceFP = findDeviceFP(visitorLogService, av, visitorLogModel);
 				
 				WebEventModel webEvent = new WebEventModel();
+				webEvent.setId(UUID.randomUUID().toString());
 				webEvent.setAnonymousVisitorID(av.getId());
 				webEvent.setBrowserFPID(browserFP.getId());
 				webEvent.setDeviceFPID(deviceFP.getId());
 				webEvent.setTimeStamp(visitorLogModel.getTimeStamp());
 				webEvent.setTitle(visitorLogModel.getTitle());
 				webEvent.setType(visitorLogModel.getType());
+				webEvent.setUrl(visitorLogModel.getUrl());
 				visitorLogService.save(WebEventModel.class, webEvent);
 				System.out.println("Created New WebEvent "+webEvent.getId());
+				if (webEvent != null && broadcast(args)) {
+					try{
+						RestTemplate rt = new RestTemplate();
+
+						rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+						rt.getMessageConverters().add(new StringHttpMessageConverter());
+
+						String uri = new String("http://103.253.145.213:8191/webapp-poc/notifyEvents");
+						Map<String, Object> data = new HashMap<String, Object>();
+						data.put(WebEventModel.class.getName(), webEvent);
+						String result = rt.postForObject(uri, data, String.class);
+					}catch(Exception e){
+						System.out.print(e.getMessage());
+					}
+					
+				}
 			}
 
 			
@@ -138,10 +162,11 @@ public class Main {
 					rt.getMessageConverters().add(new StringHttpMessageConverter());
 
 					String uri = new String("http://103.253.145.213:8191/webapp-poc/notifyEvents");
-
-					String result = rt.postForObject(uri, visitorLogModels, String.class);
+					Map<String, Object> data = new HashMap<String, Object>();
+					data.put(VisitorLogModel.class.getName(), visitorLogModels);
+					String result = rt.postForObject(uri, data, String.class);
 				}catch(Exception e){
-					
+					System.out.print(e.getMessage());
 				}
 				
 			}
@@ -181,7 +206,7 @@ public class Main {
 			System.out.println("Finding Anonymous Visitor by session..");
 			av = visitorLogService.getOne(AnonymousVisitorModel.class, sessionModel.getAnonymousVisitorID());
 			if(av != null) {
-				System.out.println("Anonymous Vistor Found.");
+				System.out.println("Anonymous Vistor Found. "+av.getId());
 				return av;
 			}
 		}

@@ -113,3 +113,6 @@ md-input-container .md-placeholder, md-input-container label:not(.md-no-float) {
 md-toolbar:not(.md-menu-toolbar).j-fill-white{
 	
 }
+.height-inherit{
+ height:inherit;	
+}

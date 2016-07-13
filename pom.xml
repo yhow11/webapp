@@ -27,5 +27,8 @@
     <module>marketo</module>
     <module>helper-mongodb</module>
     <module>plugin-highchart</module>
+    <module>helper-phoenix</module>
+    <module>helper-hibernate</module>
+    <module>helper-spring</module>
   </modules>
 </project>

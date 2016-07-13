@@ -17,7 +17,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.jofel</groupId>
-			<artifactId>hbase</artifactId>
+			<artifactId>helper-phoenix</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

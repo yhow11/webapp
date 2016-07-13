@@ -1,6 +1,8 @@
 
-<md-card flex-gt-sm layout="column" layout="center" layout-padding>
-<md-data-table-toolbar class="toolbar-with-fab" ng-hide="search" layout="row">
+
+<md-card flex-gt-sm layout="column" layout-align="center" layout-padding>
+		
+		<md-data-table-toolbar class="toolbar-with-fab" ng-hide="search" layout="row">
 		    <h4 class="md-title j-color-grey">Log History</h4>
 		    <span flex-gt-sm></span>
 		    <md-button class="md-icon-button" ng-click="search = true">
@@ -16,53 +18,20 @@
 		      <md-icon>close</md-icon>
 		    </md-button>
 		</md-data-table-toolbar>
-  		<md-data-table-container>
-		  <table md-data-table md-row-select="selected" md-progress="deffered" sortable-columns="true">
-		    <thead>
-		      <tr>
-		      	<th name="timestamp"></th>
-		      	<th name="sessionID"></th>
-		      	<th name="webFP"></th>
-		      	<th name="deviceFP"></th>
-		      	<th name="type"></th>
-		      	<th name="url"></th>
-		      	<th name="title"></th>
-		      	
-		        <!-- <th name="group"></th>
-		        <th numeric name="dcode" hide-sm></th>
-		        <th numeric name="lcode" hide-sm></th>
-		        <th name="attended" hide-sm></th>
-		        <th name="absent/s" hide-sm></th>
-		        <th name="completion date" hide-sm></th>
-		        <th name="actions"></th> -->
-		      </tr>
-		    </thead>
-		    <tbody>
-		      <tr md-auto-select ng-repeat="event in events | filter : searchValue">
-		        <td>{{event.timeStamp}}</td>
-		      	<td>{{event.sessionID}}</td>
-		      	<td>{{event.webFP}}</td>
-		      	<td>{{event.deviceFP}}</td>
-		        <td>{{event.type}}</td>
-		        <td>{{event.url}}</td>
-		    	<td>{{event.title}}</td>
-		        
-		     <!--    <td>{{member.group}}</td>
-		        <td hide-sm>{{member.dcode}}</td>
-		        <td hide-sm>{{member.lcode}}</td>
-		        <td hide-sm>{{member.present}}</td>
-		        <td hide-sm>{{member.absent}}</td>
-		        <td hide-sm>{{member.completionDate | date:'yyyy-MM-dd'}}</td>
-		        <td>
-				  <md-select ng-model="member.name" placeholder="Edit">
-				    <md-option ng-repeat="action in member.actions" ng-click="actions(action, member)" >{{action.name}}</md-option>
-				  </md-select>
-				</td> -->
-		      </tr>
-		    </tbody>
-		  </table>
-		</md-data-table-container>	
-		<md-data-table-pagination md-limit="3" md-page="1" md-total="9"></md-data-table-pagination>
+		 	<div  infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='0.6'>
+		    <div layout="row"  ng-repeat='item in reddit.items | filter:searchValue'>
+		      <span >{{item.timeStamp}}&nbsp;</span>
+		      <span >{{item.webFP}}</span>
+		      <span >{{item.deviceFP}}</span>
+		      <span >{{item.type}}</span>
+		      <span >{{item.url}}</span>
+		      <span >{{item.title}}&nbsp;</span>
+		      <span >{{item.sessionID}}</span>
+		    </div>
+		    
+		      <div style='clear: both;'></div>		     
+		    <div ng-show='reddit.busy'>Loading data...</div>
+		  </div>
+  		
 </md-card>
-
-
+ 
