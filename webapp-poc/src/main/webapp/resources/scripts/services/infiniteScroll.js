@@ -15,19 +15,22 @@ angular.module('fingerPrintApp').
     this.busy = true;
     
     eventService.getAll(this.after).then(function(data){
-		if(data.data.status) {
-			var items = data.data.data;
-			if(items.length > 1) {
-				 this.after = items[items.length - 1].timeStamp;
-				 for (var i = 0; i < items.length; i++) {
-					 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL")
-			    	  this.items.push(items[i]);
-			      }
-		     
-			}
-			
-			this.busy = false;
-		}
+    	if(data.data){
+    		if(data.data.status) {
+    			var items = data.data.data;
+    			if(items.length > 1) {
+    				 this.after = items[items.length - 1].timeStamp;
+    				 for (var i = 0; i < items.length; i++) {
+    					 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL")
+    			    	  this.items.push(items[i]);
+    			      }
+    		     
+    			}
+    			
+    			this.busy = false;
+    		}
+    	}
+		
 	}.bind(this));
     return Reddit;
   };
@@ -38,19 +41,22 @@ angular.module('fingerPrintApp').
     this.busy = true;
     
     eventService.getAllWebEvents(FingerPrint.getData(), this.after).then(function(data){
-		if(data.data.status) {
-			var items = data.data.data;
-			if(items.length > 1) {
-				  this.after = items[items.length - 1].timeStamp;
-				 for (var i = 0; i < items.length; i++) {
-					 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL")
-			    	  this.items.push(items[i]);
-			      }
-		    
-			}
-			
-			this.busy = false;
-		}
+    	if(data.data){
+    		if(data.data.status) {
+    			var items = data.data.data;
+    			if(items.length > 1) {
+    				  this.after = items[items.length - 1].timeStamp;
+    				 for (var i = 0; i < items.length; i++) {
+    					 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL")
+    			    	  this.items.push(items[i]);
+    			      }
+    		    
+    			}
+    			
+    			this.busy = false;
+    		}
+    	}
+		
 	}.bind(this));
     return Reddit;
   };
