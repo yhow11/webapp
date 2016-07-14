@@ -2,7 +2,6 @@ package com.fingerprint.event.controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -11,7 +10,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -79,6 +77,29 @@ public class EventsController {
 		    	List<WebEventModel> events =  visitorLogService.findWebEvents(browserFP.getAnonymousVisitorID(),String.valueOf(Utilities.getDate(new Date(Long.valueOf(start)), -3).getTime()) , String.valueOf(new Date(Long.valueOf(start)).getTime()), "desc");
 				response.setStatus(true);
 				response.setData(events);
+		    }
+		}
+		
+		return response;
+	}
+	
+
+	@RequestMapping(value = "event/getSessions", method = RequestMethod.POST)
+	public @ResponseBody  ResponseForm<SessionModel> getSessions(@RequestBody FingerPrintFormParam fingerPrintFormParam, @RequestParam("start") String start) throws Exception {
+		
+		ResponseForm<SessionModel> response =  new ResponseForm<SessionModel>();
+		SessionModel session =  visitorLogService.getOne(SessionModel.class, fingerPrintFormParam.getSessionID());
+
+		if(session != null) {
+			List<SessionModel> sessions = visitorLogService.find(SessionModel.class, "anonymousVisitorID", session.getAnonymousVisitorID());
+			response.setStatus(true);
+			response.setData(sessions);
+		} else {
+			BrowserFPModel browserFP = visitorLogService.getOne(BrowserFPModel.class, fingerPrintFormParam.getBrowserFP());
+		    if(browserFP != null) {
+		    	List<SessionModel> sessions = visitorLogService.find(SessionModel.class, "anonymousVisitorID", browserFP.getAnonymousVisitorID());
+				response.setStatus(true);
+				response.setData(sessions);
 		    }
 		}
 		

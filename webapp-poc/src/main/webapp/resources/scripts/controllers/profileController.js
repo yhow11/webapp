@@ -8,19 +8,37 @@ angular.module('fingerPrintApp').controller(
 		'ProfileController',
 		function($rootScope, $scope, eventService, Reddit) {
 			$scope.reddit = new Reddit();
-			eventService.getAnonymousUser(FingerPrint.getData()).then(function(data){
+			var params = FingerPrint.getData();
+			eventService.getAnonymousUser(params).then(function(data){
 				if(data.data.status) {
 					$scope.fingerPrintData = data.data.data[0];
 				}
 			});
+			eventService.getMySessions(params).then(function(data){
+				if(data.data.status) {
+					$scope.sessions = data.data.data;
+				}
+			});
 			$rootScope.$on("notifyReceivers", function(event, data) {
-				if(data.type == "WebEventModel"){
-					var items = data.data;
-					for (var i = 0; i < items.length; i++) {
-						 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL");
-				    }
-					$scope.reddit.items = items.concat($scope.reddit.items);
-					$scope.$apply();
+				var webEvent = data.data;
+				if(webEvent.type == "WebEventModel"){
+					eventService.getAnonymousUser(FingerPrint.getData()).then(function(data){
+						if(data.data.status) {
+							$scope.fingerPrintData = data.data.data[0];
+							
+							var myItems = [];
+							var items = webEvent.data;
+							for (var i = 0; i < items.length; i++) {
+								  if($scope.fingerPrintData.anonymousUserID == items[i].anonymousVisitorID){
+									  items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL");
+									  myItems.push(items[i]);	 
+								 }
+						    }
+							$scope.reddit.items = myItems.concat($scope.reddit.items);
+							$scope.$apply();
+						}
+					});
+					
 				}
 			});
 		});

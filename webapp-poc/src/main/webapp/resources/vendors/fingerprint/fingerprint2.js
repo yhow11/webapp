@@ -46,9 +46,8 @@
     		var timeZone = client.getTimeZone();
     		var language = client.getLanguage();
     		var fonts = client.getFonts();
-    		var user_agent = client.getUserAgent();
     		
-    		var deviceDataPoints = screenPrint + OS + CPU + device + timeZone + language + fonts + user_agent;
+    		var deviceDataPoints = screenPrint + OS + CPU + device + timeZone + language + fonts;
     		
     		FingerPrint.setCookie('device', device, 10);
     		FingerPrint.setCookie('cpu', CPU, 10);
@@ -57,10 +56,11 @@
     		FingerPrint.setCookie('timeZone', timeZone, 10);
     		FingerPrint.setCookie('language', language, 10);
     		FingerPrint.setCookie('fonts', fonts, 10);
-    		FingerPrint.setCookie('user_agent', user_agent, 10);
+    		
     		
     		//Browser Data Points
-    		
+
+    		var user_agent = client.getUserAgent();
     		var browser_browser = client.getBrowser();
     		var browser_browser_version = client.getBrowserVersion();
     		var browser_engine = client.getEngine();
@@ -75,8 +75,9 @@
 
     		var browserDataPoints = browser_browser + browser_browser_version + browser_engine + browser_engine_version + browser_localstorage 
     		+ browser_session_storage + browser_plugins + browser_canvas_print + browser_mime_type
-    		+ browser_is_mime_type + browser_system_language;
+    		+ browser_is_mime_type + browser_system_language + user_agent;
     		
+    		FingerPrint.setCookie('user_agent', user_agent, 10);
     		FingerPrint.setCookie('browser_browser', browser_browser, 10);
     		FingerPrint.setCookie('browser_browser_version', browser_browser_version, 10);
     		FingerPrint.setCookie('browser_engine', browser_engine, 10);

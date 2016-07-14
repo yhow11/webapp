@@ -10,8 +10,8 @@ angular.module('fingerPrintApp').controller(
 			$scope.reddit = new Reddit();
 			
 			$rootScope.$on("notifyReceivers", function(event, data) {
-				if(data.type == "VisitorLogModel"){
-					var items = data.data;
+				if(data.data.type == "VisitorLogModel"){
+					var items = data.data.data;
 					for (var i = 0; i < items.length; i++) {
 						 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL");
 				    }

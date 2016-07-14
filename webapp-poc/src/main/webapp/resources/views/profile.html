@@ -53,6 +53,27 @@
 	</md-card>
 	 -->
 	  <div flex-gt-sm="50" >
+	  	<md-card>
+				<md-data-table-toolbar class="toolbar-with-fab" ng-hide="searchSession" layout="row">
+					<span class="md-headline">Sessions</span>
+				    <span flex-gt-sm></span>
+				    <md-button class="md-icon-button" ng-click="searchSession = true">
+				      <md-icon>filter_list</md-icon>
+				    </md-button>
+				</md-data-table-toolbar>
+				<md-data-table-toolbar class="toolbar-with-fab" ng-show="searchSession" layout="row" layout-padding>
+				    <md-input-container class="md-block" flex-gt-sm>
+						<label>Search</label> <input 
+							ng-model="searchSessionValue" >
+					</md-input-container>
+				    <md-button class="md-icon-button" ng-click="searchSession = false">
+				      <md-icon>close</md-icon>
+				    </md-button>
+				</md-data-table-toolbar>
+				<div layout="column" layout-gt-md="row" layout-align="center"  >
+			      	<span ng-repeat='session in sessions | filter:searchSessionValue' flex class='score'>{{session.id}}</span>
+			    </div>
+		</md-card>
 	  	<md-card >
 	  		<md-data-table-toolbar class="toolbar-with-fab" ng-hide="searchWE" layout="row">
 					<span class="md-headline">Web Events</span>
