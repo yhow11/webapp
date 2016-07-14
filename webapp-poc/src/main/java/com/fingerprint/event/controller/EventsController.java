@@ -85,7 +85,7 @@ public class EventsController {
 	
 
 	@RequestMapping(value = "event/getSessions", method = RequestMethod.POST)
-	public @ResponseBody  ResponseForm<SessionModel> getSessions(@RequestBody FingerPrintFormParam fingerPrintFormParam, @RequestParam("start") String start) throws Exception {
+	public @ResponseBody  ResponseForm<SessionModel> getSessions(@RequestBody FingerPrintFormParam fingerPrintFormParam) throws Exception {
 		
 		ResponseForm<SessionModel> response =  new ResponseForm<SessionModel>();
 		SessionModel session =  visitorLogService.getOne(SessionModel.class, fingerPrintFormParam.getSessionID());

@@ -16,7 +16,7 @@ angular.module('fingerPrintApp').controller(
 			});
 			eventService.getMySessions(params).then(function(data){
 				if(data.data.status) {
-					$scope.sessions = data.data.data;
+					$scope.sessionModels = data.data.data;
 				}
 			});
 			$rootScope.$on("notifyReceivers", function(event, data) {

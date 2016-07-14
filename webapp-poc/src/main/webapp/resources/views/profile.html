@@ -71,7 +71,7 @@
 				    </md-button>
 				</md-data-table-toolbar>
 				<div layout="column" layout-gt-md="row" layout-align="center"  >
-			      	<span ng-repeat='session in sessions | filter:searchSessionValue' flex class='score'>{{session.id}}</span>
+			      	<span ng-repeat='sessionModel in sessionModels | filter:searchSessionValue' flex class='score'>{{sessionModel.id}}</span>
 			    </div>
 		</md-card>
 	  	<md-card >
