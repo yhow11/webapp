@@ -70,7 +70,7 @@
 				      <md-icon>close</md-icon>
 				    </md-button>
 				</md-data-table-toolbar>
-				<div layout="column" layout-gt-md="row" layout-align="center"  >
+				<div layout="column"  layout-align="center center" layout-padding >
 			      	<span ng-repeat='sessionModel in sessionModels | filter:searchSessionValue' flex class='score'>{{sessionModel.id}}</span>
 			    </div>
 		</md-card>
@@ -91,12 +91,9 @@
 				      <md-icon>close</md-icon>
 				    </md-button>
 			</md-data-table-toolbar>
-			<div  infinite-scroll='reddit.nextWebEventPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='0.6'>
+			<div layout="column" layout-padding  infinite-scroll='reddit.nextWebEventPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='0.6'>
 			    <div layout="row" layout-align="center"   ng-repeat='item in reddit.items | filter:searchValue'>
-			      <span flex class='score'>{{item.timeStamp}}&nbsp;</span>
-			      <span flex class='score'>{{item.type}}</span>
-			      <span flex class='score'>{{item.url}}</span>
-			      <span flex class='score'>{{item.title}}&nbsp;</span>
+			      <span flex="100" class='score'>{{item.timeStamp}}&nbsp; | &nbsp;{{item.type}} | &nbsp;{{item.url}} | &nbsp;{{item.title}}</span>
 			    </div>
 			    
 			      <div style='clear: both;'></div>		     

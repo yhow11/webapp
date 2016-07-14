@@ -65,19 +65,16 @@ public class EventsController {
 	public @ResponseBody  ResponseForm<WebEventModel> getWebEvents(@RequestBody FingerPrintFormParam fingerPrintFormParam, @RequestParam("start") String start) throws Exception {
 		
 		ResponseForm<WebEventModel> response =  new ResponseForm<WebEventModel>();
-		SessionModel session =  visitorLogService.getOne(SessionModel.class, fingerPrintFormParam.getSessionID());
-
-		if(session != null) {
-			List<WebEventModel> events =  visitorLogService.findWebEvents(session.getAnonymousVisitorID(),String.valueOf(Utilities.getDate(new Date(Long.valueOf(start)), -3).getTime()) , String.valueOf(new Date(Long.valueOf(start)).getTime()), "desc");
+		
+		String av = visitorLogService.getAV(fingerPrintFormParam.getSessionID(), fingerPrintFormParam.getBrowserFP());
+		
+		if(av != null) {
+			List<WebEventModel> events =  visitorLogService.findWebEvents(av,String.valueOf(Utilities.getDate(new Date(Long.valueOf(start)), -3).getTime()) , String.valueOf(new Date(Long.valueOf(start)).getTime()), "desc");
 			response.setStatus(true);
 			response.setData(events);
 		} else {
-			BrowserFPModel browserFP = visitorLogService.getOne(BrowserFPModel.class, fingerPrintFormParam.getBrowserFP());
-		    if(browserFP != null) {
-		    	List<WebEventModel> events =  visitorLogService.findWebEvents(browserFP.getAnonymousVisitorID(),String.valueOf(Utilities.getDate(new Date(Long.valueOf(start)), -3).getTime()) , String.valueOf(new Date(Long.valueOf(start)).getTime()), "desc");
-				response.setStatus(true);
-				response.setData(events);
-		    }
+			response.setStatus(false);
+	    	response.setMessage(ResponseForm.NO_DATA);
 		}
 		
 		return response;
@@ -88,21 +85,17 @@ public class EventsController {
 	public @ResponseBody  ResponseForm<SessionModel> getSessions(@RequestBody FingerPrintFormParam fingerPrintFormParam) throws Exception {
 		
 		ResponseForm<SessionModel> response =  new ResponseForm<SessionModel>();
-		SessionModel session =  visitorLogService.getOne(SessionModel.class, fingerPrintFormParam.getSessionID());
-
-		if(session != null) {
-			List<SessionModel> sessions = visitorLogService.find(SessionModel.class, "anonymousVisitorID", session.getAnonymousVisitorID());
+		String av = visitorLogService.getAV(fingerPrintFormParam.getSessionID(), fingerPrintFormParam.getBrowserFP());
+		
+		if(av != null) {
+			List<SessionModel> sessions = visitorLogService.find(SessionModel.class, "anonymousVisitorID", av);
 			response.setStatus(true);
 			response.setData(sessions);
+			response.setStatus(true);
 		} else {
-			BrowserFPModel browserFP = visitorLogService.getOne(BrowserFPModel.class, fingerPrintFormParam.getBrowserFP());
-		    if(browserFP != null) {
-		    	List<SessionModel> sessions = visitorLogService.find(SessionModel.class, "anonymousVisitorID", browserFP.getAnonymousVisitorID());
-				response.setStatus(true);
-				response.setData(sessions);
-		    }
+			response.setStatus(false);
+	    	response.setMessage(ResponseForm.NO_DATA);
 		}
-		
 		return response;
 	}
 	
@@ -112,30 +105,18 @@ public class EventsController {
 		ResponseForm<FingerPrintResponseForm> response =  new ResponseForm<FingerPrintResponseForm>();
 		FingerPrintResponseForm form = new FingerPrintResponseForm();
 		
-		SessionModel session =  visitorLogService.getOne(SessionModel.class, fingerPrintFormParam.getSessionID());
-
-		if(session != null) {
-			form.setAnonymousUserID(session.getAnonymousVisitorID());
-			form.setBrowserFPs(visitorLogService.find(BrowserFPModel.class, "anonymousVisitorID", session.getAnonymousVisitorID()));
-			form.setDeviceFPs(visitorLogService.find(DeviceFPModel.class, "anonymousVisitorID", session.getAnonymousVisitorID()));
-			
+		String av = visitorLogService.getAV(fingerPrintFormParam.getSessionID(), fingerPrintFormParam.getBrowserFP());
+		
+		if(av != null) {
+			form.setAnonymousUserID(av);
+			form.setBrowserFPs(visitorLogService.find(BrowserFPModel.class, "anonymousVisitorID", av));
+			form.setDeviceFPs(visitorLogService.find(DeviceFPModel.class, "anonymousVisitorID", av));
+			response.setStatus(true);
+			response.getData().add(form);
 		} else {
-			BrowserFPModel browserFP = visitorLogService.getOne(BrowserFPModel.class, fingerPrintFormParam.getBrowserFP());
-		    if(browserFP != null) {
-		    	form.setAnonymousUserID(browserFP.getAnonymousVisitorID());
-		    	form.setBrowserFPs(visitorLogService.find(BrowserFPModel.class, "anonymousVisitorID", browserFP.getAnonymousVisitorID()));
-				form.setDeviceFPs(visitorLogService.find(DeviceFPModel.class, "anonymousVisitorID", browserFP.getAnonymousVisitorID()));
-				
-		    } else {
-		    	response.setStatus(false);
-		    	response.setMessage(ResponseForm.NO_DATA);
-		    }
-		
+			response.setStatus(false);
+	    	response.setMessage(ResponseForm.NO_DATA);
 		}
-		response.setStatus(true);
-		response.getData().add(form);
-		
-		
 		
 		return response;
 	}

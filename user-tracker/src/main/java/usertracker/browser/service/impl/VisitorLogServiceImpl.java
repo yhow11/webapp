@@ -3,6 +3,8 @@ package usertracker.browser.service.impl;
 import java.util.List;
 
 import usertracker.browser.dao.VisitorLogDao;
+import usertracker.browser.model.BrowserFPModel;
+import usertracker.browser.model.SessionModel;
 import usertracker.browser.model.WebEventModel;
 import usertracker.browser.service.VisitorLogService;
 
@@ -62,6 +64,22 @@ public class VisitorLogServiceImpl implements VisitorLogService {
 	public List<WebEventModel> findWebEvents(String av, String start, String last, String orderby) throws Exception {
 		// TODO Auto-generated method stub
 		return visitorLogDao.findWebEvents(av, start, last, orderby);
+	}
+
+	@Override
+	public String getAV(String session, String browserFP) throws Exception {
+		// TODO Auto-generated method stub
+		SessionModel sessionModel =  visitorLogDao.getOne(SessionModel.class, session);
+
+		if(session != null) {
+			return sessionModel.getAnonymousVisitorID();
+		} else {
+			BrowserFPModel browserFPModel = visitorLogDao.getOne(BrowserFPModel.class, browserFP);
+		    if(browserFPModel != null) {
+		    	return browserFPModel.getAnonymousVisitorID();
+		    }
+		}
+		return null;
 	}
 
 	

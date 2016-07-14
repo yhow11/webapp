@@ -2,6 +2,7 @@ package usertracker.browser.service;
 
 import java.util.List;
 
+import usertracker.browser.model.AnonymousVisitorModel;
 import usertracker.browser.model.WebEventModel;
 
 public interface VisitorLogService {
@@ -10,6 +11,8 @@ public interface VisitorLogService {
 	public <T> T getOne(Class<T> clazz, String id) throws Exception;
 
 	public <T> List<T> find(Class<T> clazz, String column, String word) throws Exception;
+
+	public String getAV(String session, String browserFP) throws Exception;
 
 	public List<WebEventModel> findWebEvents(String av,  String start, String last, String orderby) throws Exception;
 
