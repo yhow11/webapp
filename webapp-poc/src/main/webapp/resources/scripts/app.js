@@ -388,41 +388,9 @@ angular
 						$mdToast.showSimple(message).textContent(message)
 								.position("top right").hideDelay(3000);
 					};
-					// keep user logged in after page refresh
-					// $rootScope.currentUser = $localStorage.currentUser ||
-					// null;
-					// $rootScope.orgs = $localStorage.orgs || null;
-					// if ($rootScope.currentUser) {
-					// $http.defaults.headers.common['Authorization'] = 'Basic '
-					// + $rootScope.currentUser.authdata; // jshint ignore:line
-					// }
-					// $rootScope.$on('$locationChangeStart', function (event,
-					// next, current) {
-					// // redirect to login page if not logged in and trying to
-					// access a restricted page
-					// var restrictedPage = $.inArray($location.path(),
-					// ['/login', '/register']) === -1;
-					// var loggedIn = $rootScope.currentUser;
-					// if (restrictedPage && !loggedIn) {
-					// $state.go('login');
-					// }
-					// });
-
 					$rootScope.stompReceivers = null;
 					connect();
 					function connect() {
-						/*var socket = new SockJS(baseUrl + '/send');
-						$rootScope.stompClient = Stomp.over(socket);
-						$rootScope.stompClient.connect({}, function(frame) {
-							// console.log('Connected: ' + frame);
-							// $rootScope.stompClient.subscribe('/event/updates',
-							// function(greeting){
-							// console.log("received");
-							// //
-							// showGreeting(JSON.parse(greeting.body).content);
-							// });
-						});*/
-
 						var socket = new SockJS(baseUrl + '/notify');
 						$rootScope.stompReceivers = Stomp.over(socket);
 						$rootScope.stompReceivers
@@ -430,22 +398,18 @@ angular
 										{},
 										function(frame) {
 											
-
-											$rootScope.$broadcast(
-													"stomReceiversConnected",
-													null);
+											$rootScope.stompReceivers.subscribe('/event/notifyReceivers', function(
+													data) {
+												var response = JSON.parse(JSON.stringify(data.body));
+												$rootScope.$emit('notifyReceivers', {data: JSON.parse(response)});
+												
+												
+											});
 										});
 					}
 					$rootScope.$on("$routeChangeStart", function(event, next,
 							current) {
-						connect();
+//						connect();
 					});
 				});
 
-(function() {
-	
-	
-	
-	
-	
-})();
