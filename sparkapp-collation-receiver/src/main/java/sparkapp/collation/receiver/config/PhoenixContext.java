@@ -24,7 +24,7 @@ import usertracker.browser.model.VisitorLogModel;
 public class PhoenixContext {
 
     private static final String DRIVER_CLASS_NAME = "org.apache.phoenix.jdbc.PhoenixDriver";
-    private static final String URL = "jdbc:phoenix:master,slave1:2181/hbase";
+    private static final String URL = "jdbc:phoenix:poc:2181/hbase";
 
     @Autowired
     private ConfigContext configContext;

@@ -20,7 +20,7 @@ public class ConfigContext {
 		org.apache.hadoop.conf.Configuration config = HBaseConfiguration.create();
 		// config.addResource(new Path("/etc/hbase/conf/hbase-site.xml"));
 		// config.addResource(new Path("/etc/hadoop/conf/core-site.xml"));
-		config.set("hbase.zookeeper.quorum", "master,slave1");
+		config.set("hbase.zookeeper.quorum", "poc");
 		// config.set("hbase.zookeeper.property.maxClientCnxns", "1000");
 		config.set("hbase.zookeeper.property.clientPort", "2181");
 		// config.set("hbase.client.scanner.timeout.period", "90000");

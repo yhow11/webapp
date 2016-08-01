@@ -149,7 +149,7 @@ public class Main {
 
 					rt.getMessageConverters().add(new StringHttpMessageConverter());
 
-					String uri = new String("http://103.253.145.213:8191/webapp-poc/notifyEvents");
+					String uri = new String("http://poc:8191/webapp-poc/notifyEvents");
 					UserParam<WebEventModel> data = new UserParam<WebEventModel>();
 					data.setType(WebEventModel.class.getSimpleName());
 					data.getData().addAll(webEventModels);
@@ -168,7 +168,7 @@ public class Main {
 
 					rt.getMessageConverters().add(new StringHttpMessageConverter());
 
-					String uri = new String("http://103.253.145.213:8191/webapp-poc/notifyEvents");
+					String uri = new String("http://poc:8191/webapp-poc/notifyEvents");
 					UserParam<VisitorLogModel> data = new UserParam<VisitorLogModel>();
 					data.setType(VisitorLogModel.class.getSimpleName());
 					data.getData().addAll(visitorLogModels);
