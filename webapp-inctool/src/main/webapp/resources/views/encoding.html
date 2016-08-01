@@ -54,6 +54,7 @@
 		  <table md-data-table md-row-select="selected" md-progress="deffered" sortable-columns="true">
 		    <thead>
 		      <tr>
+		      	<th name="reference"></th>
 		      	<th name="name"></th>
 		      	<th name="area"></th>
 		        <th name="group"></th>
@@ -67,17 +68,18 @@
 		    </thead>
 		    <tbody>
 		      <tr md-auto-select ng-repeat="member in members | filter : searchValue">
+		      	<td>{{member.reference}}</td>
 		      	<td>{{member.name}}</td>
 		        <td>{{member.area}}</td>
 		        <td>{{member.group}}</td>
 		        <td hide-sm>{{member.dcode}}</td>
 		        <td hide-sm>{{member.lcode}}</td>
-		        <td hide-sm>{{member.present}}</td>
-		        <td hide-sm>{{member.absent}}</td>
-		        <td hide-sm>{{member.completionDate | date:'yyyy-MM-dd'}}</td>
+		        <td hide-sm>{{member.r309Attendance.present}}</td>
+		        <td hide-sm>{{member.r309Attendance.absent}}</td>
+		        <td hide-sm>{{member.r309Attendance.completionDate | date:'yyyy-MM-dd'}}</td>
 		        <td>
 				  <md-select ng-model="member.name" placeholder="Edit">
-				    <md-option ng-repeat="action in member.actions" ng-click="actions(action, member)" >{{action.name}}</md-option>
+				    <md-option ng-repeat="option in member.options" ng-click="options(option, member)" >{{option.name}}</md-option>
 				  </md-select>
 				</td>
 		      </tr>

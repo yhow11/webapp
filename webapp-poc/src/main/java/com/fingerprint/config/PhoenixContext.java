@@ -7,9 +7,11 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
@@ -21,10 +23,13 @@ import usertracker.browser.model.VisitorLogModel;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({"usertracker.browser.dao"})
+@PropertySource({"classpath:com/fingerprint/properties/phoenix.properties"})
 public class PhoenixContext {
 
-    private static final String DRIVER_CLASS_NAME = "org.apache.phoenix.jdbc.PhoenixDriver";
-    private static final String URL = "jdbc:phoenix:master,slave1:2181/hbase";
+	@Value("${phoenix.driver}")
+    private String DRIVER_CLASS_NAME;
+	@Value("${phoenix.url}")
+    private String URL;
 
     @Autowired
     private ConfigContext configContext;

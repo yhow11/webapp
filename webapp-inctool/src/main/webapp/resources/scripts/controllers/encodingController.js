@@ -10,8 +10,8 @@ angular.module('incToolApp').controller(
 			$scope.search = false;
 			$scope.status = '  ';
 			$scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
-			$scope.actions = function(action, member){
-				if(action.name == "Edit") {
+			$scope.options = function(option, member){
+				if(option.name == "Edit") {
 					$state.go("membership", { id: member.id});	
 				} else if(action.name == "Delete") {
 					memberService.remove(member.id).then(function(data){

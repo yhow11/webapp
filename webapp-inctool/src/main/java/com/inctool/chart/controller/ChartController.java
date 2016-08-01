@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.inctool.chart.form.SeriesForm;
-import com.inctool.chart.service.ChartService;
 import com.inctool.common.form.ResponseForm;
+
+import plugin.highchart.object.Series;
+import plugin.highchart.service.ChartService;
 
 @Controller
 @RequestMapping("api/chart")
@@ -22,9 +23,9 @@ public class ChartController {
 	
 	
 	@RequestMapping(value = "getMonthyCandidatesOfCompletion", method = RequestMethod.POST)
-    public @ResponseBody ResponseForm<SeriesForm> getMonthyCandidatesOfCompletion(@RequestParam("id") String type) throws ParseException {
+    public @ResponseBody ResponseForm<Series> getMonthyCandidatesOfCompletion(@RequestParam("id") String type) throws ParseException {
        
-        ResponseForm<SeriesForm> response = new ResponseForm<SeriesForm>();
+        ResponseForm<Series> response = new ResponseForm<Series>();
         response.setData(chartService.getMonthlyCountOfCompletion(type, ""));
         response.setMessage("SUCCESS");
         response.setStatus(true);

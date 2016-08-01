@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.inctool.chart.service.ChartService;
-import com.inctool.chart.service.impl.ChartServiceImpl;
 import com.inctool.management.service.MemberService;
 import com.inctool.management.service.impl.MemberServiceImpl;
 import com.inctool.management.service.impl.UserDetailsServiceImpl;
@@ -15,6 +13,9 @@ import com.jofel.service.authentication.JAuthenticationService;
 import com.jofel.service.authentication.impl.JAuthenticationServiceImpl;
 import com.jofel.service.management.JUserService;
 import com.jofel.service.management.impl.JUserServiceImpl;
+
+import plugin.highchart.service.ChartService;
+import plugin.highchart.service.impl.ChartServiceImpl;
 
 @Configuration
 @PropertySource("classpath:com/inctool/properties/application.properties")
@@ -47,7 +48,7 @@ public class ServiceContext {
 	
 	@Bean
 	public ChartService chartService() throws Exception{
-		return new ChartServiceImpl(context.chartDao(), mapperContext.chartMapper());
+		return new ChartServiceImpl(context.chartDao());
 	}
 	
 }

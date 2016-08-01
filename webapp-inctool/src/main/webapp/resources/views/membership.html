@@ -14,9 +14,44 @@
      	</div>
      	<div flex-gt-sm="50" layout="column">
      		<div flex-gt-sm layout-gt-sm="row">
+     			<md-autocomplete flex required
+					            md-input-minlength="2"
+					            md-input-maxlength="18"
+					            md-no-cache="reference.noCache"
+					            md-selected-item="reference.selectedItem"
+					            md-search-text="reference.searchText"
+					            md-items="item in reference.querySearch(reference.searchText)"
+					            md-item-text="item"
+					            md-floating-label="Reference">
+					          <md-item-template>
+					            <span md-highlight-text="reference.searchText">{{item}}</span>
+					          </md-item-template>
+					          <md-not-found ng-click="reference.createNew(reference.searchText)">
+						          No states matching "{{reference.searchText}}" were found.
+						          <a >Create a new one!</a>
+						        </md-not-found>
+				        </md-autocomplete>
+     		</div>
+     		<div flex-gt-sm layout-gt-sm="row">
      			<input type="hidden" ng-model="member.id">
-     			<md-input-container class="md-block" flex-gt-sm>
-					<label>Name</label> <input ng-model="member.name">
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Name</label> <input ng-model="member.name" >
+				</md-input-container>
+     		</div>
+     		<div flex-gt-sm layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+				<label>Dcode</label> <input name="dcode" ng-model="member.dcode"
+					ng-pattern="/^\d+$/">
+				<div ng-messages="registraionForm.dcode.$error">
+					<div ng-message="pattern">Please enter numeric values only.</div>
+				</div>
+				</md-input-container>
+				<md-input-container class="md-block" flex-gt-sm>
+				<label>Lcode</label> <input name="lcode"
+					ng-model="member.lcode" ng-pattern="/^\d+$/">
+				<div ng-messages="registraionForm.lcode.$error">
+					<div ng-message="pattern">Please enter numeric values only.</div>
+				</div>
 				</md-input-container>
      		</div>
      		<div flex-gt-sm layout-gt-sm="row">
@@ -36,20 +71,7 @@
 				</md-input-container>
      		</div>
      		<div flex-gt-sm layout-gt-sm="row">
-	     		<md-input-container class="md-block" flex-gt-sm>
-				<label>Dcode</label> <input name="dcode" ng-model="member.dcode"
-					ng-pattern="/^\d+$/">
-				<div ng-messages="registraionForm.dcode.$error">
-					<div ng-message="pattern">Please enter numeric values only.</div>
-				</div>
-				</md-input-container>
-				<md-input-container class="md-block" flex-gt-sm>
-				<label>Lcode</label> <input name="lcode"
-					ng-model="member.lcode" ng-pattern="/^\d+$/">
-				<div ng-messages="registraionForm.lcode.$error">
-					<div ng-message="pattern">Please enter numeric values only.</div>
-				</div>
-				</md-input-container>
+	     		
 				<div flex-gt-sm="30" layout="column" show-sm hide-gt-sm layout-align="center center">
 		     		<canvas flex-gt-sm id="doughnut" class="chart chart-doughnut"
 					  chart-data="datas" chart-labels="labels" chart-legend="true">
@@ -99,12 +121,12 @@
 	  </md-toolbar>
      <md-card-content  layout="row" layout-wrap> 
      	<md-datepicker flex-gt-sm="25" ng-model="r309.datepicker"
-						ng-repeat="r309 in member.r309" ng-change="r309.date = r309.datepicker.getTime();" md-placeholder="{{r309.id--1}} . Choose date..">
+						ng-repeat="r309 in member.r309" ng-change="r309.date = r309.datepicker.toISOString();" md-placeholder="{{r309.id--1}} . Choose date..">
 					</md-datepicker>
      </md-card-content>
  </md-card>
  
- <md-fab-speed-dial md-open="true" md-direction="up"
+ <md-fab-speed-dial md-open="isSpeedDialOpen" md-direction="up"
                      class="md-fling position-fix-left-bottom">
     <md-fab-trigger>
       <md-button aria-label="menu" class="md-fab md-warn">
@@ -128,235 +150,3 @@
       </md-button>
     </md-fab-actions>
   </md-fab-speed-dial>
-<!-- <span flex="5"></span>
-<div flex="80" layout="column" class="j-fill-white">
-	<div layout="row" flex>
-		<div flex="20" class="position-relative">
-			<md-icon style="color: #C0B9B9;font-size:10em;"
-			            aria-label="Profile"
-			            class="material-icons step position-absolute-left">
-			          account_box
-			        </md-icon>
-		</div>
-		<div layout="row" layout-align="center end" flex="70">
-			<md-input-container class="md-block" flex-gt-sm>
-			<label>Name</label> <input ng-model="member.name">
-			</md-input-container>
-			<span flex-gt-sm></span>
-			<md-input-container class="md-block" flex-gt-sm="15">
-			<label>Area No</label> <input name="area" ng-model="member.area"
-				ng-pattern="/^\d+$/">
-			<div ng-messages="registraionForm.area.$error">
-				<div ng-message="pattern">Please enter numeric values only.</div>
-			</div>
-			</md-input-container>
-			<md-input-container class="md-block" flex-gt-sm="15">
-			<label>Group No</label> <input name="group"
-				ng-model="member.group" ng-pattern="/^\d+$/">
-			<div ng-messages="registraionForm.group.$error">
-				<div ng-message="pattern">Please enter numeric values only.</div>
-			</div>
-			</md-input-container>
-		</div>
-	</div>
-	<div layout="row" flex>
-	</div>
-	<div layout="row" flex>
-	</div>
-	<div layout="row" flex>
-	</div>
-</div> -->
-<!-- <div flex layout="column" class="j-fill-white">
-	<div layout="row" flex class="position-relative">
-		<div flex="20">
-			<md-icon style="color: #C0B9B9;font-size:10em;"
-			            aria-label="Profile"
-			            class="material-icons step position-absolute-left">
-			          account_box
-			        </md-icon>
-		</div>
-		<div layout="row" layout-align="center end" flex="70">
-			<md-input-container class="md-block" flex-gt-sm>
-			<label>Name</label> <input ng-model="member.name">
-			</md-input-container>
-			<span flex-gt-sm></span>
-			<md-input-container class="md-block" flex-gt-sm="15">
-			<label>Dcode</label> <input name="dcode" ng-model="member.dcode"
-				ng-pattern="/^\d+$/">
-			<div ng-messages="registraionForm.dcode.$error">
-				<div ng-message="pattern">Please enter numeric values only.</div>
-			</div>
-			</md-input-container>
-			<md-input-container class="md-block" flex-gt-sm="15">
-			<label>Lcode</label> <input name="lcode"
-				ng-model="member.lcode" ng-pattern="/^\d+$/">
-			<div ng-messages="registraionForm.lcode.$error">
-				<div ng-message="pattern">Please enter numeric values only.</div>
-			</div>
-			</md-input-container>
-			<md-input-container class="md-block" flex-gt-sm="15">
-			<label>Area No</label> <input name="area" ng-model="member.area"
-				ng-pattern="/^\d+$/">
-			<div ng-messages="registraionForm.area.$error">
-				<div ng-message="pattern">Please enter numeric values only.</div>
-			</div>
-			</md-input-container>
-			<md-input-container class="md-block" flex-gt-sm="15">
-			<label>Group No</label> <input name="group"
-				ng-model="member.group" ng-pattern="/^\d+$/">
-			<div ng-messages="registraionForm.group.$error">
-				<div ng-message="pattern">Please enter numeric values only.</div>
-			</div>
-			</md-input-container>
-		</div>
-	</div>
-	<div flex class="j-fill-green-hue-1">
-	test
-	</div>
-	<div  flex layout="column"  class="j-fill-white">
-		<div flex layout="row" >
-			<span flex="5"></span>
-			<h1 class="md-title">R3-10 Monitoring</h3>
-		</div>
-		<div flex  layout="row" layout-wrap>
-				<md-datepicker flex-gt-sm="25" ng-model="r310.datepicker"
-					ng-repeat="r310 in member.r310" md-placeholder="Choose date..">
-				</md-datepicker>
-		</div>
-	</div>
-</div> -->
-<!-- 
-<md-container layout="column" layout-wrap layout-align="center">
-<form name="registraionForm">
-	<div>
-
-		<md-toolbar  class="j-fill-white md-menu-toolbar">
-		<div layout="row" layout-padding> 
-			<h1 layout="row" layout-margin class="md-headline"> 
-					Profile
-			</h3>
-			<span flex></span>
-			<div layout-gt-sm="row" layout-align="end end">
-				<md-button ui-sref="encoding" class="md-icon-button md-background">
-					<md-button class="md-icon-button md-background">
-								  <md-icon style="color: rgb(244, 67, 54);"
-			            aria-label="cancel"
-			            class="material-icons step">
-			          clear
-			        </md-icon>
-				</md-button>
-			</div>
-			<div layout-gt-sm="row" layout-align="end end">
-				<md-button class="md-icon-button md-background">
-					  <md-icon style="color: rgb(76, 175, 80);"
-            aria-label="save"
-            class="material-icons step">
-          done
-        </md-icon>
-				</md-button>
-			</div>
-		</div>
-		</md-toolbar>
-		<md-content >
-			<div layout="row" layout-padding>
-				<span flex="5"></span>
-				<h1 class="md-title">Basic Information</h3>
-				<span flex="50"></span>
-				<md-icon style="color: #C0B9B9;"
-			            aria-label="Profile"
-			            class="material-icons step md-36">
-			          account_box
-			        </md-icon>
-			</div>
-			<div layout="row">
-				<span flex="10"></span>
-				<div flex="80" layout="column">
-					<div layout-gt-sm="row">
-						<md-input-container class="md-block" flex-gt-sm>
-						<label>Dcode</label> <input name="dcode" ng-model="member.dcode"
-							ng-pattern="/^\d+$/">
-						<div ng-messages="registraionForm.dcode.$error">
-							<div ng-message="pattern">Please enter numeric values only.</div>
-						</div>
-						</md-input-container>
-						<md-input-container class="md-block" flex-gt-sm>
-						<label>Lcode</label> <input name="lcode"
-							ng-model="member.lcode" ng-pattern="/^\d+$/">
-						<div ng-messages="registraionForm.lcode.$error">
-							<div ng-message="pattern">Please enter numeric values only.</div>
-						</div>
-						</md-input-container>
-						<md-input-container class="md-block" flex-gt-sm>
-						<label>Area No</label> <input name="area" ng-model="member.area"
-							ng-pattern="/^\d+$/">
-						<div ng-messages="registraionForm.area.$error">
-							<div ng-message="pattern">Please enter numeric values only.</div>
-						</div>
-						</md-input-container>
-						<md-input-container class="md-block" flex-gt-sm>
-						<label>Group No</label> <input name="group"
-							ng-model="member.group" ng-pattern="/^\d+$/">
-						<div ng-messages="registraionForm.group.$error">
-							<div ng-message="pattern">Please enter numeric values only.</div>
-						</div>
-						</md-input-container>
-					</div>
-					<div layout-gt-sm="row">
-						<md-input-container class="md-block" flex-gt-sm>
-						<label>Name</label> <input ng-model="member.name">
-						</md-input-container>
-						<md-input-container class="md-block" flex-gt-sm>
-						<label>Reference No</label> <input name="reference" ng-model="member.reference"
-							ng-pattern="/^\d+$/">
-						<div ng-messages="registraionForm.reference.$error">
-							<div ng-message="pattern">Please enter numeric values only.</div>
-						</div>
-						</md-input-container>
-					</div>
-					<div layout-gt-sm="row">
-						<md-input-container class="md-block" flex-gt-sm>
-						<label>Address</label> <input ng-model="member.address"> </md-input-container>
-					</div>
-				</div>
-			</div>
-			<div layout="row" layout-padding>
-				<span flex="5"></span>
-				<h1 class="md-title">R3-10 Monitoring</h3>
-			</div>
-			<div layout="row">
-				<span flex="10"></span>
-				<div flex="80"  layout="row" layout-wrap>
-					<md-datepicker flex-gt-sm="25" ng-model="r310.datepicker"
-						ng-repeat="r310 in member.r310" md-placeholder="Choose date..">
-					</md-datepicker>
-				</div>
-			</div>
-			<div layout="row" layout-padding>
-				<span flex="5"></span>
-				<h1 class="md-title">R3-05 Monitoring</h3>
-			</div>
-			<div layout="row">
-				<span flex="10"></span>
-				<div flex="80"  layout="row" layout-wrap>
-					<md-datepicker flex-gt-sm="25" ng-model="r305.datepicker"
-						ng-repeat="r305 in member.r305" md-placeholder="Choose date..">
-					</md-datepicker>
-				</div>
-			</div>
-			<div layout="row" layout-padding>
-				<span flex="5"></span>
-				<h1 class="md-title">R3-09 Monitoring</h3>
-			</div>
-			<div layout="row">
-				<span flex="10"></span>
-				<div flex="80"  layout="row" layout-wrap>
-					<md-datepicker flex-gt-sm="25" ng-model="r309.datepicker"
-						ng-repeat="r309 in member.r309" md-placeholder="Choose date..">
-					</md-datepicker>
-				</div>
-			</div>
-		</md-content>
-
-	</div>
-</form>
-</md-container> -->

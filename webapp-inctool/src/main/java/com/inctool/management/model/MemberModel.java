@@ -5,10 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.inctool.common.model.ActionModel;
+import com.inctool.common.annotation.MapUtilField;
 import com.inctool.common.model.DateModel;
 import com.inctool.common.model.PersonModel;
 import com.inctool.management.enums.MemberEnum;
@@ -16,43 +15,51 @@ import com.inctool.management.enums.MemberEnum;
 @Document
 public class MemberModel extends PersonModel{
 
+	@MapUtilField(name="id")
 	@Id
 	private String id;
+	@MapUtilField(name="dcode")
 	private String dcode;
+	@MapUtilField(name="lcode")
 	private String lcode;
+	@MapUtilField(name="area")
 	private String area;
+	@MapUtilField(name="group")
 	private String group;
+	@MapUtilField(name="reference")
 	private String reference;
-	private String address;
-	private Integer absent = 0;
-	private Integer present = 0;
-	private Date completionDate;
+	@MapUtilField(name="createdDate")
 	private Date createdDate;
+	@MapUtilField(name="status")
 	private MemberEnum status = MemberEnum.GUEST; 
+	
+	
+	private AttendanceModel r310Attendance;
+	private AttendanceModel r305Attendance;
+	private AttendanceModel r309Attendance;
 	
 	private List<DateModel> r310 = new ArrayList<DateModel>();
 	private List<DateModel> r305 = new ArrayList<DateModel>();
 	private List<DateModel> r309 = new ArrayList<DateModel>();
-	private List<ActionModel> actions = new ArrayList<ActionModel>();
 	
 	
-	public Date getCompletionDate() {
-		return completionDate;
+	public AttendanceModel getR310Attendance() {
+		return r310Attendance;
 	}
-	public void setCompletionDate(Date completionDate) {
-		this.completionDate = completionDate;
+	public void setR310Attendance(AttendanceModel r310Attendance) {
+		this.r310Attendance = r310Attendance;
 	}
-	public Integer getPresent() {
-		return present;
+	public AttendanceModel getR305Attendance() {
+		return r305Attendance;
 	}
-	public void setPresent(Integer present) {
-		this.present = present;
+	public void setR305Attendance(AttendanceModel r305Attendance) {
+		this.r305Attendance = r305Attendance;
 	}
-	public Integer getAbsent() {
-		return absent;
+	public AttendanceModel getR309Attendance() {
+		return r309Attendance;
 	}
-	public void setAbsent(Integer absent) {
-		this.absent = absent;
+	public void setR309Attendance(AttendanceModel r309Attendance) {
+		this.r309Attendance = r309Attendance;
 	}
 	public MemberEnum getStatus() {
 		return status;
@@ -119,19 +126,6 @@ public class MemberModel extends PersonModel{
 	}
 	public void setR309(List<DateModel> r309) {
 		this.r309 = r309;
-	}
-	
-	public List<ActionModel> getActions() {
-		return actions;
-	}
-	public void setActions(List<ActionModel> actions) {
-		this.actions = actions;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
 	}
 	
 }

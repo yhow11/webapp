@@ -1,5 +1,6 @@
 package com.inctool.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -18,20 +19,23 @@ import com.mongodb.MongoClient;
 public class MongoContext extends AbstractMongoConfiguration
 {
 
+	@Value("${mongo.host}")
+	private String host;
 
+	@Value("${mongo.port}")
+	private Integer port;
+	
+	@Value("${mongo.db}")
+	private String db;
+	
     @Override
     protected String getDatabaseName() {
-        return "demo";
+        return db;
     }
 
     @Override
     public Mongo mongo() throws Exception {
-    	return new MongoClient("188.166.214.159", 27017);
-    }
-
-    @Override
-    protected String getMappingBasePackage() {
-        return "com.johnathanmarksmith.mongodb.example.domain";
+    	return new MongoClient(host, port);
     }
 
     

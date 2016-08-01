@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.inctool.common.model.ActionModel;
+import com.inctool.common.model.OptionModel;
 import com.inctool.common.model.DateModel;
 import com.inctool.common.model.PersonModel;
 import com.inctool.management.enums.MemberEnum;
@@ -29,7 +29,7 @@ public class MemberHeaderModel extends PersonModel{
 	private List<DateModel> r310 = new ArrayList<DateModel>();
 	private List<DateModel> r305 = new ArrayList<DateModel>();
 	private List<DateModel> r309 = new ArrayList<DateModel>();
-	private List<ActionModel> actions = new ArrayList<ActionModel>();
+	private List<OptionModel> actions = new ArrayList<OptionModel>();
 	
 	
 	public MemberEnum getStatus() {
@@ -99,10 +99,10 @@ public class MemberHeaderModel extends PersonModel{
 		this.r309 = r309;
 	}
 	
-	public List<ActionModel> getActions() {
+	public List<OptionModel> getActions() {
 		return actions;
 	}
-	public void setActions(List<ActionModel> actions) {
+	public void setActions(List<OptionModel> actions) {
 		this.actions = actions;
 	}
 	public String getAddress() {

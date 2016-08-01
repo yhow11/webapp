@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 @Configuration
 @PropertySource("classpath:com/inctool/properties/application.properties")
@@ -28,10 +26,6 @@ public class AppContext {
     @Bean
     public PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
     	PropertySourcesPlaceholderConfigurer pspc = new PropertySourcesPlaceholderConfigurer();
-    	Resource[] resources = new ClassPathResource[ ]
-    	{ new ClassPathResource( "com/inctool/properties/mail.properties" ) };
-    	pspc.setLocations( resources );
-    	pspc.setIgnoreUnresolvablePlaceholders( true );
         return pspc;
     }
 }

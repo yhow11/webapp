@@ -52,25 +52,25 @@
 		};
 		MarketoFormCustomizer.init = function() {
 			var params = MarketoFormCustomizer.getUrlParams();
-			if(!params[""]){
-				var cookieStr = MarketoFormCustomizer.readCookie("marketoFormCookie");
-				if (typeof cookieStr === "undefined"
-	    			|| cookieStr == null
-	    			|| cookieStr == "null") {
-					var cookie = {};
+			var cookieStr = MarketoFormCustomizer.readCookie("marketoFormCookie");
+			if (typeof cookieStr === "undefined"
+    			|| cookieStr == null
+    			|| cookieStr == "null") {
+				var cookie = {};
+				if(!params[""]){
 					for(var key in params){
 						if((key.indexOf("utm_source") > -1 || 
-								key.indexOf("utm_source") > -1 ||
 								key.indexOf("utm_medium") > -1 ||
 								key.indexOf("utm_term") > -1 ||
 								key.indexOf("utm_content") > -1 ||
 								key.indexOf("utm_campaign") > -1 )){
-							cookie[key] = params[key];
+							cookie[key+"__c"] = params[key];
 						}
 					}
-					MarketoFormCustomizer.setCookie("marketoFormCookie", JSON.stringify(cookie), 100);
 				}
+				MarketoFormCustomizer.setCookie("marketoFormCookie", JSON.stringify(cookie), 100);
 			}
+			
 			//Static Form
 			var forms = document.getElementsByTagName("form");
 			for(var index = 0; index < forms.length; index++){
@@ -118,11 +118,11 @@
 						for(var index = 0; index < formElems.length ; index++){
 							for(var indexInput in formElems[index].getElementsByTagName("input")){
 								var input = formElems[index].getElementsByTagName("input")[indexInput];
-								if(input.type == "hidden" && (input.name.indexOf("utm_source") > -1 || 
-							input.name.indexOf("utm_medium") > -1 ||
-							input.name.indexOf("utm_term") > -1 ||
-							input.name.indexOf("utm_content") > -1 ||
-							input.name.indexOf("utm_campaign") > -1 )){
+								if(input.type == "hidden" && (input.name.indexOf("utm_source__c") > -1 || 
+							input.name.indexOf("utm_medium__c") > -1 ||
+							input.name.indexOf("utm_term__c") > -1 ||
+							input.name.indexOf("utm_content__c") > -1 ||
+							input.name.indexOf("utm_campaign__c") > -1 )){
 									input.value = cookie[input.name];
 								}
 							}

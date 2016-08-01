@@ -2,21 +2,28 @@ package com.inctool.common.model;
 
 import java.util.Date;
 
-import com.inctool.management.enums.WorshipServiceEnum;
+import com.inctool.common.annotation.MapUtilField;
+import com.inctool.common.enums.WorshipServiceEnum;
 
 public class DateModel {
 	
+	@MapUtilField(name="id")
 	private String id;
+	@MapUtilField(name="date")
 	private Date date;
-	private Date weekStartDate;
-	private Date weekEndDate;
-	private WorshipServiceEnum worshipServiceStatus = WorshipServiceEnum.NA; 
+	@MapUtilField(name="startDate")
+	private Date startDate;
+	@MapUtilField(name="endDate")
+	private Date endDate;
+	@MapUtilField(name="status")
+	private WorshipServiceEnum status = WorshipServiceEnum.NA; 
 	
-	public WorshipServiceEnum getWorshipServiceStatus() {
-		return worshipServiceStatus;
+	
+	public WorshipServiceEnum getStatus() {
+		return status;
 	}
-	public void setWorshipServiceStatus(WorshipServiceEnum worshipServiceStatus) {
-		this.worshipServiceStatus = worshipServiceStatus;
+	public void setStatus(WorshipServiceEnum status) {
+		this.status = status;
 	}
 	public String getId() {
 		return id;
@@ -30,19 +37,18 @@ public class DateModel {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public Date getWeekStartDate() {
-		return weekStartDate;
+	public Date getStartDate() {
+		return startDate;
 	}
-	public void setWeekStartDate(Date weekStartDate) {
-		this.weekStartDate = weekStartDate;
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
-	public Date getWeekEndDate() {
-		return weekEndDate;
+	public Date getEndDate() {
+		return endDate;
 	}
-	public void setWeekEndDate(Date weekEndDate) {
-		this.weekEndDate = weekEndDate;
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
-	
 	
 	
 }

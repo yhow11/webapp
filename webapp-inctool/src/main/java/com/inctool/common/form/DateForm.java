@@ -1,54 +1,61 @@
 package com.inctool.common.form;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.inctool.management.enums.WorshipServiceEnum;
+import com.inctool.common.annotation.MapUtilField;
+import com.inctool.common.enums.WorshipServiceEnum;
 
 public class DateForm {
-	
+
+	@MapUtilField(name="id")
 	private String id;
-	private Date date;
-	private String datepicker;
-	private Date weekStartDate;
-	private Date weekEndDate;
-	private String worshipServiceStatus = WorshipServiceEnum.NA.toString(); 
+	@MapUtilField(name="date")
+	private String date;
+	@MapUtilField(name="startDate")
+	private String startDate;
+	@MapUtilField(name="endDate")
+	private String endDate;
+	@MapUtilField(name="status")
+	private String status = WorshipServiceEnum.NA.toString();
 	
-public String getWorshipServiceStatus() {
-	return worshipServiceStatus;
-}
-public void setWorshipServiceStatus(String worshipServiceStatus) {
-	this.worshipServiceStatus = worshipServiceStatus;
-}
-public Date getWeekStartDate() {
-		return weekStartDate;
-	}
-	public void setWeekStartDate(Date weekStartDate) {
-		this.weekStartDate = weekStartDate;
-	}
-	public Date getWeekEndDate() {
-		return weekEndDate;
-	}
-	public void setWeekEndDate(Date weekEndDate) {
-		this.weekEndDate = weekEndDate;
-	}
-public String getDatepicker() {
-	return datepicker;
-}
-public void setDatepicker(String datepicker) {
-	this.datepicker = datepicker;
-}
+	private List<DateForm> absents = new ArrayList<DateForm>();
+	
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
-	
-	
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public List<DateForm> getAbsents() {
+		return absents;
+	}
+	public void setAbsents(List<DateForm> absents) {
+		this.absents = absents;
+	}
+
 }

@@ -91,7 +91,6 @@ public class EventsController {
 			List<SessionModel> sessions = visitorLogService.find(SessionModel.class, "anonymousVisitorID", av);
 			response.setStatus(true);
 			response.setData(sessions);
-			response.setStatus(true);
 		} else {
 			response.setStatus(false);
 	    	response.setMessage(ResponseForm.NO_DATA);

@@ -57,7 +57,7 @@
 		    </md-toolbar>
 		    <md-progress-linear class="md-warn" md-mode="determinate" ng-show="showLoading" value="{{determinateValue}}"></md-progress-linear>
 		    <md-content flex layout="row" class="j-fill-grey " layout-align="center" >
-		    	<div ui-view  flex-gt-sm="80" flex-sm="95" ></div>
+		    	<div ui-view  flex="100" ></div>
 		    </md-content>
 	    <!-- <section layout="column" layout-fill>
 	    	<md-toolbar flex>

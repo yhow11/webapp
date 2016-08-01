@@ -1,13 +1,47 @@
 'use strict';
 /**
  * @ngdoc function
- * @name sbAdminApp.controller:MembershipController
+ * @name incToolApp.controller:MembershipController
  * @description # MembershipController Controller of the incToolApp
  */
 angular.module('incToolApp').controller(
 		'MembershipController',
-		function($rootScope, $scope, $stateParams, memberService) {
-			
+		function($rootScope, $scope, $stateParams, $q, $timeout,  memberService) {
+			var reference = {
+					simulateQuery: true,
+					items: ["123","111","222"],
+					isDisabled: false,
+					noCache: false,
+					selectedItem: null,
+					searchText: null,
+				    selectedItemChanged: function selectedItemChange(item) {
+				        $log.info('Item changed to ' + JSON.stringify(item));
+				    }
+					
+			};
+			reference.createFilterFor = function createFilterFor(query) {
+		        var lowercaseQuery = angular.lowercase(query);
+		        return function filterFn(item) {
+		          return (item.indexOf(lowercaseQuery) === 0);
+		        };
+	        };
+	        
+	        reference.querySearch = function(query) {
+	            var results = query ? $scope.reference.items.filter( $scope.reference.createFilterFor(query) ) : $scope.reference.items,
+	                    deferred;
+	                if ($scope.reference.simulateQuery) {
+	                  deferred = $q.defer();
+	                  $timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
+	                  return deferred.promise;
+	                } else {
+	                  return results;
+	                }
+            };
+            $scope.reference = reference;
+            $scope.reference.createNew = function(item){
+	        	$scope.reference.items.push(item);
+	        };
+			$scope.isSpeedDialOpen = false;
 			$scope.labels = ["Attended", "Absent/s", "Left"];
 			$scope.datas = [];
 			$scope.showLabel = true;  

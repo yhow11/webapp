@@ -9,10 +9,11 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.inctool.common.model.ActionModel;
+import com.inctool.common.model.OptionModel;
 import com.inctool.management.dao.MemberDao;
+import com.inctool.management.enums.MemberEnum;
+import com.inctool.management.model.AttendanceModel;
 import com.inctool.management.model.MemberModel;
-import com.inctool.management.util.ScheduleUtil;
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -123,34 +124,29 @@ DBObject project1 = (DBObject) JSON.parse("{ $project: {\r\n    id: \"$_id\",\r\
 		}*/
 		DBObject project4 = (DBObject) JSON.parse("{\r\n    $project : {\r\n       id: \"$_id.id\",\r\n       name: \"$_id.name\",\r\n       area: \"$_id.area\",\r\n       group: \"$_id.group\",\r\n       lcode: \"$_id.lcode\",\r\n       dcode: \"$_id.dcode\",\r\n       lastDate: \"$lastDate\",\r\n       absent: \"$count\",\r\n       present: \"$present\"\r\n    }\r\n}");
 		
-		final AggregationOutput aggregate = mongoTemplate.getCollection("memberModel").aggregate(unwind, project1, project2, group, project4);
+//		final AggregationOutput aggregate = mongoTemplate.getCollection("memberModel").aggregate(unwind, project1, project2, group, project4);
 		
-		List<MemberModel> memberModels = new ArrayList<>();
-		Iterable<DBObject> list= aggregate.results();
-		for(DBObject item : list){
-			ObjectId id = (ObjectId) item.get("id");
-			MemberModel memberModel =  new MemberModel();
-			memberModel.setId(id.toString());;
-			memberModel.setDcode((String) item.get("dcode"));
-			memberModel.setLcode((String) item.get("lcode"));
-			memberModel.setArea((String) item.get("area"));
-			memberModel.setGroup((String) item.get("group"));
-			memberModel.setName((String) item.get("name"));
-			memberModel.setAbsent((Integer) item.get("absent"));
-			memberModel.setPresent((Integer) item.get("present"));
-			memberModel.setCompletionDate((Date) item.get("lastDate"));
-			if(memberModel.getCompletionDate() != null) {
-				memberModel.setCompletionDate(ScheduleUtil.getCompletionDate(memberModel.getCompletionDate(), memberModel.getAbsent()));
-			}
-			ActionModel actionModel = new ActionModel();
-			actionModel.setName("Edit");
-			memberModel.getActions().add(actionModel);
-			actionModel = new ActionModel();
-			actionModel.setName("Delete");
-			memberModel.getActions().add(actionModel);
-			memberModels.add(memberModel);
-		}
-		return memberModels;
+		
+//		List<MemberModel> memberModels = new ArrayList<>();
+//		Iterable<DBObject> list= aggregate.results();
+//		for(DBObject item : list){
+//			ObjectId id = (ObjectId) item.get("id");
+//			MemberModel memberModel =  new MemberModel();
+//			memberModel.setId(id.toString());;
+//			memberModel.setDcode((String) item.get("dcode"));
+//			memberModel.setLcode((String) item.get("lcode"));
+//			memberModel.setArea((String) item.get("area"));
+//			memberModel.setGroup((String) item.get("group"));
+//			memberModel.setName((String) item.get("name"));
+//			OptionModel actionModel = new OptionModel();
+//			actionModel.setName("Edit");
+//			memberModel.getOptions().add(actionModel);
+//			actionModel = new OptionModel();
+//			actionModel.setName("Delete");
+//			memberModel.getOptions().add(actionModel);
+//			memberModels.add(memberModel);
+//		}
+		return mongoTemplate.findAll(MemberModel.class);
 	}
 	@Override
 	public MemberModel findOne(String id) {
@@ -252,24 +248,25 @@ DBObject project1 = (DBObject) JSON.parse("{ $project: {\r\n    id: \"$_id\",\r\
 		for(DBObject item : list){
 			ObjectId _id = (ObjectId) item.get("id");
 			MemberModel memberModel =  new MemberModel();
-			memberModel.setId(_id.toString());;
+			memberModel.setId(_id.toString());
 			memberModel.setDcode((String) item.get("dcode"));
 			memberModel.setLcode((String) item.get("lcode"));
 			memberModel.setArea((String) item.get("area"));
 			memberModel.setGroup((String) item.get("group"));
 			memberModel.setName((String) item.get("name"));
-			memberModel.setAbsent((Integer) item.get("absent"));
-			memberModel.setPresent((Integer) item.get("present"));
-			memberModel.setCompletionDate((Date) item.get("lastDate"));
-			if(memberModel.getCompletionDate() != null) {
-				memberModel.setCompletionDate(ScheduleUtil.getCompletionDate(memberModel.getCompletionDate(), memberModel.getAbsent()));
-			}
-			ActionModel actionModel = new ActionModel();
+			memberModel.setStatus(MemberEnum.valueOf((String) item.get("status")));
+			DBObject r309AttendanceObject = (DBObject) item.get("r309");
+			AttendanceModel r309Attendance = new AttendanceModel();
+			r309Attendance.setAbsent((String) r309AttendanceObject.get("absent"));
+			r309Attendance.setLeft((String) r309AttendanceObject.get("na"));
+			r309Attendance.setPresent((String) r309AttendanceObject.get("present"));
+			memberModel.setR309Attendance(r309Attendance);
+			OptionModel actionModel = new OptionModel();
 			actionModel.setName("Edit");
-			memberModel.getActions().add(actionModel);
-			actionModel = new ActionModel();
+			memberModel.getOptions().add(actionModel);
+			actionModel = new OptionModel();
 			actionModel.setName("Delete");
-			memberModel.getActions().add(actionModel);
+			memberModel.getOptions().add(actionModel);
 			memberModels.add(memberModel);
 		}
 		return memberModels.get(0);

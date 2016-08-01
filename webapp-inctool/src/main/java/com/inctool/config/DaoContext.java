@@ -5,12 +5,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import com.inctool.chart.dao.ChartDao;
-import com.inctool.chart.dao.impl.ChartDaoImpl;
 import com.inctool.management.dao.MemberDao;
 import com.inctool.management.dao.impl.MemberDaoImpl;
 import com.inctool.management.dao.impl.UserDaoImpl;
 import com.jofel.data.common.dao.JDao;
+
+import plugin.highchart.dao.ChartDao;
+import plugin.highchart.dao.impl.ChartDaoImpl;
 
 @Configuration
 @PropertySource("classpath:com/inctool/properties/application.properties")
