@@ -2,7 +2,6 @@ package usertracker.browser.service;
 
 import java.util.List;
 
-import usertracker.browser.model.AnonymousVisitorModel;
 import usertracker.browser.model.WebEventModel;
 
 public interface VisitorLogService {
@@ -20,6 +19,8 @@ public interface VisitorLogService {
 	
 	public void creatTable(Class<?> clazz) throws Exception;
 
+	public void creatTable(Class<?>... clazzes) throws Exception;
+	
 	public <T> T save(Class<T> clazz, Object object) throws Exception;
 	
 	public List<String> findColumnValues(Class<?> clazz, String columnReturn, String column, String word) throws Exception;

@@ -82,6 +82,14 @@ public class VisitorLogServiceImpl implements VisitorLogService {
 		return null;
 	}
 
+	@Override
+	public void creatTable(Class<?>... clazzes) throws Exception {
+		// TODO Auto-generated method stub
+		for(Class<?> clazz: clazzes) {
+			creatTable(clazz);
+		}
+	}
+
 	
 	
 }

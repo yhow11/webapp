@@ -30,5 +30,6 @@
     <module>helper-phoenix</module>
     <module>helper-hibernate</module>
     <module>helper-spring</module>
+    <module>helper-kafka</module>
   </modules>
 </project>

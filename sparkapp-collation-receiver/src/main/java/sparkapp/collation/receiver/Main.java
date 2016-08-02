@@ -29,10 +29,12 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import helper.kafka.service.KafkaService;
 import kafka.admin.AdminUtils;
 import kafka.serializer.StringDecoder;
 import sparkapp.collation.receiver.config.ConfigContext;
 import sparkapp.collation.receiver.config.DaoConfig;
+import sparkapp.collation.receiver.config.KafkaContext;
 import sparkapp.collation.receiver.config.MapperConfig;
 import sparkapp.collation.receiver.config.PhoenixContext;
 import sparkapp.collation.receiver.config.ServiceConfig;
@@ -57,57 +59,17 @@ public class Main {
 		Logger.getLogger("org.apache.spark.streaming.scheduler.JobGenerator").setLevel(Level.INFO);
 
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigContext.class, DaoConfig.class,
-				ServiceConfig.class, MapperConfig.class, PhoenixContext.class);
-
+				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class);
+		
 		VisitorLogService visitorLogService = (VisitorLogService) ctx.getBean("visitorLogService");
 		VisitorLogStringMapper visitorLogStringMapper = (VisitorLogStringMapper) ctx.getBean("visitorLogStringMapper");
 
-		String zookeepers = args[0];
-		String directBrokers = args[1];
-		String topics = args[2];
-		
-		ZkClient zkClient = null;
-		try {
-			zkClient = new ZkClient(zookeepers, 10000, 10000, ZKStringSerializer$.MODULE$);
-			for (String topic : topics.split(",")) {
-				System.out.println("Topic exists? "+ AdminUtils.topicExists(zkClient, topic));
-				if (!AdminUtils.topicExists(zkClient, topic)) {
-					AdminUtils.createTopic(zkClient, topic, 1, 1, new Properties());
-				}
+		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
 
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			if (zkClient != null) {
-				zkClient.close();
-			}
-		}
+		JavaPairInputDStream<String, String> messages = (JavaPairInputDStream<String, String>)  ctx.getBean("kafkaDStream");
 
-		// Create context with a 2 seconds batch interval
-		SparkConf sparkConf = new SparkConf().setAppName("CollationReceiver");
-
-		JavaSparkContext sc = new JavaSparkContext(sparkConf);
-
-		JavaStreamingContext jssc = new JavaStreamingContext(sc, new Duration(5000));
-		SQLContext sqlContext = new SQLContext(sc);
-
-		Set<String> topicsSet = new HashSet<>(Arrays.asList(topics.split(",")));
-		Map<String, String> kafkaParams = new HashMap<>();
-		kafkaParams.put("metadata.broker.list", directBrokers);
-
-		// Create direct kafka stream with brokers and topics
-		JavaPairInputDStream<String, String> messages = KafkaUtils.createDirectStream(jssc, String.class, String.class,
-				StringDecoder.class, StringDecoder.class, kafkaParams, topicsSet);
-
-		if (createNewTable(args)) {
-			visitorLogService.creatTable(VisitorLogModel.class);
-			visitorLogService.creatTable(AnonymousVisitorModel.class);
-			visitorLogService.creatTable(BrowserFPModel.class);
-			visitorLogService.creatTable(DeviceFPModel.class);
-			visitorLogService.creatTable(SessionModel.class);
-			visitorLogService.creatTable(WebEventModel.class);
-
+		if (isCreateNewTableEnabled(args)) {
+			visitorLogService.creatTable(VisitorLogModel.class, AnonymousVisitorModel.class, BrowserFPModel.class, DeviceFPModel.class, SessionModel.class, WebEventModel.class);
 		}
 
 		// Get the lines, split them into words, count the words and print
@@ -124,6 +86,7 @@ public class Main {
 			List<VisitorLogModel> visitorLogModels = rowRDD.collect();
 			List<WebEventModel> webEventModels = new ArrayList<>();
 			for (VisitorLogModel visitorLogModel : visitorLogModels) {
+				
 				System.out.println("Saving..");
 				visitorLogModel.setId(UUID.randomUUID().toString());
 				visitorLogService.save(VisitorLogModel.class, visitorLogModel);
@@ -131,9 +94,11 @@ public class Main {
 				AnonymousVisitorModel av = null;
 				BrowserFPModel browserFP = null;
 				DeviceFPModel deviceFP = null;
+				
 				SessionModel sessionModel = visitorLogService.getOne(SessionModel.class,
 						visitorLogModel.getSessionID());
 				System.out.println(sessionModel);
+				
 				av = findAV(visitorLogService, sessionModel, visitorLogModel);
 
 				if (sessionModel == null) {
@@ -164,38 +129,26 @@ public class Main {
 
 			}
 
-			if (webEventModels.size() > 0 && broadcast(args)) {
+			
+			
+			if (webEventModels.size() > 0 && isbroadcastEnabled(args)) {
 				try {
-					RestTemplate rt = new RestTemplate();
-
-					rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-
-					rt.getMessageConverters().add(new StringHttpMessageConverter());
-
-					String uri = new String("http://poc:8191/webapp-poc/notifyEvents");
 					UserParam<WebEventModel> data = new UserParam<WebEventModel>();
 					data.setType(WebEventModel.class.getSimpleName());
 					data.getData().addAll(webEventModels);
-					String result = rt.postForObject(uri, data, String.class);
+					broadcast("http://poc:8191/webapp-poc/notifyEvents", data);
 				} catch (Exception e) {
 					System.out.print(e.getMessage());
 				}
 
 			}
 
-			if (visitorLogModels.size() > 0 && broadcast(args)) {
+			if (visitorLogModels.size() > 0 && isbroadcastEnabled(args)) {
 				try {
-					RestTemplate rt = new RestTemplate();
-
-					rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-
-					rt.getMessageConverters().add(new StringHttpMessageConverter());
-
-					String uri = new String("http://poc:8191/webapp-poc/notifyEvents");
 					UserParam<VisitorLogModel> data = new UserParam<VisitorLogModel>();
 					data.setType(VisitorLogModel.class.getSimpleName());
 					data.getData().addAll(visitorLogModels);
-					String result = rt.postForObject(uri, data, String.class);
+					broadcast("http://poc:8191/webapp-poc/notifyEvents", data);
 				} catch (Exception e) {
 					System.out.print(e.getMessage());
 				}
@@ -204,6 +157,15 @@ public class Main {
 		});
 		jssc.start();
 		jssc.awaitTermination();
+	}
+	
+	public static String broadcast(String url, Object data){
+		RestTemplate rt = new RestTemplate();
+
+		rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+		rt.getMessageConverters().add(new StringHttpMessageConverter());
+		return rt.postForObject(url, data, String.class);
 	}
 
 	public static BrowserFPModel findBrowserFP(VisitorLogService visitorLogService, AnonymousVisitorModel av,
@@ -264,15 +226,15 @@ public class Main {
 		return av;
 	}
 
-	public static boolean createNewTable(String[] args) {
-		if (args.length > 3) {
+	public static boolean isCreateNewTableEnabled(String[] args, Class<?>... classes) {
+		if (args.length > 3 && "true".equals(args[3])) {
 			return "true".equals(args[3]);
 		} else {
 			return false;
 		}
 	}
 
-	public static boolean broadcast(String[] args) {
+	public static boolean isbroadcastEnabled(String[] args) {
 		if (args.length > 4) {
 			return "true".equals(args[4]);
 		} else {
