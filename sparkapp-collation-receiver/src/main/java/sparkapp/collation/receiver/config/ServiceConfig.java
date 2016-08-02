@@ -32,14 +32,4 @@ public class ServiceConfig {
 	public KafkaService kafkaService() throws Exception{
 		return new KafkaServiceImpl("poc:2181", "events");
 	}
-	
-	@PostConstruct
-	public void initTables() throws Exception {
-		visitorLogService().creatTable(VisitorLogModel.class);
-		visitorLogService().creatTable(AnonymousVisitorModel.class);
-		visitorLogService().creatTable(BrowserFPModel.class);
-		visitorLogService().creatTable(DeviceFPModel.class);
-		visitorLogService().creatTable(SessionModel.class);
-		visitorLogService().creatTable(WebEventModel.class);
-	}
 }

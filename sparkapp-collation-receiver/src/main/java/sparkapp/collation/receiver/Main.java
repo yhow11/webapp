@@ -38,6 +38,7 @@ import sparkapp.collation.receiver.config.KafkaContext;
 import sparkapp.collation.receiver.config.MapperConfig;
 import sparkapp.collation.receiver.config.PhoenixContext;
 import sparkapp.collation.receiver.config.ServiceConfig;
+import sparkapp.collation.receiver.config.StartUpContext;
 import usertracker.base.UserParam;
 import usertracker.browser.mapper.impl.VisitorLogStringMapper;
 import usertracker.browser.model.AnonymousVisitorModel;
@@ -59,7 +60,7 @@ public class Main {
 		Logger.getLogger("org.apache.spark.streaming.scheduler.JobGenerator").setLevel(Level.INFO);
 
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigContext.class, DaoConfig.class,
-				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class);
+				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, StartUpContext.class);
 		
 		VisitorLogService visitorLogService = (VisitorLogService) ctx.getBean("visitorLogService");
 		VisitorLogStringMapper visitorLogStringMapper = (VisitorLogStringMapper) ctx.getBean("visitorLogStringMapper");
