@@ -232,8 +232,8 @@ public class Main {
 	}
 
 	public static boolean isCreateNewTableEnabled(String[] args, Class<?>... classes) {
-		if (args.length > 0 && "true".equals(args[0])) {
-			return "true".equals(args[3]);
+		if (args.length > 0) {
+			return "true".equals(args[0]);
 		} else {
 			return false;
 		}
