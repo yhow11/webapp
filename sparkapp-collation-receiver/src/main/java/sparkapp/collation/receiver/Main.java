@@ -67,9 +67,9 @@ public class Main {
 		
 		ZkClient zkClient = null;
 		try {
-			zkClient = new ZkClient("poc:2181", 10000, 10000, ZKStringSerializer$.MODULE$);
+			zkClient = new ZkClient(brokers, 10000, 10000, ZKStringSerializer$.MODULE$);
 			for (String topic : topics.split(",")) {
-				System.out.println("Creating topic..."+topic);
+				System.out.println("Topic exists? "+ AdminUtils.topicExists(zkClient, topic));
 				if (!AdminUtils.topicExists(zkClient, topic)) {
 					
 					AdminUtils.createTopic(zkClient, topic, 1, 1, new Properties());
