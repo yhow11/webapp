@@ -69,7 +69,12 @@ public class Main {
 		JavaPairInputDStream<String, String> messages = (JavaPairInputDStream<String, String>)  ctx.getBean("kafkaDStream");
 
 		if (isCreateNewTableEnabled(args)) {
-			visitorLogService.creatTable(VisitorLogModel.class, AnonymousVisitorModel.class, BrowserFPModel.class, DeviceFPModel.class, SessionModel.class, WebEventModel.class);
+			visitorLogService.creatTable(VisitorLogModel.class);
+			visitorLogService.creatTable(AnonymousVisitorModel.class);
+			visitorLogService.creatTable(BrowserFPModel.class);
+			visitorLogService.creatTable(DeviceFPModel.class);
+			visitorLogService.creatTable(SessionModel.class);
+			visitorLogService.creatTable(WebEventModel.class);
 		}
 
 		// Get the lines, split them into words, count the words and print
@@ -227,7 +232,7 @@ public class Main {
 	}
 
 	public static boolean isCreateNewTableEnabled(String[] args, Class<?>... classes) {
-		if (args.length > 3 && "true".equals(args[3])) {
+		if (args.length > 0 && "true".equals(args[0])) {
 			return "true".equals(args[3]);
 		} else {
 			return false;
@@ -235,8 +240,8 @@ public class Main {
 	}
 
 	public static boolean isbroadcastEnabled(String[] args) {
-		if (args.length > 4) {
-			return "true".equals(args[4]);
+		if (args.length > 1) {
+			return "true".equals(args[1]);
 		} else {
 			return false;
 		}
