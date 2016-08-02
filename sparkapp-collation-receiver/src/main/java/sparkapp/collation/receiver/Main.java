@@ -2,14 +2,17 @@ package sparkapp.collation.receiver;
 
 
 import java.util.ArrayList;
+import kafka.utils.ZKStringSerializer$;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 
+import org.I0Itec.zkclient.ZkClient;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
@@ -27,6 +30,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import kafka.admin.AdminUtils;
 import kafka.serializer.StringDecoder;
 import sparkapp.collation.receiver.config.ConfigContext;
 import sparkapp.collation.receiver.config.DaoConfig;
@@ -60,6 +64,14 @@ public class Main {
 		String brokers = args[0];
 		String topics = args[1];
 
+		ZkClient zkClient = new ZkClient("poc:2181", 10000, 10000, ZKStringSerializer$.MODULE$);
+		for(String topic: topics.split(",")){
+			if(!AdminUtils.topicExists(zkClient, topic)){
+				AdminUtils.createTopic(zkClient, topic, 1, 1, new Properties());
+			}
+			
+		}
+		
 		// Create context with a 2 seconds batch interval
 		SparkConf sparkConf = new SparkConf().setAppName("CollationReceiver");
 
