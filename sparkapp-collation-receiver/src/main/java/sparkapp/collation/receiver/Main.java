@@ -62,16 +62,16 @@ public class Main {
 		VisitorLogService visitorLogService = (VisitorLogService) ctx.getBean("visitorLogService");
 		VisitorLogStringMapper visitorLogStringMapper = (VisitorLogStringMapper) ctx.getBean("visitorLogStringMapper");
 
-		String brokers = args[0];
-		String topics = args[1];
+		String zookeepers = args[0];
+		String directBrokers = args[1];
+		String topics = args[2];
 		
 		ZkClient zkClient = null;
 		try {
-			zkClient = new ZkClient(brokers, 10000, 10000, ZKStringSerializer$.MODULE$);
+			zkClient = new ZkClient(zookeepers, 10000, 10000, ZKStringSerializer$.MODULE$);
 			for (String topic : topics.split(",")) {
 				System.out.println("Topic exists? "+ AdminUtils.topicExists(zkClient, topic));
 				if (!AdminUtils.topicExists(zkClient, topic)) {
-					
 					AdminUtils.createTopic(zkClient, topic, 1, 1, new Properties());
 				}
 
@@ -94,7 +94,7 @@ public class Main {
 
 		Set<String> topicsSet = new HashSet<>(Arrays.asList(topics.split(",")));
 		Map<String, String> kafkaParams = new HashMap<>();
-		kafkaParams.put("metadata.broker.list", brokers);
+		kafkaParams.put("metadata.broker.list", directBrokers);
 
 		// Create direct kafka stream with brokers and topics
 		JavaPairInputDStream<String, String> messages = KafkaUtils.createDirectStream(jssc, String.class, String.class,
@@ -265,16 +265,16 @@ public class Main {
 	}
 
 	public static boolean createNewTable(String[] args) {
-		if (args.length > 2) {
-			return "true".equals(args[2]);
+		if (args.length > 3) {
+			return "true".equals(args[3]);
 		} else {
 			return false;
 		}
 	}
 
 	public static boolean broadcast(String[] args) {
-		if (args.length > 3) {
-			return "true".equals(args[3]);
+		if (args.length > 4) {
+			return "true".equals(args[4]);
 		} else {
 			return false;
 		}
