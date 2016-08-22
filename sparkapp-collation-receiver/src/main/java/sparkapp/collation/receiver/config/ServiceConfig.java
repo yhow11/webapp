@@ -1,8 +1,10 @@
 package sparkapp.collation.receiver.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -25,8 +27,15 @@ import usertracker.browser.service.impl.VisitorLogServiceImpl;
 import usertracker.browser.service.impl.WebEventServiceImpl;
 
 @Configuration
+@PropertySource({"classpath:kafka.properties", "classpath:spark.properties"})
 public class ServiceConfig {
 
+	@Value("${kafka.topics}")
+	private String topics;
+	
+	@Value("${kafka.metadata.broker.list}")
+	private String metaDataBrokerList;
+	
 	@Autowired
 	private DaoConfig daoConfig;
 	
@@ -67,7 +76,7 @@ public class ServiceConfig {
 	
 	@Bean
 	public KafkaService kafkaService() throws Exception{
-		return new KafkaServiceImpl("ip-172-31-3-147.us-west-2.compute.internal:2181", "events");
+		return new KafkaServiceImpl(metaDataBrokerList, topics);
 	}
 	
 	@Bean

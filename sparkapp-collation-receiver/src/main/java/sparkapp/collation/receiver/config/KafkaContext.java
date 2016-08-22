@@ -12,20 +12,30 @@ import org.apache.spark.streaming.Duration;
 import org.apache.spark.streaming.api.java.JavaPairInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.kafka.KafkaUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import kafka.serializer.StringDecoder;
 
 @Configuration
+@PropertySource({"classpath:kafka.properties", "classpath:spark.properties"})
 public class KafkaContext {
   
-	private static final String topics = "events";
+	@Value("${kafka.topics}")
+	private String topics;
+	
+	@Value("${kafka.metadata.broker.list}")
+	private String metaDataBrokerList;
+	
+	@Value("${spark.appname}")
+	private String appName;
 	
 	@Bean
 	public  Map<String, String> kafkaConfig(){
 		Map<String, String> kafkaParams = new HashMap<>();
-		kafkaParams.put("metadata.broker.list", "ip-172-31-3-147.us-west-2.compute.internal:6667"); 
+		kafkaParams.put("metadata.broker.list", metaDataBrokerList); 
 		return kafkaParams;
 	}
 	
@@ -40,7 +50,7 @@ public class KafkaContext {
 	
 	@Bean
 	public JavaStreamingContext javaStreamingContext(){
-		SparkConf sparkConf = new SparkConf().setAppName("CollationReceiver");
+		SparkConf sparkConf = new SparkConf().setAppName(appName);
 
 		JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
