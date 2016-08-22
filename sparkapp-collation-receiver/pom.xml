@@ -63,7 +63,7 @@
 		
 		<dependency>
 			<groupId>com.jofel</groupId>
-			<artifactId>user-tracker</artifactId>
+			<artifactId>service-usertracker</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		

@@ -22,7 +22,7 @@
     <module>webapp-mapper</module>
     <module>webapp-poc</module>
     <module>hbase</module>
-    <module>user-tracker</module>
+    <module>service-usertracker</module>
     <module>sparkapp-collation-receiver</module>
     <module>marketo</module>
     <module>helper-mongodb</module>

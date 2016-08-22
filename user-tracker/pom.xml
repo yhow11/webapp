@@ -8,7 +8,7 @@
 		<artifactId>webapp</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>user-tracker</artifactId>
+	<artifactId>service-usertracker</artifactId>
 	<name>user-tracker</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -34,7 +34,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>user-tracker</finalName>
+		<finalName>service-usertracker</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
