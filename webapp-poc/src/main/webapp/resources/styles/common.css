@@ -1,16 +1,20 @@
 .j-fill-green {
 	background-color: rgb(76, 175, 80);
 }
+
 .j-fill-green-hue-1 {
 	background-color: #C8E6C9;
 }
+
 .j-fill-red {
 	background-color: rgb(244, 67, 54);
 }
-.j-fill-grey{
+
+.j-fill-grey {
 	background-color: #F5F5F5;
 }
-.j-fill-white{
+
+.j-fill-white {
 	background-color: #fff;
 }
 
@@ -21,98 +25,165 @@
 .j-color-red {
 	color: rgb(244, 67, 54);
 }
-.j-color-grey{
+
+.j-color-grey {
 	color: #212121;
 }
-.j-base-line{
+
+.j-base-line {
 	border-bottom: 1px dashed #C0B9B9;
 }
-.j-color-grey-hue-1{
+
+.j-color-grey-hue-1 {
 	color: #C0B9B9;
 }
-.j-color-white{
+
+.j-color-white {
 	color: #fff;
 }
+
 .text-capitalize {
-  text-transform: capitalize; }
-.md-fab {
-	color: rgb(244, 67, 54); 
+	text-transform: capitalize;
 }
+
+.md-fab {
+	color: rgb(244, 67, 54);
+}
+
 .md-fab:hover, .md-fab.md-focused {
-  background-color: rgb(244, 67, 54) !important; }
+	background-color: rgb(244, 67, 54) !important;
+}
+
 p.note {
-  font-size: 1.2rem; }
+	font-size: 1.2rem;
+}
+
 .lock-size {
-  min-width: 300px;
-  min-height: 300px;
-  width: 300px;
-  height: 300px;
-  margin-left: auto;
-  margin-right: auto; }
-  
+	min-width: 300px;
+	min-height: 300px;
+	width: 300px;
+	height: 300px;
+	margin-left: auto;
+	margin-right: auto;
+}
 
 .s48 {
-    width: 48px;
-    height: 48px;
-    color: #00F;
+	width: 48px;
+	height: 48px;
+	color: #00F;
 }
+
 md-sidenav {
-    z-index: 1;
+	z-index: 1;
 }
+
 md-backdrop.md-sidenav-backdrop {
-    z-index: 1;
-    display:none
+	z-index: 1;
+	display: none
 }
+
 .md-button.md-fab {
-    z-index: 1;
+	z-index: 1;
 }
+
 .fab-default {
-  z-index:1;
-  font-size:30px;
-  transform:scale(.88,.88);
+	z-index: 1;
+	font-size: 30px;
+	transform: scale(.88, .88);
 }
+
 .fab-right {
-  position:absolute;
-  right:24px;
+	position: absolute;
+	right: 24px;
 }
+
 .fab-left {
-  position:fixed;
-  right:30px;
-  bottom: 30px;
+	position: fixed;
+	right: 30px;
+	bottom: 30px;
 }
-.toolbar-with-fab{
+
+.toolbar-with-fab {
 	position: relative;
 }
 
-md-toolbar:not(.md-menu-toolbar) .md-button {
-    color: white;
+md-toolbar:not (.md-menu-toolbar ) .md-button {
+	color: white;
 }
 
-md-toolbar:not(.md-menu-toolbar) md-icon {
-    color: #fff;
+md-toolbar:not (.md-menu-toolbar ) md-icon {
+	color: #fff;
 }
+
 md-toolbar.md-menu-toolbar {
-    z-index:0;
+	z-index: 0;
 }
-md-input-container .md-placeholder, md-input-container label:not(.md-no-float) {
-	z-index:0;
+
+md-input-container .md-placeholder, md-input-container label:not (.md-no-float
+	) {
+	z-index: 0;
 }
+
 .position-relative {
-  position:relative;
+	position: relative;
 }
+
 .position-absolute-left {
-  position:absolute;
-  left:24px;
+	position: absolute;
+	left: 24px;
 }
+
 .position-fix-left-bottom {
-  position:fixed;
-  right:48px;
-  bottom: 48px;
-  z-index: 2;
+	position: fixed;
+	right: 48px;
+	bottom: 48px;
+	z-index: 2;
 }
-md-toolbar:not(.md-menu-toolbar).j-fill-white{
+
+md-toolbar:not (.md-menu-toolbar ).j-fill-white {
 	
 }
-.height-inherit{
- height:inherit;	
+
+.height-inherit {
+	height: inherit;
+}
+
+.j-cursor-pointer {
+	cursor: pointer;
+}
+
+md-card>h2 {
+	padding-left: 15px;
+}
+
+md-tooltip ._md-content {
+	height: 50px;
+	line-height: 22px;
+	padding: 60px;
+}
+
+.md-chips md-chip .j-chip-button {
+	text-align: center;
+	width: 32px;
+	height: 32px;
+	min-width: 0;
+	padding: 0;
+	background: 0 0;
+	border: none;
+	box-shadow: none;
+	margin: 0;
+	position: relative;
+}
+
+.pop-availability {
+	display: inline-block;
+	min-width: 375px;
+	position: absolute;
+	overflow: hidden;
+	border-radius: 4px;
+	font-weight: 500;
+	font-size: 14px;
+	background-color: rgba(0,0,0,0.54);
+	opacity: 1;
+	color: white;
 }

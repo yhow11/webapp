@@ -1,109 +1,93 @@
 package helper.phoenix.dao.impl;
 
-import static org.jooq.impl.DSL.fieldByName;
-import static org.jooq.impl.DSL.tableByName;
-
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.Type;
-import org.jooq.impl.DefaultDSLContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 
-import helper.phoenix.annotation.PhoenixTableAnnotation;
-import helper.phoenix.dao.PhoenixDao;
+import helper.phoenix.annotation.entity.PhoenixID;
+import helper.phoenix.annotation.entity.PhoenixSequence;
 import helper.phoenix.util.PhoenixUtil;
 
-
-public abstract class PhoenixDaoImpl extends HibernateTemplate implements PhoenixDao {
+public abstract class PhoenixDaoImpl extends HibernateTemplate {
 	
-	private DefaultDSLContext defaultDSLContext;
 	
 	public PhoenixDaoImpl(SessionFactory sessionFactory) {
 		// TODO Auto-generated constructor stub
 		super(sessionFactory);
 	}
-	public PhoenixDaoImpl(DefaultDSLContext defaultDSLContext, SessionFactory sessionFactory) {
-		// TODO Auto-generated constructor stub
-		super(sessionFactory);
-		this.defaultDSLContext = defaultDSLContext;
+	
+	public void delete(Object object){
+		try {
+			getSessionFactory().getCurrentSession().createSQLQuery(PhoenixUtil.createDeleteSQL(object)).executeUpdate();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public <T> T upsert(Object entity) throws DataAccessException {
+		// TODO Auto-generated method stub
 		
+		try {
+			Field primaryField = PhoenixUtil.findFields(entity.getClass(), PhoenixID.class).get(0);
+			Object value = PropertyUtils.getProperty(entity, primaryField.getName());
+			if(value == null && primaryField.isAnnotationPresent(PhoenixSequence.class)) {
+				SQLQuery query  = getSessionFactory().getCurrentSession().createSQLQuery(PhoenixUtil.createGetNextValueForSEQ(entity).get(0));
+				Long id =  ((Number) query.uniqueResult()).longValue();
+				PropertyUtils.setProperty(entity, primaryField.getName(), id);
+			}
+			getSessionFactory().getCurrentSession().createSQLQuery(PhoenixUtil.createSaveSQL(entity)).executeUpdate();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return (T) entity;
 	}
 	
-	public <T> T save(Class<T> clazz, Object object) throws Exception {
-		getSessionFactory().getCurrentSession().createSQLQuery(PhoenixUtil.createSaveSQL(clazz, object)).executeUpdate();
-//		defaultDSLContext.query().execute();
-        return (T) object;
-	}
-	
-	public void createTable(Class<?> clazz) throws Exception {
-		getSessionFactory().getCurrentSession().createSQLQuery(PhoenixUtil.createDeleteTableSQL(clazz)).executeUpdate();
+	public void createTable(Class<?> clazz, Class<?>... views) throws Exception {
+		getSessionFactory().getCurrentSession().createSQLQuery(PhoenixUtil.createDropTableSQL(clazz)).executeUpdate();
 		getSessionFactory().getCurrentSession().createSQLQuery(PhoenixUtil.createCreateTableSQL(clazz)).executeUpdate();
+		createSequence(clazz);
 	}
 	
-	public <T> List<T> find(Class<T> clazz, String column, String value) throws Exception {
-		return find(clazz,column,value, 0);
-	}
-	public List<String> findColumnValues(Class<?> clazz, String columnReturn, String column, String word) throws Exception {
-		String queryStr = "select "+columnReturn+" from "+clazz.getAnnotation(PhoenixTableAnnotation.class).table();
-		queryStr += " where "+column+" =:value ";
-		SQLQuery query  = getSessionFactory().getCurrentSession().createSQLQuery(queryStr);
-		query.setParameter("value", column);
-		return (List<String>) query.list();
-	}
-	
-	public <T> List<T> find(Class<T> clazz, String column, String value, int limit) throws Exception {
-		String queryStr = "";
-		if(limit > 0) {
-			queryStr = defaultDSLContext
-	        .select()
-	        .from(tableByName(clazz.getAnnotation(PhoenixTableAnnotation.class).table()))
-	        .where(fieldByName(column).eq(value)).limit(limit).toString().replace("`", "").replace("offset 0", "");
-		} else {
-			queryStr = defaultDSLContext
-	        .select()
-	        .from(tableByName(clazz.getAnnotation(PhoenixTableAnnotation.class).table()))
-	        .where(fieldByName(column).eq(value)).toString().replace("`", "");
+	public void createSequence(Class<?> clazz) throws Exception {
+		for(String sql: PhoenixUtil.createDropSEQSQLs(clazz)){
+			getSessionFactory().getCurrentSession().createSQLQuery(sql).executeUpdate();
 		}
+		for(String sql: PhoenixUtil.createCreateSEQSQLs(clazz)){
+			getSessionFactory().getCurrentSession().createSQLQuery(sql).executeUpdate();
+		}
+	}
+	
+	public <T> List<T> search(Class<T> clazz, Object value) throws Exception {
 		
-        
-		SQLQuery query  = getSessionFactory().getCurrentSession().createSQLQuery(queryStr);
+		SQLQuery query  = getSessionFactory().getCurrentSession().createSQLQuery(PhoenixUtil.createGetSQL(value));
 		query.setResultTransformer( Transformers.aliasToBean(clazz));
-		Map<String, Type> fields = PhoenixUtil.getFieldNamesWithType(clazz);
+		Map<String, Type> fields = PhoenixUtil.getColumnsWithType(value.getClass());
 		for(String key: fields.keySet()) {
 			query.addScalar(key, fields.get(key));
 		}
 		return query.list();
-	}
-	public <T> T findById(Class<T> clazz,String value) throws Exception {
-		List<T> result = find(clazz, PhoenixUtil.findPrimaryKey(clazz),value, 1);
-		if(result.size() > 0) {
-			return result.get(0);
-		} else {
-			return null;
-		}
 	}
 	
-	public <T> List<T> getAll(Class<T> clazz, String column,  String start, String last) throws Exception {
-		return getAll(clazz, column,  start, last, null);
-	}
-	public <T> List<T> getAll(Class<T> clazz, String column,  String start, String last, String orderby) throws Exception {
-		String queryStr = "select * from "+clazz.getAnnotation(PhoenixTableAnnotation.class).table();
-		queryStr += " where "+column+" > :start and "+column+" < :end ";
-		if(orderby != null){
-			queryStr += " order by "+column+" "+orderby;
-		} 
-		SQLQuery query  = getSessionFactory().getCurrentSession().createSQLQuery(queryStr);
-		query.setParameter("start", Long.valueOf(start));
-		query.setParameter("end", Long.valueOf(last));
-		query.setResultTransformer( Transformers.aliasToBean(clazz));
-		Map<String, Type> fields = PhoenixUtil.getFieldNamesWithType(clazz);
-		for(String key: fields.keySet()) {
-			query.addScalar(key, fields.get(key));
-		}
-		return query.list();
+
+	public Long count(Object value) throws Exception {
+		SQLQuery query  = getSessionFactory().getCurrentSession().createSQLQuery(PhoenixUtil.createCountSQL(value));
+		return   ((Number) query.uniqueResult()).longValue();
 	}
 }

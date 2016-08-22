@@ -2,92 +2,46 @@ package usertracker.browser.service.impl;
 
 import java.util.List;
 
-import usertracker.browser.dao.VisitorLogDao;
-import usertracker.browser.model.BrowserFPModel;
-import usertracker.browser.model.SessionModel;
-import usertracker.browser.model.WebEventModel;
+import helper.phoenix.dao.impl.PhoenixDaoImpl;
+import usertracker.browser.model.VisitorLogModel;
 import usertracker.browser.service.VisitorLogService;
 
 public class VisitorLogServiceImpl implements VisitorLogService {
 	
-	private VisitorLogDao visitorLogDao;
+	private PhoenixDaoImpl phoenixDaoImpl;
 	
-	public VisitorLogServiceImpl(VisitorLogDao visitorLogDao) {
+	public VisitorLogServiceImpl(PhoenixDaoImpl phoenixDaoImpl) {
 		// TODO Auto-generated constructor stub
-		this.visitorLogDao = visitorLogDao;
+		this.phoenixDaoImpl = phoenixDaoImpl;
 	}
 
 	@Override
-	public <T> List<T> getAll(Class<T> clazz, String column, String start, String last) throws Exception {
+	public VisitorLogModel save(VisitorLogModel model) throws Exception {
 		// TODO Auto-generated method stub
-		return visitorLogDao.getAll(clazz, column, start, last);
+		return phoenixDaoImpl.upsert(model);
 	}
 
 	@Override
-	public <T> T getOne(Class<T> clazz, String id) throws Exception {
+	public void delete(Long id) throws Exception {
 		// TODO Auto-generated method stub
-		return visitorLogDao.getOne(clazz, id);
+		phoenixDaoImpl.delete(get(id));
 	}
 
 	@Override
-	public <T> List<T> find(Class<T> clazz, String word, String column) throws Exception {
+	public VisitorLogModel get(Long id) throws Exception {
 		// TODO Auto-generated method stub
-		return visitorLogDao.find(clazz, word, column);
+		VisitorLogModel paramModel = new VisitorLogModel();
+		paramModel.setId(id);
+		List<VisitorLogModel> visitorLog = phoenixDaoImpl.search(VisitorLogModel.class, paramModel);
+		return visitorLog.get(0);
 	}
 
 	@Override
-	public void creatTable(Class<?> clazz) throws Exception {
+	public List<VisitorLogModel> getAll(Long start, Long end) throws Exception {
 		// TODO Auto-generated method stub
-		visitorLogDao.creatTable(clazz);
-	}
-
-	@Override
-	public <T> T save(Class<T> clazz, Object object) throws Exception {
-		// TODO Auto-generated method stub
-		return visitorLogDao.save(clazz, object);
-	}
-
-	@Override
-	public <T> List<T> getAll(Class<T> clazz, String column, String start, String last, String orderby)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return visitorLogDao.getAll(clazz, column, start, last, orderby);
-	}
-
-	@Override
-	public List<String> findColumnValues(Class<?> clazz, String columnReturn, String column, String word) throws Exception {
-		// TODO Auto-generated method stub
-		return visitorLogDao.findColumnValues(clazz, columnReturn, column, word);
-	}
-
-	@Override
-	public List<WebEventModel> findWebEvents(String av, String start, String last, String orderby) throws Exception {
-		// TODO Auto-generated method stub
-		return visitorLogDao.findWebEvents(av, start, last, orderby);
-	}
-
-	@Override
-	public String getAV(String session, String browserFP) throws Exception {
-		// TODO Auto-generated method stub
-		SessionModel sessionModel =  visitorLogDao.getOne(SessionModel.class, session);
-
-		if(session != null) {
-			return sessionModel.getAnonymousVisitorID();
-		} else {
-			BrowserFPModel browserFPModel = visitorLogDao.getOne(BrowserFPModel.class, browserFP);
-		    if(browserFPModel != null) {
-		    	return browserFPModel.getAnonymousVisitorID();
-		    }
-		}
-		return null;
-	}
-
-	@Override
-	public void creatTable(Class<?>... clazzes) throws Exception {
-		// TODO Auto-generated method stub
-		for(Class<?> clazz: clazzes) {
-			creatTable(clazz);
-		}
+		VisitorLogModel paramModel = new VisitorLogModel();
+		List<VisitorLogModel> visitorLog = phoenixDaoImpl.search(VisitorLogModel.class, paramModel);
+		return visitorLog;
 	}
 
 	

@@ -1,19 +1,24 @@
 package helper.phoenix.model;
 
-import helper.phoenix.annotation.PhoenixFieldAnnotation;
-import helper.phoenix.annotation.PhoenixTableAnnotation;
+import helper.phoenix.annotation.entity.PhoenixColumn;
+import helper.phoenix.annotation.entity.PhoenixID;
+import helper.phoenix.annotation.entity.PhoenixSequence;
+import helper.phoenix.annotation.entity.PhoenixTable;
+import helper.phoenix.annotation.query.PhoenixPaginated;
 
-@PhoenixTableAnnotation(table="testTable")
-public class TestModel {
+@PhoenixTable(table="testTable")
+public class TestModel{
 
-	@PhoenixFieldAnnotation(type="VARCHAR(100)", primary=true)
-	private String id;
-	@PhoenixFieldAnnotation(type="INTEGER")
+	@PhoenixID
+	@PhoenixSequence
+	@PhoenixColumn(type="BIGINT")
+	private Long id;
+	@PhoenixColumn(type="INTEGER")
 	private int count;
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public int getCount() {
@@ -22,6 +27,5 @@ public class TestModel {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
 	
 }

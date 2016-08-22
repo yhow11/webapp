@@ -9,7 +9,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { AppContext.class, SecurityContext.class, ServiceContext.class, MapperContext.class, ConfigContext.class, DaoContext.class, WebSocketContext.class, PhoenixContext.class};
+		return new Class<?>[] { AppContext.class, SecurityContext.class, ServiceContext.class, MapperContext.class, ConfigContext.class, DaoContext.class, WebSocketContext.class, PhoenixContext.class, CronContext.class, StartUpContext.class};
 	}
 
 	@Override

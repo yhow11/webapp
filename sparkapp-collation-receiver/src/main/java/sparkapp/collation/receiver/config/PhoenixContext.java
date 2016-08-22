@@ -20,7 +20,7 @@ import usertracker.browser.model.VisitorLogModel;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"usertracker.browser.dao"})
+@ComponentScan({"sparkapp.collation.receiver.config"})
 public class PhoenixContext {
 
     private static final String DRIVER_CLASS_NAME = "org.apache.phoenix.jdbc.PhoenixDriver";
@@ -37,23 +37,6 @@ public class PhoenixContext {
         dataSource.setUrl(URL);
         return dataSource;
     }
-    @Bean
-    public TransactionAwareDataSourceProxy dataSourceProxy() {
-        TransactionAwareDataSourceProxy dataSourceProxy = new TransactionAwareDataSourceProxy();
-        dataSourceProxy.setTargetDataSource(dataSource());
-        return dataSourceProxy;
-    }
-
-    @Bean
-    public DataSourceConnectionProvider dataSourceConnectionProvider() {
-        return new DataSourceConnectionProvider(dataSourceProxy());
-    }
-
-    @Bean
-    public DefaultDSLContext defaultDSLContext() {
-        return new DefaultDSLContext(dataSourceConnectionProvider(), SQLDialect.MYSQL);
-    }
-
     @Bean
     public Random createRandom() {
         return new Random();

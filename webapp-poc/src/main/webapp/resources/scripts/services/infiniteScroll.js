@@ -10,7 +10,6 @@ angular.module('fingerPrintApp').
 
   Reddit.prototype.nextPage = function() {
 	  var self = this;
-	  console.log(this.busy);
     if (this.busy) return;
     this.busy = true;
     

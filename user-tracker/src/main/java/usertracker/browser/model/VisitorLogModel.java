@@ -2,33 +2,38 @@ package usertracker.browser.model;
 
 import java.io.Serializable;
 
-import helper.phoenix.annotation.PhoenixFieldAnnotation;
-import helper.phoenix.annotation.PhoenixTableAnnotation;
+import helper.phoenix.annotation.entity.PhoenixColumn;
+import helper.phoenix.annotation.entity.PhoenixID;
+import helper.phoenix.annotation.entity.PhoenixSequence;
+import helper.phoenix.annotation.entity.PhoenixTable;
+import helper.phoenix.object.PaginationQuery;
 
-@PhoenixTableAnnotation(table="visitorLog")
-public class VisitorLogModel  implements Serializable{
+@PhoenixTable(table="visitorLog")
+public class VisitorLogModel extends PaginationQuery implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@PhoenixFieldAnnotation(type="VARCHAR(255)", primary=true)
-	private String id;
-	@PhoenixFieldAnnotation(type="VARCHAR(255)")
+	@PhoenixID
+	@PhoenixSequence
+	@PhoenixColumn(type="BIGINT")
+	private Long id;
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String webFP;
-	@PhoenixFieldAnnotation(type="VARCHAR(255)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String deviceFP;
-	@PhoenixFieldAnnotation(type="VARCHAR(255)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String leadID;
-	@PhoenixFieldAnnotation(type="BIGINT")
+	@PhoenixColumn(type="BIGINT")
 	private Long timeStamp;
-	@PhoenixFieldAnnotation(type="VARCHAR(255)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String type;
-	@PhoenixFieldAnnotation(type="VARCHAR(255)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String url;
-	@PhoenixFieldAnnotation(type="VARCHAR(255)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String title;
-	@PhoenixFieldAnnotation(type="VARCHAR(255)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String sessionID;
 	
 	
@@ -44,10 +49,10 @@ public class VisitorLogModel  implements Serializable{
 	public void setLeadID(String leadID) {
 		this.leadID = leadID;
 	}
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getWebFP() {

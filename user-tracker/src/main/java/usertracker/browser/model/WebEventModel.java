@@ -2,39 +2,42 @@ package usertracker.browser.model;
 
 import java.io.Serializable;
 
-import helper.phoenix.annotation.PhoenixFieldAnnotation;
-import helper.phoenix.annotation.PhoenixTableAnnotation;
+import helper.phoenix.annotation.entity.PhoenixColumn;
+import helper.phoenix.annotation.entity.PhoenixID;
+import helper.phoenix.annotation.entity.PhoenixTable;
+import helper.phoenix.object.PaginationQuery;
 
-@PhoenixTableAnnotation(table="webEvent")
-public class WebEventModel implements Serializable {
+@PhoenixTable(table="webEvent")
+public class WebEventModel extends PaginationQuery implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	protected static final long serialVersionUID = 1L;
 
-	@PhoenixFieldAnnotation(type="VARCHAR(100)", primary=true)
-	private String id;
+	@PhoenixID
+	@PhoenixColumn(type="VARCHAR(100)")
+	protected String id;
 
-	@PhoenixFieldAnnotation(type="VARCHAR(100)")
-	private String anonymousVisitorID;
+	@PhoenixColumn(type="VARCHAR(100)")
+	protected String anonymousVisitorID;
 
-	@PhoenixFieldAnnotation(type="VARCHAR(100)")
-	private String browserFPID;
+	@PhoenixColumn(type="VARCHAR(100)")
+	protected String browserFPID;
 
-	@PhoenixFieldAnnotation(type="VARCHAR(100)")
-	private String deviceFPID;
+	@PhoenixColumn(type="VARCHAR(100)")
+	protected String deviceFPID;
 
-	@PhoenixFieldAnnotation(type="BIGINT")
-	private Long timeStamp;
+	@PhoenixColumn(type="BIGINT")
+	protected Long timeStamp;
 	
-	@PhoenixFieldAnnotation(type="VARCHAR(100)")
-	private String type;
+	@PhoenixColumn(type="VARCHAR(100)")
+	protected String type;
 	
-	@PhoenixFieldAnnotation(type="VARCHAR(100)")
-	private String url;
+	@PhoenixColumn(type="VARCHAR(100)")
+	protected String url;
 	
-	@PhoenixFieldAnnotation(type="VARCHAR(100)")
-	private String title;
+	@PhoenixColumn(type="VARCHAR(100)")
+	protected String title;
 
 	
 	

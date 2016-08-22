@@ -150,26 +150,34 @@
 						var title = e.target.title;
 						FingerPrint.send("hover", title, href);
 					}
-					console.log("user hover.");
 				}
-				window.onclick = function(e) {
-					var href = "N/A";
-					var title = "N/A";
-					if (e.target.localName == 'a') {
-						href = e.target.href;
-						title = e.target.title;
-					} else if (e.target.localName == 'button') {
-						title = e.target.label;
-					} else if (e.target.localName == 'img') {
-						var parent = e.target.parentElement;
-						if(parent.localName == 'a') {
-							href = parent.href;
-							title = parent.title;
-						}
-					}
-					FingerPrint.send("clicked", title, href);
-					console.log("user clicked.");
-				}
+				document.documentElement.addEventListener("click", function handleAnchorClick(event) {
+				    event = event || window.event;
+				    var element = FingerPrint.findParentByTagName(event.target || event.srcElement, "A");
+				    if (element) {
+				        var href = element.href;
+						var title = element.title;
+						FingerPrint.send("clicked", title, href);
+				    }
+				}, false);
+//				window.onclick = function(e) {
+//					var href = "N/A";
+//					var title = "N/A";
+//					if (e.target.localName == 'a') {
+//						href = e.target.href;
+//						title = e.target.title;
+//					} else if (e.target.localName == 'button') {
+//						title = e.target.label;
+//					} else if (e.target.localName == 'img') {
+//						var parent = e.target.parentElement;
+//						if(parent.localName == 'a') {
+//							href = parent.href;
+//							title = parent.title;
+//						}
+//					}
+//					FingerPrint.send("clicked", title, href);
+//					console.log("user clicked.");
+//				}
 				window.onload = function () {
 					FingerPrint.send("visited", document.title, window.location.href);
 					console.log("user visited.");
@@ -180,6 +188,16 @@
 	        	console.log("init completed.");
 			});
         };
+        FingerPrint.findParentByTagName = function (element, tagName) {
+            var parent = element;
+
+            while (parent !== null && parent.tagName !== tagName.toUpperCase()) {
+                parent = parent.parentNode;
+            }
+
+            return parent;
+        };
+
         FingerPrint.send = function(type, title, url){
         	if(FingerPrint.client){
         		var data = FingerPrint.getData();

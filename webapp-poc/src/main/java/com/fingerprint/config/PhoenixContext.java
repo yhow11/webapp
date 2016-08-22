@@ -9,20 +9,16 @@ import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import usertracker.browser.model.VisitorLogModel;
 
 @Configuration
-@EnableTransactionManagement
-@ComponentScan({"usertracker.browser.dao"})
 @PropertySource({"classpath:com/fingerprint/properties/phoenix.properties"})
 public class PhoenixContext {
 
@@ -42,23 +38,7 @@ public class PhoenixContext {
         dataSource.setUrl(URL);
         return dataSource;
     }
-    @Bean
-    public TransactionAwareDataSourceProxy dataSourceProxy() {
-        TransactionAwareDataSourceProxy dataSourceProxy = new TransactionAwareDataSourceProxy();
-        dataSourceProxy.setTargetDataSource(dataSource());
-        return dataSourceProxy;
-    }
-
-    @Bean
-    public DataSourceConnectionProvider dataSourceConnectionProvider() {
-        return new DataSourceConnectionProvider(dataSourceProxy());
-    }
-
-    @Bean
-    public DefaultDSLContext defaultDSLContext() {
-        return new DefaultDSLContext(dataSourceConnectionProvider(), SQLDialect.MYSQL);
-    }
-
+   
     @Bean
     public Random createRandom() {
         return new Random();

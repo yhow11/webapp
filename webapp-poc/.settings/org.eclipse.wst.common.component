@@ -6,7 +6,7 @@
         <dependent-module archiveName="helper-spring-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/helper-spring/helper-spring">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="user-tracker-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/user-tracker/user-tracker">
+        <dependent-module archiveName="service-keymanagement-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/service-keymanagement/service-keymanagement">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="helper-phoenix-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/helper-phoenix/helper-phoenix">
@@ -16,6 +16,12 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="helper-hibernate-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/helper-hibernate/helper-hibernate">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="service-urlmanagement-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/service-urlmanagement/service-urlmanagement">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="user-tracker-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/user-tracker/user-tracker">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="webapp-poc"/>

@@ -1,0 +1,51 @@
+<div layout="row" layout-align="center">
+
+		<md-card flex="100" flex-gt-sm="90">
+			<md-data-table-toolbar class="toolbar-with-fab"  layout="row" layout-margin>
+			    <span class="md-subhead" flex="80" flex-gt-sm="95"><md-icon md-svg-icon="resources/img/icons/key.svg"></md-icon> &nbsp  Key Manager</span>
+			    <span flex-gt-sm></span>
+			    <md-button class="md-primary" ui-sref="keymanagement.view"  flex="15" flex-gt-sm="10">
+			      <md-icon >list</md-icon> <span hide show-gt-sm> View Keys</span>
+			    </md-button>
+			</md-data-table-toolbar>
+			<form name="keyForm">
+	        <md-card-content layout="column" layout-gt-sm="row">
+	            <md-input-container flex="nogrow" flex-gt-sm="nogrow">
+					<label>Key</label> <input required validkey="isOnEdit" name="key" ng-model="data.key" ng-disabled="isOnEdit">
+					<div ng-messages="keyForm.key.$error">
+			            <div ng-message="required">Please enter key.</div>
+			            <div ng-message="validkey">Key is already Exists.</div>
+	                </div>
+				</md-input-container>
+				<span flex="5" flex-gt-sm="5"></span>
+				<div layout="column" flex flex-gt-sm="90">
+					<md-input-container md-no-float ng-repeat="value in data.values" ng-show="data.values.length > 0" >
+						<input disabled ng-model="value.value" type="text"> 
+						 <md-icon  ng-click="keymanager.remove($index)" 
+				            class="material-icons  j-cursor-pointer">
+				          clear
+				        </md-icon>
+					</md-input-container>
+					<md-input-container  flex="50" >
+						<label>Value</label> <input validvalue="data.values" name="newValue" ng-model="newValue">
+						<md-icon  ng-click="keymanager.add(keyForm, data.key, newValue)" 
+						          class="material-icons md-primary j-cursor-pointer">
+						        add
+						</md-icon>
+						<div ng-messages="keyForm.newValue.$error" >
+				            <div ng-message="validvalue">Value is already Exists.</div>
+		                </div>
+				     </md-input-container>
+				</div>
+	        </md-card-content>
+	        <div layout layout-align="center" style="padding-bottom:25px">
+	        	 <md-button aria-label="Save" ng-click="save(keyForm)" ng-disabled="keyForm.key.$invalid || showLoading" class="md-raised md-primary" flex="20" flex-gt-sm="10">
+			          <md-icon md-svg-icon="resources/img/icons/save.svg" ></md-icon> Submit
+			     </md-button>
+	        </div>
+	        </form>
+		</md-card>
+	
+</div>
+
+

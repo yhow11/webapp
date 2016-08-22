@@ -31,5 +31,8 @@
     <module>helper-hibernate</module>
     <module>helper-spring</module>
     <module>helper-kafka</module>
+    <module>service-keymanagement</module>
+    <module>common</module>
+    <module>service-urlmanagement</module>
   </modules>
 </project>

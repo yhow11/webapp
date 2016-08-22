@@ -2,20 +2,22 @@ package usertracker.browser.model;
 
 import java.io.Serializable;
 
-import helper.phoenix.annotation.PhoenixFieldAnnotation;
-import helper.phoenix.annotation.PhoenixTableAnnotation;
+import helper.phoenix.annotation.entity.PhoenixColumn;
+import helper.phoenix.annotation.entity.PhoenixID;
+import helper.phoenix.annotation.entity.PhoenixTable;
 
-@PhoenixTableAnnotation(table="browserFP")
+@PhoenixTable(table="browserFP")
 public class BrowserFPModel  implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@PhoenixFieldAnnotation(type="VARCHAR(100)", primary=true)
+	@PhoenixID
+	@PhoenixColumn(type="VARCHAR(100)")
 	private String id;
 	
-	@PhoenixFieldAnnotation(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(100)")
 	private String anonymousVisitorID;
 
 	public String getId() {

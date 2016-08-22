@@ -14,7 +14,7 @@ angular
 				'fingerPrintApp',
 				[ 'chart.js', 'oc.lazyLoad', 'ui.router', 'ngStorage',
 						'md.data.table', 'ngMaterial', 'ngMessages',
-						'ngMdIcons', 'highcharts-ng', 'infinite-scroll' ])
+						'ngMdIcons', 'highcharts-ng', 'infinite-scroll', 'nsPopover' ])
 		.config(
 				[
 						'$mdThemingProvider',
@@ -51,73 +51,7 @@ angular
 							$urlRouterProvider.otherwise('/home');
 
 							$stateProvider
-									.state(
-											'home',
-											{
-												url : '/home',
-												controller : 'HomeController',
-												templateUrl : 'resources/views/home.html',
-												resolve : {
-													loadMyFiles : function(
-															$ocLazyLoad) {
-														return $ocLazyLoad
-																.load({
-																	name : 'fingerPrintApp',
-																	files : [
-																			'resources/scripts/services/chartService.js',
-																			'resources/scripts/controllers/homeController.js' ]
-																})
-													}
-												}
-
-											})
-									.state(
-											'reports',
-											{
-												url : '/reports',
-												params : {
-													param : null
-												},
-												controller : 'ReportsController',
-												templateUrl : 'resources/views/reports.html',
-												resolve : {
-													loadMyFiles : function(
-															$ocLazyLoad) {
-														return $ocLazyLoad
-																.load({
-																	name : 'fingerPrintApp',
-																	files : [
-																			'resources/scripts/services/eventService.js',
-																			'resources/scripts/controllers/reportsController.js',
-
-																	]
-																})
-													}
-												}
-
-											})
-									.state(
-											'membership',
-											{
-												url : '/membership/:id',
-												controller : 'MembershipController',
-												templateUrl : 'resources/views/membership.html',
-												resolve : {
-													loadMyFiles : function(
-															$ocLazyLoad) {
-														return $ocLazyLoad
-																.load({
-																	name : 'fingerPrintApp',
-																	files : [
-																			'resources/scripts/services/memberService.js',
-																			'resources/scripts/controllers/membershipController.js',
-
-																	]
-																})
-													}
-												}
-
-											})
+									
 									.state(
 											'test',
 											{
@@ -156,6 +90,88 @@ angular
 																	'resources/scripts/services/eventService.js',
 																	'resources/scripts/services/infiniteScroll.js',
 																	'resources/scripts/controllers/profileController.js',
+
+															]
+														})
+											}
+										}
+
+									})
+									.state(
+									'keymanagement',
+									{
+										abstract: true,
+										template : '<ui-view  ></ui-view>',
+										url : '/keymanagement'
+
+									})
+									.state(
+									'keymanagement.addnew',
+									{
+										url : '/keymanagement/addnew',
+										controller : 'AddNewController',
+										templateUrl : 'resources/views/keymanagement/addnew.html',
+										params: {
+											param: null
+										},
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+													         		'resources/scripts/services/keymanagementService.js',
+													         		'resources/scripts/directives/validations/validvalueDirective.js',
+																	'resources/scripts/directives/validations/validkeyDirective.js',
+																	'resources/scripts/controllers/addnewController.js'
+
+															]
+														})
+											}
+										}
+
+									})
+									.state(
+									'keymanagement.view',
+									{
+										url : '/keymanagement/view',
+										controller : 'ViewController',
+										templateUrl : 'resources/views/keymanagement/view.html',
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+														         	'resources/scripts/services/keymanagementService.js',
+																	'resources/scripts/services/keymanagementInfiniteScroll.js',
+																	'resources/scripts/controllers/viewController.js',
+
+															]
+														})
+											}
+										}
+
+									})
+									.state(
+									'urltagging',
+									{
+										url : '/urltagging',
+										controller : 'URLTaggingController',
+										templateUrl : 'resources/views/urltagging/urltagging.html',
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+														         	'resources/scripts/services/valuemanagementService.js',
+														         	'resources/scripts/services/keymanagementService.js',
+														         	'resources/scripts/services/urlTaggingService.js',
+																	'resources/scripts/controllers/urltaggingController.js',
 
 															]
 														})
@@ -344,7 +360,7 @@ angular
 						} ])
 		.run(
 				function($rootScope, $state, $location, $localStorage, $http,
-						$mdSidenav, $log, $interval) {
+						$mdSidenav, $log, $interval, $mdToast) {
 					$mdSidenav("left").then(function(instance) {
 						$log.debug(instance);
 					});
@@ -384,9 +400,11 @@ angular
 							$rootScope.showLoading = false;
 						}
 					});
-					$rootScope.displayError = function(message) {
-						$mdToast.showSimple(message).textContent(message)
+					$rootScope.toast = function(message, color) {
+						var mdToast = $mdToast.simple()
+					      .textContent(message)
 								.position("top right").hideDelay(3000);
+						$mdToast.show(mdToast);
 					};
 					$rootScope.stompReceivers = null;
 					connect();

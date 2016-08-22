@@ -20,6 +20,8 @@
 	href="resources/vendors/angularjs/angular-chart.js/angular-chart.css">
 <link rel="stylesheet"
 	href="resources/vendors/iconate/iconate.min.css">
+<link rel="stylesheet"
+	href="resources/vendors/nspopover/nsPopover.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
 <link rel="stylesheet"
@@ -46,9 +48,10 @@
 		document.getElementsByTagName('head')[0].appendChild(s);
 	})(); */
 	</script>
+	
 </head>
 
-<body ng-app="fingerPrintApp" layout="column" ng-cloak>
+<body ng-app="fingerPrintApp"  ng-cloak class="j-fill-grey ">
 
 
 		<!-- <md-grid-list md-cols="20" md-row-height="80px">
@@ -61,7 +64,79 @@
 		  <md-grid-tile md-colspan="2" md-rowspan="1" class="j-fill-red">
 		  </md-grid-tile>
 		</md-grid-list> -->
-		 <md-toolbar class="md-primary">
+		
+	<md-toolbar class="md-menu-toolbar">
+	    <div layout="row">
+	      <md-toolbar-filler layout layout-align="center center">
+	        <md-button ui-sref="home" class="md-icon-button md-background" aria-label="Home">
+	          <md-icon md-svg-icon="resources/img/icons/home.svg"></md-icon>
+	        </md-button>
+	      </md-toolbar-filler>
+	      <div>
+	        <h2 class="md-toolbar-tools">Nurture Retargeting Tool</h2>
+	        <md-menu-bar>
+	          <md-menu>
+	            <button ng-click="$mdOpenMenu()">
+	              Demo
+	            </button>
+	            <md-menu-content>
+	              <md-menu-item>
+	                <md-button ui-sref="test"  aria-label="Testing Section">
+			          User Tracking Demo
+			        </md-button>
+	              </md-menu-item>
+	              <md-menu-divider></md-menu-divider>
+	              <md-menu-item>
+	                 <md-button ui-sref="profile" aria-label="Profile">
+			          User Profile Demo
+			         </md-button>
+	              </md-menu-item>
+	            </md-menu-content>
+	          </md-menu>
+	          <md-menu>
+	            <button ng-click="$mdOpenMenu()">
+	              Admin
+	            </button>
+	            <md-menu-content>
+	              <md-menu-item>
+	                <md-button ui-sref="monitoring" aria-label="Profile">
+	                  History
+	                </md-button>
+	              </md-menu-item>
+	              <md-menu-divider></md-menu-divider>
+	              <md-menu-item >
+	              	 <md-menu>
+	              	 	<md-button  ng-click="$mdOpenMenu()">
+				               Key Management
+			            </md-button >
+		                 <md-menu-content>
+			              <md-menu-item>
+			                <md-button ui-sref="keymanagement.addnew" aria-label="Profile">
+			                  Add New
+			                </md-button>
+			              </md-menu-item>
+			              <md-menu-divider></md-menu-divider>
+			              <md-menu-item>
+			                <md-button ui-sref="keymanagement.view">
+			                  View
+			                </md-button>
+			              </md-menu-item>
+			            </md-menu-content>
+	              	 </md-menu>
+	              </md-menu-item>
+	              <md-menu-divider></md-menu-divider>
+	              <md-menu-item>
+	                <md-button ui-sref="urltagging">
+	                  Url Tagging
+	                </md-button>
+	              </md-menu-item>
+	            </md-menu-content>
+	          </md-menu>
+	        </md-menu-bar>
+	      </div>
+	    </div>
+  </md-toolbar>
+	<!-- 	 <md-toolbar class="md-primary">
 		      <div class="md-toolbar-tools md-whiteframe-z1">
 		      	<md-button class="md-icon-button " aria-label="Home" ng-click="iconate(options)"><i id="icon" class="fa  fa-bars fa-1x j-color-white"></i></md-button>
 
@@ -79,11 +154,9 @@
 		          <md-icon md-svg-icon="resources/img/icons/monitor.svg"></md-icon>
 		        </md-button>
 		      </div>
-		    </md-toolbar>
+		    </md-toolbar> -->
 		    <md-progress-linear class="md-warn" md-mode="determinate" ng-show="showLoading" value="{{determinateValue}}"></md-progress-linear>
-		    <div flex layout="row" class="j-fill-grey "  layout-align="center" >
-		    	<div ui-view  flex="100" ></div>
-		    </div>
+		    <div ui-view ></div>
 	    <!-- <section layout="column" layout-fill>
 	    	<md-toolbar flex>
 		      <div class="md-toolbar-tools">
@@ -193,7 +266,8 @@
 		src="resources/vendors/angularjs/angular-chart.js/Chart.bundle.min.js"></script>
 		<script
 		src="resources/vendors/angularjs/angular-chart.js/angular-chart.min.js"></script>
-		
+	<script
+		src="resources/vendors/nspopover/nsPopover.js"></script>	
 	<script src="resources/vendors/oclazyload/dist/ocLazyLoad.min.js"></script>
 	<script src="resources/vendors/iconate/iconate.min.js"></script>
 	<script
