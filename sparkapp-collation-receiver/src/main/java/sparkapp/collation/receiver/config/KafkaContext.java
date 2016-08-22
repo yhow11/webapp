@@ -25,7 +25,7 @@ public class KafkaContext {
 	@Bean
 	public  Map<String, String> kafkaConfig(){
 		Map<String, String> kafkaParams = new HashMap<>();
-		kafkaParams.put("metadata.broker.list", "poc:6667"); 
+		kafkaParams.put("metadata.broker.list", "ip-172-31-3-147.us-west-2.compute.internal:6667"); 
 		return kafkaParams;
 	}
 	
