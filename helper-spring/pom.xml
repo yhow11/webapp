@@ -113,11 +113,8 @@
 			<artifactId>spring-integration-kafka</artifactId>
 			<version>1.3.0.RELEASE</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-websocket</artifactId>
-			<version>7.0.52</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.apache.tomcat.embed</groupId> <artifactId>tomcat-embed-websocket</artifactId> 
+			<version>7.0.52</version> </dependency> -->
 	</dependencies>
 	<build>
 		<finalName>helper-spring</finalName>
@@ -141,4 +138,12 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>spring-s3</id>
+			<name>Springframework Maven SNAPSHOT Repository</name>
+			<url>http://maven.springframework.org/snapshot</url>
+		</repository>
+	</repositories>
+
 </project>
