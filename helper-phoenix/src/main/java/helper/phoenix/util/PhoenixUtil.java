@@ -13,13 +13,14 @@ import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import com.google.common.base.Strings;
+
 import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixID;
 import helper.phoenix.annotation.entity.PhoenixSequence;
 import helper.phoenix.annotation.entity.PhoenixTable;
 import helper.phoenix.annotation.query.PhoenixDistinctColumn;
 import helper.phoenix.annotation.query.PhoenixPaginated;
-import joptsimple.internal.Strings;
 
 public class PhoenixUtil {
 
