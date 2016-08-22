@@ -13,7 +13,6 @@ import helper.phoenix.dao.impl.SimplePhoenixDaoImpl;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({"service.keymanagement", "usertracker.browser.service","service.urlmanagement"})
-@PropertySource("classpath:com/fingerprint/properties/application.properties")
 public class DaoConfig {
 	
 	@Autowired
