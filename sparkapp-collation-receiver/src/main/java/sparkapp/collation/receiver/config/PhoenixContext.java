@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import usertracker.browser.model.VisitorLogModel;
 
 @Configuration
-@EnableTransactionManagement
-@ComponentScan({"sparkapp.collation.receiver.config"})
 public class PhoenixContext {
 
     private static final String DRIVER_CLASS_NAME = "org.apache.phoenix.jdbc.PhoenixDriver";
