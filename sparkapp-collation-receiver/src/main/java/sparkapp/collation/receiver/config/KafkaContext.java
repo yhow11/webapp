@@ -26,7 +26,7 @@ public class KafkaContext {
 	@Value("${kafka.topics}")
 	private String topics;
 	
-	@Value("${kafka.metadata.broker.list}")
+	@Value("${kafka.listener}")
 	private String metaDataBrokerList;
 	
 	@Value("${spark.appname}")
