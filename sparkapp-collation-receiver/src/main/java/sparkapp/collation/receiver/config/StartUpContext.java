@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 import helper.phoenix.dao.impl.PhoenixDaoImpl;
 import usertracker.browser.model.AnonymousVisitorModel;
@@ -16,6 +17,7 @@ import usertracker.browser.model.VisitorLogModel;
 import usertracker.browser.model.WebEventModel;
 
 @Configuration
+@Transactional
 public class StartUpContext implements ApplicationListener<ApplicationEvent> {
 
 	@Autowired
