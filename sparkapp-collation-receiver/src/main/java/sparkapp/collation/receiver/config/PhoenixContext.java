@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -15,9 +16,12 @@ import usertracker.browser.model.VisitorLogModel;
 @Configuration
 public class PhoenixContext {
 
-    private static final String DRIVER_CLASS_NAME = "org.apache.phoenix.jdbc.PhoenixDriver";
-    private static final String URL = "jdbc:phoenix:ip-172-31-3-147.us-west-2.compute.internal:2181/hbase";
-
+	@Value("${phoenix.driverclassname}")
+	private String DRIVER_CLASS_NAME;
+	
+	@Value("${phoenix.url}")
+	private String URL;
+	
     @Autowired
     private ConfigContext configContext;
     

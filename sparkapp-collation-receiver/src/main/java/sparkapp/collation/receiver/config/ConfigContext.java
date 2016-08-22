@@ -6,6 +6,7 @@ import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
 public class ConfigContext {
@@ -53,4 +54,8 @@ public class ConfigContext {
 	    return properties;
 	}
 	
+	@Bean 
+	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+	return new PropertySourcesPlaceholderConfigurer();
+	}
 }
