@@ -33,6 +33,7 @@ public class SessionServiceImpl implements SessionService {
 		SessionModel paramModel = new SessionModel();
 		paramModel.setId(id);
 		List<SessionModel> sessions = phoenixDaoImpl.search(SessionModel.class, paramModel);
+		
 		if(sessions.size() > 0){
 			return sessions.get(0);
 		} else {
