@@ -32,8 +32,13 @@ public class SessionServiceImpl implements SessionService {
 		// TODO Auto-generated method stub
 		SessionModel paramModel = new SessionModel();
 		paramModel.setId(id);
-		List<SessionModel> session = phoenixDaoImpl.search(SessionModel.class, paramModel);
-		return session.get(0);
+		List<SessionModel> sessions = phoenixDaoImpl.search(SessionModel.class, paramModel);
+		if(sessions.size() > 0){
+			return sessions.get(0);
+		} else {
+			return null;
+		}
+		
 	}
 
 	@Override

@@ -37,8 +37,12 @@ public class AnonymousVisitorServiceImpl implements AnonymousVisitorService {
 		// TODO Auto-generated method stub
 		AnonymousVisitorModel paramModel = new AnonymousVisitorModel();
 		paramModel.setId(id);
-		List<AnonymousVisitorModel> av = phoenixDaoImpl.search(AnonymousVisitorModel.class, paramModel);
-		return av.get(0);
+		List<AnonymousVisitorModel> avs = phoenixDaoImpl.search(AnonymousVisitorModel.class, paramModel);
+		if(avs.size() > 0){
+			return avs.get(0);
+		} else {
+			return null;
+		}
 	}
 
 	

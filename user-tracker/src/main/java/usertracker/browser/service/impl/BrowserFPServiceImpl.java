@@ -32,8 +32,12 @@ public class BrowserFPServiceImpl implements BrowserFPService {
 		// TODO Auto-generated method stub
 		BrowserFPModel paramModel = new BrowserFPModel();
 		paramModel.setId(id);
-		List<BrowserFPModel> fp = phoenixDaoImpl.search(BrowserFPModel.class, paramModel);
-		return fp.get(0);
+		List<BrowserFPModel> fps = phoenixDaoImpl.search(BrowserFPModel.class, paramModel);
+		if(fps.size() > 0){
+			return fps.get(0);
+		} else {
+			return null;
+		}
 	}
 
 	@Override

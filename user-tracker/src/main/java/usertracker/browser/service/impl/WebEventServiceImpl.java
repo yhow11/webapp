@@ -33,8 +33,12 @@ public class WebEventServiceImpl implements WebEventService {
 		// TODO Auto-generated method stub
 		WebEventModel paramModel = new WebEventModel();
 		paramModel.setId(id);
-		List<WebEventModel> webEvent = phoenixDaoImpl.search(WebEventModel.class, paramModel);
-		return webEvent.get(0);
+		List<WebEventModel> webEvents = phoenixDaoImpl.search(WebEventModel.class, paramModel);
+		if(webEvents.size() > 0){
+			return webEvents.get(0);
+		} else {
+			return null;
+		}
 	}
 	
 	@Override

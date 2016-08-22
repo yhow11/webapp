@@ -32,8 +32,12 @@ public class DeviceFPServiceImpl implements DeviceFPService {
 		// TODO Auto-generated method stub
 		DeviceFPModel paramModel = new DeviceFPModel();
 		paramModel.setId(id);
-		List<DeviceFPModel> fp = phoenixDaoImpl.search(DeviceFPModel.class, paramModel);
-		return fp.get(0);
+		List<DeviceFPModel> fps = phoenixDaoImpl.search(DeviceFPModel.class, paramModel);
+		if(fps.size() > 0){
+			return fps.get(0);
+		} else {
+			return null;
+		}
 	}
 
 	@Override
