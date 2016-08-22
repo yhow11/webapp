@@ -67,7 +67,7 @@ public class ServiceConfig {
 	
 	@Bean
 	public KafkaService kafkaService() throws Exception{
-		return new KafkaServiceImpl("poc:2181", "events");
+		return new KafkaServiceImpl("ip-172-31-3-147.us-west-2.compute.internal:2181", "events");
 	}
 	
 	@Bean
