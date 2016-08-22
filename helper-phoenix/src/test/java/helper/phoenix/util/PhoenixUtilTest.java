@@ -1,4 +1,4 @@
-package helper.phoenix.util;
+/*package helper.phoenix.util;
 
 import org.junit.Test;
 
@@ -17,3 +17,4 @@ public class PhoenixUtilTest {
        
     }
 }
+*/
