@@ -25,8 +25,8 @@
 				 <md-list layout="column" layout-padding  infinite-scroll='keymanagementInfiniteScroll.nextPage()' infinite-scroll-disabled='keymanagementInfiniteScroll.busy' infinite-scroll-distance='0.6'>
 				    <md-list-item layout="row" layout-align="center"   ng-repeat='item in keymanagementInfiniteScroll.items | filter:searchValue'>
 				      <span flex-gt-xs="30" hide  show-gt-xs>{{item.key}}</span>
-				      <span flex-gt-xs="50" hide  show-gt-xs>{{item.values.join()}}</span>
-				      <span flex="50" hide-gt-xs><h3>{{item.key}}</h3><p>{{item.values.join()}}</p></span>
+				      <span flex-gt-xs="50" hide  show-gt-xs>{{getValueStr(item)}}</span>
+				      <span flex="50" hide-gt-xs><h3>{{item.key}}</h3><p>{{getValueStr(item)}}</p></span>
 				      <span flex="50" flex-gt-xs="20" layout="row" layout-align="center center">
 				      	<md-button aria-label="Edi3" class="md-icon-button" ng-click="goTo('keymanagement.addnew', item)" ng-disabled="showLoading">
 					          <md-icon md-svg-icon="resources/img/icons/edit.svg"  ></md-icon>

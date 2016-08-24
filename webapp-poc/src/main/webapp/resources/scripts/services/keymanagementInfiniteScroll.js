@@ -14,7 +14,7 @@ angular.module('fingerPrintApp').
 	  if (this.busy) return;
 	    this.busy = true;
     
-	    keymanagementService.getAll('0', this.after).then(function(data){
+	    keymanagementService.getAllByPagination('0', '50').then(function(data){
     	if(data.data){
     		if(data.data.status) {
     			self.items = data.data.data;

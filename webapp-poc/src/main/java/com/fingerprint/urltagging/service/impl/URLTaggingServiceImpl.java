@@ -1,7 +1,11 @@
 package com.fingerprint.urltagging.service.impl;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import org.apache.commons.httpclient.util.URIUtil;
 
 import com.fingerprint.keymanagement.mapper.KeyMapper;
 import com.fingerprint.keymanagement.mapper.ValueMapper;
@@ -45,20 +49,19 @@ public class URLTaggingServiceImpl implements URLTaggingService {
 	    List<URLForm> urls = new ArrayList<>();
 	    for(WebEventModel webEvent: webEvents) {
 	    	URLForm form = new URLForm();
-	    	form.setPath(webEvent.getUrl());
+	    	form.setPath(URIUtil.getFromPath(webEvent.getUrl()));
+	    	form.setUrl(webEvent.getUrl());
 	    	List<URLModel> urlModels = URLManagementService.getAll("%"+webEvent.getUrl());
 	    	for(URLModel urlModel: urlModels){
 		      KeyForm keyForm = new KeyForm();
 		      keyForm.setKey(urlModel.gettKey());
 		      if(!Strings.isNullOrEmpty(urlModel.gettValues())) {
 		    	  List<ValueForm> valueForms = new ArrayList<>();
-		    	  for(String valueID: urlModel.gettValues().split(",")){
+		    	  for(String value: urlModel.gettValues().split(",")){
 		    		  ValueForm valueForm = new ValueForm();
-		    		  try{
-		    			  valueForm  = valueMapper.unmarshall(valueManagementService.get(Long.valueOf(valueID)));
-		    		  }catch(Exception e){
-		    			  valueForm.setValue(valueID);
-		    		  }
+		    		  valueForm.setId(UUID.randomUUID().toString());
+		    		  valueForm.setKey(urlModel.gettKey());
+		    		  valueForm.setValue(value);
 		    		  valueForms.add(valueForm);
 		    	  }
 		    	  keyForm.setValues(valueForms);
@@ -78,19 +81,15 @@ public class URLTaggingServiceImpl implements URLTaggingService {
 		// TODO Auto-generated method stub
 		ResponsePaginationForm<URLForm> response = new ResponsePaginationForm<>();
 		for(URLForm urlForm: urlForms){
-			URLManagementService.deleteByURL("%"+urlForm.getPath());
+			URLManagementService.deleteByURL("%"+urlForm.getUrl());
 			for(KeyForm keyForm: urlForm.getKeys()){
 				URLModel urlModel = new URLModel();
-				urlModel.setUrl(urlForm.getPath());
+				urlModel.setUrl(urlForm.getUrl());
 				urlModel.settKey(keyForm.getKey());
 				if(keyForm.getValues().size() > 0){
 					List<String> values = new ArrayList<String>();
 					for(ValueForm valueForm: keyForm.getValues()){
-						if(!Strings.isNullOrEmpty(valueForm.getId())) {
-							values.add(valueForm.getId());
-						} else {
-							values.add(valueForm.getValue());
-						}
+						values.add(valueForm.getValue());
 					}
 					urlModel.settValues(String.join(",", values));
 				}
@@ -101,5 +100,4 @@ public class URLTaggingServiceImpl implements URLTaggingService {
 		
 		return response;
 	}
-
 }

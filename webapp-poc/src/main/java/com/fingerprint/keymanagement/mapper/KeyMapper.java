@@ -2,14 +2,23 @@ package com.fingerprint.keymanagement.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.fingerprint.keymanagement.object.KeyForm;
+import com.fingerprint.keymanagement.object.ValueForm;
 import com.fingerprint.mapper.Mapper;
 
+import joptsimple.internal.Strings;
 import service.keymanagement.model.KeyModel;
 
 public class KeyMapper implements Mapper<KeyForm, KeyModel> {
 
+	private ValueMapper valueMapper;
+	
+	public KeyMapper(ValueMapper valueMapper) {
+		// TODO Auto-generated constructor stub
+		this.valueMapper = valueMapper;
+	}
 	@Override
 	public KeyForm unmarshall(KeyModel e) {
 		// TODO Auto-generated method stub
@@ -46,6 +55,7 @@ public class KeyMapper implements Mapper<KeyForm, KeyModel> {
 		// TODO Auto-generated method stub
 		KeyForm form = t;
 		form.setKey(e.gettKey());
+		form.setValues(valueMapper.unmarshall(e));
 		return form;
 	}
 	@Override
@@ -53,6 +63,7 @@ public class KeyMapper implements Mapper<KeyForm, KeyModel> {
 		// TODO Auto-generated method stub
 		KeyModel model = e;
 		model.settKey(t.getKey());
+		model = valueMapper.marshall(t.getValues(), model);
 		return model;
 	}
 

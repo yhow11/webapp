@@ -13,7 +13,7 @@ public class MapperContext {
 	
 	@Bean
 	public KeyMapper keyMapper(){
-		return new KeyMapper();
+		return new KeyMapper(valueMapper());
 	}
 	
 	@Bean

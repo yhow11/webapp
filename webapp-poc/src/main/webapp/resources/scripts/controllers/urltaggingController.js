@@ -25,13 +25,13 @@ angular.module('fingerPrintApp').controller(
 							   if(chipID == currChipID) {
 								   if(item.key != $scope.lastKey){
 									   $scope.lastKey = item.key;
-									   valuemanagementService.getAll(item.key).then(function(data){
+									   keymanagementService.getAll(item.key).then(function(data){
 										   if(data.data.status){
-											   $scope.valueChip.autoComplete.items = data.data.data;
+											   $scope.valueChip.autoComplete.items = data.data.data[0].values;
 										   }
 									   });
 								   }
-								   $scope.popOver.chip = item;
+								   $scope.popOver.chip = angular.copy(chip);
 								   keys[index].values = item.values? item.values : [];
 								   $scope.popOver.items = keys[index].values;
 								   
@@ -100,21 +100,18 @@ angular.module('fingerPrintApp').controller(
 						return null;
 					},
 					onRemoveChip: function(chip, selected){
+						chip = angular.copy(chip);
 						if(selected.length > 0){
-							for(var index in selected){
-								var select = selected[index];
-								$scope.keyChip.removeObject(chip, select.keys);
-							}
-						}
-					},
-					removeObject: function(chip, items){
-						for(var index in items){
-							var item = items[index];
-							var currChipID = $scope.keyChip.getChipID(chip);
-							var chipID = $scope.keyChip.getChipID(item);
-							if(currChipID == chipID){
-								items.splice(index, 1);   
-							}
+							angular.forEach(selected,function(select,selectIndex){
+								for (var i = select.keys.length - 1; i >= 0; i--) {
+									var item = select.keys[i];
+									var currChipID = $scope.keyChip.getChipID(chip);
+									var chipID = $scope.keyChip.getChipID(item);
+									if(currChipID == chipID){
+										select.keys.splice(select.keys.indexOf(item), 1);  
+									}
+								}
+							});
 						}
 					},
 					fillUniqueObject: function(chip, items){
@@ -162,6 +159,7 @@ angular.module('fingerPrintApp').controller(
 									if(chipID == currChipID){
 										item.values = item.values? item.values: [];
 										$scope.valueChip.fillUniqueObject(copy, item.values);
+										$scope.popOver.chip = angular.copy(item);
 									}
 								}
 							}
@@ -178,6 +176,7 @@ angular.module('fingerPrintApp').controller(
 									var currChipID = $scope.keyChip.getChipID(item);
 									if(chipID == currChipID){
 										$scope.valueChip.removeObject(chip, item.values);
+										$scope.popOver.chip = angular.copy(item);
 									}
 								}
 							}
@@ -187,7 +186,7 @@ angular.module('fingerPrintApp').controller(
 						for(var index in values){
 							var item = values[index];
 							if(chip.value == item.value){
-								items.splice(index, 1);   
+								values.splice(index, 1);   
 							}
 						}
 					},
@@ -216,13 +215,15 @@ angular.module('fingerPrintApp').controller(
 						});
 					},
 					searchValue: null,
-					search: function(){
-						urlTaggingService.getAllURLs($scope.urlTable.searchValue, $scope.urlTable.query.page, $scope.urlTable.query.limit).then(function(data){
-							if(data.data.status){
-								$scope.urlTable.items = data.data;
-								
-							}
-						});
+					search: function(searchForm){
+						if(searchForm.searchValue.$valid){
+							urlTaggingService.getAllURLs($scope.urlTable.searchValue, $scope.urlTable.query.page, $scope.urlTable.query.limit).then(function(data){
+								if(data.data.status){
+									$scope.urlTable.items = data.data;
+									
+								}
+							});
+						}
 					},
 					items: [],
 					query: {

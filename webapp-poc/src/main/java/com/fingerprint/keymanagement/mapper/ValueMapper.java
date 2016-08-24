@@ -2,65 +2,54 @@ package com.fingerprint.keymanagement.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.fingerprint.keymanagement.object.ValueForm;
-import com.fingerprint.mapper.Mapper;
-import com.google.common.base.Strings;
+import com.fingerprint.mapper.OneToManyMapper;
 
-import service.keymanagement.model.ValueModel;
+import joptsimple.internal.Strings;
+import service.keymanagement.model.KeyModel;
 
-public class ValueMapper implements Mapper<ValueForm, ValueModel> {
+public class ValueMapper implements OneToManyMapper<ValueForm, KeyModel> {
 
 	@Override
-	public ValueForm unmarshall(ValueModel e, ValueForm t) {
+	public List<ValueForm> unmarshall(KeyModel e) {
 		// TODO Auto-generated method stub
-		t.setId(String.valueOf(e.getId()));
-		t.setKey(e.gettKey());
-		t.setValue(e.gettValue());
+		return unmarshall(e, new ArrayList<ValueForm>());
+	}
+
+	@Override
+	public KeyModel marshall(List<ValueForm> t) {
+		// TODO Auto-generated method stub
+		return marshall(t, new KeyModel());
+	}
+
+	@Override
+	public List<ValueForm> unmarshall(KeyModel e, List<ValueForm> t) {
+		// TODO Auto-generated method stub
+		if(!Strings.isNullOrEmpty(e.gettValues())){
+			for(String value: e.gettValues().split(",")){
+				ValueForm valueForm = new ValueForm();
+				valueForm.setId(UUID.randomUUID().toString());
+				valueForm.setKey(e.gettKey());
+				valueForm.setValue(value);
+				t.add(valueForm);
+			}
+		}
 		return t;
 	}
 
 	@Override
-	public ValueModel marshall(ValueForm t, ValueModel e) {
+	public KeyModel marshall(List<ValueForm> t, KeyModel e) {
 		// TODO Auto-generated method stub
-		if(!Strings.isNullOrEmpty(t.getId())){
-			e.setId(Long.valueOf(t.getId()));
+		List<String> values = new ArrayList<String>();
+		for(ValueForm valueForm : t){
+			values.add(valueForm.getValue());
 		}
-		e.settKey(t.getKey());
-		e.settValue(t.getValue());
+		if(values.size() > 0){
+			e.settValues(String.join(",", values));
+		}
 		return e;
-	}
-
-	@Override
-	public ValueForm unmarshall(ValueModel e) {
-		// TODO Auto-generated method stub
-		return unmarshall(e, new ValueForm());
-	}
-
-	@Override
-	public ValueModel marshall(ValueForm t) {
-		// TODO Auto-generated method stub
-		return marshall(t, new ValueModel());
-	}
-
-	@Override
-	public List<ValueForm> unmarshall(List<ValueModel> e) {
-		// TODO Auto-generated method stub
-		List<ValueForm> valueForms = new ArrayList<>();
-		for(ValueModel valueModel: e){
-			valueForms.add(unmarshall(valueModel));
-		}
-		return valueForms;
-	}
-
-	@Override
-	public List<ValueModel> marshall(List<ValueForm> t) {
-		// TODO Auto-generated method stub
-		List<ValueModel> valueModels = new ArrayList<>();
-		for(ValueForm valueForm: t){
-			valueModels.add(marshall(valueForm));
-		}
-		return valueModels;
 	}
 
 }

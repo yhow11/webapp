@@ -51,7 +51,7 @@ public class KeyManagementServiceImpl implements KeyManagementService {
 	public void delete(String key) throws Exception {
 		// TODO Auto-generated method stub
 		KeyModel paramModel = new KeyModel();
-		paramModel.settKey(key);
+		paramModel.settKey("%"+key);
 		List<KeyModel> results = phoenixDaoImpl.search(KeyModel.class, paramModel);
 		KeyModel keyModel = results.get(0);
 		phoenixDaoImpl.delete(keyModel);
@@ -61,7 +61,7 @@ public class KeyManagementServiceImpl implements KeyManagementService {
 	public List<KeyModel> getAll(String key) throws Exception {
 		// TODO Auto-generated method stub
 		KeyModel paramModel = new KeyModel();
-		paramModel.settKey("%"+key+"%");
+		paramModel.settKey("%"+key);
 		List<KeyModel> keyModels = phoenixDaoImpl.search(KeyModel.class, paramModel);
 		return keyModels;
 	}

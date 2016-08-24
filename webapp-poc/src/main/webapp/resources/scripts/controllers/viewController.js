@@ -15,11 +15,18 @@ angular.module('fingerPrintApp').controller(
 				options: ["edit", "delete"]
 			}]
 			$scope.remove = function(item){
-				keymanagementService.remove(item.id).then(function(data){
+				keymanagementService.remove(item.key).then(function(data){
 					if(data.data.status){
 						$rootScope.toast("Success!", "md-primary");
 						$scope.keymanagementInfiniteScroll.refreshPage();
 					}
 				});
 			};
+			$scope.getValueStr = function(item){
+				var values = [];
+				for(var index in item.values){
+					values.push(item.values[index].value);
+				}
+				return values.join();
+			}
 		});

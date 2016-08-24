@@ -29,9 +29,6 @@ public class KeyValueManagementService {
 	public ResponseForm<KeyForm> save(KeyForm keyForm) throws Exception{
 		ResponseForm<KeyForm> response =  new ResponseForm<KeyForm>();
 		response.setStatus(true);
-		for(ValueForm valueForm: keyForm.getValues()){
-			valueForm = valueMapper.unmarshall(valueManagementService.save(valueMapper.marshall(valueForm)));
-		}
 		keyForm = keyMapper.unmarshall(keyManagementService.save(keyMapper.marshall(keyForm)));
 		
 		response.getData().add(keyForm);
@@ -41,22 +38,14 @@ public class KeyValueManagementService {
 	public ResponseForm<KeyForm> getAllByPagination(String start, String end) throws Exception{
 		ResponseForm<KeyForm> response =  new ResponseForm<KeyForm>();
 		response.setStatus(true);
-		List<KeyForm> keyForms = keyMapper.unmarshall(keyManagementService.getAll(Long.valueOf(start), Long.valueOf(end)));
-		for(KeyForm keyForm: keyForms){
-			 keyForm.setValues(valueMapper.unmarshall(valueManagementService.getAll(keyForm.getKey())));
-		}
-		response.getData().addAll(keyForms);
+		response.getData().addAll(keyMapper.unmarshall(keyManagementService.getAll(Long.valueOf(start), Long.valueOf(end))));
 		return response;
 	}
 	
 	public ResponseForm<KeyForm> getAll(String key) throws Exception{
 		ResponseForm<KeyForm> response =  new ResponseForm<KeyForm>();
 		response.setStatus(true);
-		List<KeyForm> keyForms = keyMapper.unmarshall(keyManagementService.getAll(key));
-		for(KeyForm keyForm: keyForms){
-			 keyForm.setValues(valueMapper.unmarshall(valueManagementService.getAll(keyForm.getKey())));
-		}
-		response.getData().addAll(keyForms);
+		response.getData().addAll(keyMapper.unmarshall(keyManagementService.getAll(key)));
 		return response;
 	}
 	
@@ -74,12 +63,7 @@ public class KeyValueManagementService {
 	public ResponseForm<KeyForm> delete(String key) throws Exception{
 		ResponseForm<KeyForm> response =  new ResponseForm<KeyForm>();
 		response.setStatus(true);
-		List<ValueForm> valueForms = valueMapper.unmarshall(valueManagementService.getAll(key));
-		for(ValueForm valueForm : valueForms) {
-			valueManagementService.delete(Long.valueOf(valueForm.getId()));
-		}
 		keyManagementService.delete(key);
-		
 		return response;
 	}
 }

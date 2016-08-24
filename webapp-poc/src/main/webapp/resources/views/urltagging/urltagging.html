@@ -12,11 +12,16 @@
 				    </md-button>
 				</md-data-table-toolbar> -->
 				<md-data-table-toolbar class="toolbar-with-fab"  layout="row" >
-				    <md-input-container class="md-block" flex>
-						<label>Search</label> <input 
-							ng-model="urlTable.searchValue" >
-							<md-icon class="j-cursor-pointer" ng-click="urlTable.search()">search</md-icon>
-					</md-input-container>
+					<form name="searchForm" layout="row" flex>
+					    <md-input-container class="md-block" flex>
+							<label>Search</label> <input name="searchValue" required
+								ng-model="urlTable.searchValue" >
+								  <div ng-messages="searchForm.searchValue.$error">
+							          <div ng-message="required">This is required.</div>
+						          </div>
+								<md-icon class="j-cursor-pointer"  ng-click="urlTable.search(searchForm)">search</md-icon>
+						</md-input-container>
+					</form>
 				</md-data-table-toolbar>
 				<md-table-container>
 					  <table data-md-table data-md-row-select="urlTable.options.rowSelection" multiple="{{urlTable.options.multiSelect}}" data-ng-model="urlTable.selected" >
@@ -74,8 +79,9 @@
 	    </md-button>
     </div>
     <div class="pop-content">
-    	<md-chips ng-model="popOver.items" md-on-remove="valueChip.onRemoveChip($chip, popOver.chip, urlTable.selected)" md-transform-chip="valueChip.onTransformChip($chip, popOver.chip, urlTable.selected)"  md-require-match="false">
+    	<md-chips ng-model="popOver.items" md-on-remove="valueChip.onRemoveChip($chip, popOver.chip, urlTable.selected)" md-transform-chip="valueChip.onTransformChip($chip, popOver.chip, urlTable.selected)"  md-require-match="valueChip.autoComplete.items.length > 0">
     		<md-autocomplete 
+    		   ng-disabled="showLoading"
                md-autofocus="false"
                md-no-cache="true" 
                md-min-length="0" 

@@ -21,7 +21,8 @@ public class KeyModel extends PaginationQuery implements Serializable {
 	@PhoenixColumn(type="VARCHAR(100)")
 	protected String tKey;
 	
-	protected List<ValueModel> values = new ArrayList<>();
+	@PhoenixColumn(type="VARCHAR(100)")
+	protected String tValues;
 	
 	public String gettKey() {
 		return tKey;
@@ -29,12 +30,13 @@ public class KeyModel extends PaginationQuery implements Serializable {
 	public void settKey(String tKey) {
 		this.tKey = tKey;
 	}
-	public List<ValueModel> getValues() {
-		return values;
+	public String gettValues() {
+		return tValues;
 	}
-	public void setValues(List<ValueModel> values) {
-		this.values = values;
+	public void settValues(String tValues) {
+		this.tValues = tValues;
 	}
+	
 	
 	
 }

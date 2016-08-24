@@ -33,8 +33,8 @@ angular.module('fingerPrintApp')
            return $http.post('keymanagement/save', key).then(handleSuccess, handleError('Error creating user'));
        },
 
-       remove: function(id) {
-           return $http.delete('keymanagement/delete?id=' + id).then(handleSuccess, handleError('Error deleting user'));
+       remove: function(key) {
+           return $http.delete('keymanagement/delete?key=' + key).then(handleSuccess, handleError('Error deleting user'));
        }
        
    }
