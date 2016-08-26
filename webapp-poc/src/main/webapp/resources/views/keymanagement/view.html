@@ -19,7 +19,7 @@
 				    <md-input-container class="md-block" flex>
 						<label>Search</label> <input 
 							ng-model="searchValue" >
-							<md-icon ng-click="search = false; searchValue='' ">close</md-icon>
+							<md-icon class="j-cursor-pointer" ng-click="search = false; searchValue='' ">close</md-icon>
 					</md-input-container>
 				</md-data-table-toolbar>
 				 <md-list layout="column" layout-padding  infinite-scroll='keymanagementInfiniteScroll.nextPage()' infinite-scroll-disabled='keymanagementInfiniteScroll.busy' infinite-scroll-distance='0.6'>

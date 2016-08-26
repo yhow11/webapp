@@ -6,10 +6,10 @@ import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixID;
 import helper.phoenix.annotation.entity.PhoenixTable;
 import helper.phoenix.annotation.query.PhoenixDistinctColumn;
-import helper.phoenix.object.PaginationQuery;
+import helper.phoenix.object.QueryHelperParam;
 
 @PhoenixTable(table="webEvent")
-public class WebEventGroupByURLModel extends PaginationQuery implements Serializable {
+public class WebEventGroupByURLModel extends QueryHelperParam implements Serializable {
 	/**
 	 * 
 	 */

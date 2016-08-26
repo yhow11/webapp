@@ -6,10 +6,10 @@ import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixID;
 import helper.phoenix.annotation.entity.PhoenixSequence;
 import helper.phoenix.annotation.entity.PhoenixTable;
-import helper.phoenix.object.PaginationQuery;
+import helper.phoenix.object.QueryHelperParam;
 
 @PhoenixTable(table="visitorLog")
-public class VisitorLogModel extends PaginationQuery implements Serializable{
+public class VisitorLogModel extends QueryHelperParam implements Serializable{
 	/**
 	 * 
 	 */

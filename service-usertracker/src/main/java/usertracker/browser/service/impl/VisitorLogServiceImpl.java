@@ -40,6 +40,18 @@ public class VisitorLogServiceImpl implements VisitorLogService {
 	public List<VisitorLogModel> getAll(Long start, Long end) throws Exception {
 		// TODO Auto-generated method stub
 		VisitorLogModel paramModel = new VisitorLogModel();
+		paramModel.setOffset(start);
+		paramModel.setLimit(end);
+		List<VisitorLogModel> visitorLog = phoenixDaoImpl.search(VisitorLogModel.class, paramModel);
+		return visitorLog;
+	}
+
+	@Override
+	public List<VisitorLogModel> getAll(Long start, Long end, boolean desc) throws Exception {
+		// TODO Auto-generated method stub
+		VisitorLogModel paramModel = new VisitorLogModel();
+		paramModel.setOffset(start);
+		paramModel.setLimit(end);
 		List<VisitorLogModel> visitorLog = phoenixDaoImpl.search(VisitorLogModel.class, paramModel);
 		return visitorLog;
 	}

@@ -13,4 +13,5 @@ public interface VisitorLogService {
 	public void delete(Long id)  throws Exception; 
 	public VisitorLogModel get(Long id)  throws Exception; 
 	public List<VisitorLogModel> getAll(Long start, Long end)  throws Exception; 
+	public List<VisitorLogModel> getAll(Long start, Long end, boolean desc)  throws Exception;
 }

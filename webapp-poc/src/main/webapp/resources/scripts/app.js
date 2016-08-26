@@ -121,10 +121,10 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-													         		'resources/scripts/services/keymanagementService.js',
-													         		'resources/scripts/directives/validations/validvalueDirective.js',
-																	'resources/scripts/directives/validations/validkeyDirective.js',
-																	'resources/scripts/controllers/addnewController.js'
+													         		'resources/scripts/services/keymanagement/keymanagementService.js',
+													         		'resources/scripts/directives/keymanagement/validations/validvalueDirective.js',
+																	'resources/scripts/directives/keymanagement/validations/validkeyDirective.js',
+																	'resources/scripts/controllers/keymanagement/addnewController.js'
 
 															]
 														})
@@ -145,9 +145,9 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-														         	'resources/scripts/services/keymanagementService.js',
-																	'resources/scripts/services/keymanagementInfiniteScroll.js',
-																	'resources/scripts/controllers/viewController.js',
+														         	'resources/scripts/services/keymanagement/keymanagementService.js',
+																	'resources/scripts/services/keymanagement/keymanagementInfiniteScroll.js',
+																	'resources/scripts/controllers/keymanagement/viewController.js',
 
 															]
 														})
@@ -156,11 +156,19 @@ angular
 
 									})
 									.state(
-									'urltagging',
+									'urlmanagement',
 									{
-										url : '/urltagging',
+										abstract: true,
+										template : '<ui-view  ></ui-view>',
+										url : '/urlmanagement'
+
+									})
+									.state(
+									'urlmanagement.urltagging',
+									{
+										url : 'urlmanagement/urltagging',
 										controller : 'URLTaggingController',
-										templateUrl : 'resources/views/urltagging/urltagging.html',
+										templateUrl : 'resources/views/urlmanagement/tagging.html',
 										resolve : {
 											loadMyFiles : function(
 													$ocLazyLoad) {
@@ -168,11 +176,31 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-														         	'resources/scripts/services/valuemanagementService.js',
-														         	'resources/scripts/services/keymanagementService.js',
-														         	'resources/scripts/services/urlTaggingService.js',
-																	'resources/scripts/controllers/urltaggingController.js',
+														         	'resources/scripts/services/keymanagement/keymanagementService.js',
+														         	'resources/scripts/services/urlmanagement/URLTaggingService.js',
+																	'resources/scripts/controllers/urlmanagement/URLTaggingController.js',
 
+															]
+														})
+											}
+										}
+
+									})
+									.state(
+									'urlmanagement.urlimport',
+									{
+										url : 'urlmanagement/urlimport',
+										controller : 'ImportURLController',
+										templateUrl : 'resources/views/urlmanagement/import.html',
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+														         	'resources/scripts/services/urlmanagement/importURLService.js',
+															         'resources/scripts/controllers/urlmanagement/importURLController.js',
 															]
 														})
 											}
@@ -193,8 +221,9 @@ angular
 																	name : 'fingerPrintApp',
 																	files : [
 																			'resources/scripts/services/eventService.js',
-																			'resources/scripts/services/infiniteScroll.js',
-																			'resources/scripts/controllers/monitoringController.js',
+																			'resources/scripts/services/monitoring/monitoringService.js',
+																			'resources/scripts/services/monitoring/monitoringInfiniteScroll.js',
+																			'resources/scripts/controllers/monitoring/monitoringController.js',
 
 																	]
 																})

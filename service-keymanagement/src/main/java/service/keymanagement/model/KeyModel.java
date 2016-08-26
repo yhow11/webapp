@@ -7,10 +7,10 @@ import java.util.List;
 import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixID;
 import helper.phoenix.annotation.entity.PhoenixTable;
-import helper.phoenix.object.PaginationQuery;
+import helper.phoenix.object.QueryHelperParam;
 
 @PhoenixTable(table="keyTable")
-public class KeyModel extends PaginationQuery implements Serializable {
+public class KeyModel extends QueryHelperParam implements Serializable {
 
 	/**
 	 * 

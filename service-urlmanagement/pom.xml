@@ -27,7 +27,7 @@
 	</dependency>
 	<dependency>
 		<groupId>com.jofel</groupId>
-		<artifactId>service-keymanagement</artifactId>
+		<artifactId>helper-jaxb</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</dependency>
   </dependencies>

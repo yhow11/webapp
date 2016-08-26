@@ -13,16 +13,17 @@ import com.fingerprint.keymanagement.service.KeyValueManagementService;
 import com.fingerprint.management.service.JUserService;
 import com.fingerprint.management.service.impl.UserDetailsServiceImpl;
 import com.fingerprint.management.service.impl.UserServiceImpl;
-import com.fingerprint.urltagging.service.URLTaggingService;
-import com.fingerprint.urltagging.service.impl.URLTaggingServiceImpl;
+import com.fingerprint.urlmanagement.service.URLManagementService;
 import com.fingerprint.util.service.impl.KafkaService;
 
 import service.keymanagement.KeyManagementService;
-import service.keymanagement.ValueManagementService;
 import service.keymanagement.impl.KeyManagementServiceImpl;
-import service.keymanagement.impl.ValueManagementServiceImpl;
-import service.urlmanagement.URLManagementService;
-import service.urlmanagement.impl.URLManagementServiceImpl;
+import service.urlmanagement.URLService;
+import service.urlmanagement.impl.URLImportServiceImpl;
+import service.urlmanagement.impl.URLSiteMapServiceImpl;
+import service.urlmanagement.impl.URLTaggedServiceImpl;
+import service.urlmanagement.model.URLImportModel;
+import service.urlmanagement.model.URLTaggedModel;
 import usertracker.browser.service.AnonymousVisitorService;
 import usertracker.browser.service.BrowserFPService;
 import usertracker.browser.service.DeviceFPService;
@@ -113,22 +114,27 @@ public class ServiceContext {
 	}
 	
 	@Bean
-	public ValueManagementService valueManagementService() throws Exception {
-		return new ValueManagementServiceImpl(context.phoenixDaoImpl());
+	public KeyValueManagementService keyValueManagementService() throws Exception {
+		return new KeyValueManagementService(mapperContext.keyMapper(), mapperContext.valueMapper(), keyManagementService());
 	}
 	
 	@Bean
-	public KeyValueManagementService keyValueManagementService() throws Exception {
-		return new KeyValueManagementService(mapperContext.keyMapper(), mapperContext.valueMapper(), keyManagementService(), valueManagementService());
+	public URLService<URLImportModel> URLImportService() throws Exception {
+		return new URLImportServiceImpl(context.phoenixDaoImpl());
+	}
+	
+	@Bean
+	public URLService<URLTaggedModel> URLTaggedService() throws Exception {
+		return new URLTaggedServiceImpl(context.phoenixDaoImpl());
+	}
+	
+	@Bean
+	public URLService<URLImportModel> URLSiteMapService() throws Exception {
+		return new URLSiteMapServiceImpl(context.jaxbDao());
 	}
 	
 	@Bean
 	public URLManagementService URLManagementService() throws Exception {
-		return new URLManagementServiceImpl(context.phoenixDaoImpl());
-	}
-	
-	@Bean
-	public URLTaggingService URLTaggingService() throws Exception {
-		return new URLTaggingServiceImpl(URLManagementService(), valueManagementService(), webEventService(), mapperContext.valueMapper());
+		return new URLManagementService(URLImportService(), URLTaggedService(), URLSiteMapService());
 	}
 }

@@ -125,10 +125,25 @@
 	              	 </md-menu>
 	              </md-menu-item>
 	              <md-menu-divider></md-menu-divider>
-	              <md-menu-item>
-	                <md-button ui-sref="urltagging">
-	                  Url Tagging
-	                </md-button>
+	              <md-menu-item >
+	              	 <md-menu>
+	              	 	<md-button  ng-click="$mdOpenMenu()">
+				               URL Management
+			            </md-button >
+		                 <md-menu-content>
+			              <md-menu-item>
+			                <md-button ui-sref="urlmanagement.urltagging">
+			                   Tag
+			                </md-button>
+			              </md-menu-item>
+			              <md-menu-divider></md-menu-divider>
+			              <md-menu-item>
+			                <md-button ui-sref="urlmanagement.urlimport">
+			                   Import
+			                </md-button>
+			              </md-menu-item>
+			            </md-menu-content>
+	              	 </md-menu>
 	              </md-menu-item>
 	            </md-menu-content>
 	          </md-menu>

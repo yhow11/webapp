@@ -1,0 +1,43 @@
+<div layout="row" layout-align="center">
+	<md-card flex="100" flex-gt-sm="90">
+		<md-data-table-toolbar class="toolbar-with-fab" layout="row" layout-margin>
+		    <span class="md-subhead" flex="80" flex-gt-sm="95"><md-icon >archive</md-icon> &nbsp  Import URL</span> 
+		</md-data-table-toolbar>
+		 <md-card-content layout="column" >
+				<md-data-table-toolbar class="toolbar-with-fab"  layout="row" >
+					<form name="sitemapURLForm" layout="row" flex>
+					    <md-input-container class="md-block" flex>
+							<label>SiteMap URL</label> <input name="sitemapURL" required
+								ng-model="urlTable.sitemapURL" >
+								  <div ng-messages="sitemapURLForm.sitemapURL.$error">
+							          <div ng-message="required">This is required.</div>
+						          </div>
+								<md-icon class="j-cursor-pointer md-primary"  ng-click="urlTable.get(sitemapURLForm)">send</md-icon>
+						</md-input-container>
+					</form>
+				</md-data-table-toolbar>
+				<md-table-container>
+					  <table data-md-table data-md-row-select="urlTable.options.rowSelection" multiple="{{urlTable.options.multiSelect}}" data-ng-model="urlTable.items" >
+					    <thead md-head>
+					      <tr md-row>
+					        <th md-column ><span>URL</span></th>
+					      </tr>
+					    </thead>
+					    <tbody md-body>
+					      <tr md-row md-select="item" md-select-id="id"  data-ng-repeat="item in urlTable.items" >
+					        <td md-cell layout="row" layout-align="left center">
+					        	<span>{{item.url}}</span>
+				        	</td>
+					      </tr>
+					    </tbody>
+					  </table>
+				</md-table-container>
+        </md-card-content>
+        <div layout layout-align="center" style="padding-bottom:25px">
+        	 <md-button aria-label="Save" ng-click="urlTable.save(urlTable.items)" ng-disabled="showLoading" class="md-raised md-primary" flex="20" flex-gt-sm="10">
+		          <md-icon md-svg-icon="resources/img/icons/save.svg" ></md-icon> Save
+		     </md-button>
+        </div>
+	</md-card>
+</div>
+

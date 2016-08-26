@@ -1,28 +1,22 @@
 package com.fingerprint.keymanagement.service;
 
-import java.util.List;
-
 import com.fingerprint.keymanagement.mapper.KeyMapper;
 import com.fingerprint.keymanagement.mapper.ValueMapper;
 import com.fingerprint.keymanagement.object.KeyForm;
-import com.fingerprint.keymanagement.object.ValueForm;
 import com.fingerprint.object.ResponseForm;
 
 import service.keymanagement.KeyManagementService;
-import service.keymanagement.ValueManagementService;
 
 public class KeyValueManagementService {
 
 	private KeyMapper keyMapper;
 	private ValueMapper valueMapper;
 	private KeyManagementService keyManagementService;
-	private ValueManagementService valueManagementService;
-	public KeyValueManagementService(KeyMapper keyMapper, ValueMapper valueMapper, KeyManagementService keyManagementService, ValueManagementService valueManagementService) {
+	public KeyValueManagementService(KeyMapper keyMapper, ValueMapper valueMapper, KeyManagementService keyManagementService) {
 		// TODO Auto-generated constructor stub
 		this.keyMapper = keyMapper;
 		this.valueMapper = valueMapper;
 		this.keyManagementService = keyManagementService;
-		this.valueManagementService = valueManagementService;
 		
 	}
 	
