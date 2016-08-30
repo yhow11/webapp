@@ -8,6 +8,11 @@ angular.module('fingerPrintApp').controller(
 		'URLTaggingController',
 		function($rootScope, $scope, $q,  $timeout, $mdDialog, $mdMedia, urlTaggingService, keymanagementService) {
 		
+			
+			$scope.$on('show-popover', function(event, args) {
+				$scope.popOver.showPopoverManual(args.data.x, args.data.y, args.data.chip);
+			});
+			
 			  //POPOVER
 			  $scope.popOver = {
 					  position: {
@@ -17,6 +22,24 @@ angular.module('fingerPrintApp').controller(
 					  items: [],
 					  display: false,
 					  lastKey: null,
+					  showPopoverManual: function(x, y, chip) {
+						   if(chip.key != $scope.lastKey){
+							   $scope.lastKey = chip.key;
+							   keymanagementService.getAll(chip.key).then(function(data){
+								   if(data.data.status){
+									   $scope.valueChip.autoComplete.items = data.data.data[0].values;
+								   }
+							   });
+						   }
+						   x += 50;
+						   $scope.popOver.chip = angular.copy(chip);
+						   chip.values = chip.values? chip.values : [];
+						   $scope.popOver.items = chip.values;
+					       $scope.popOver.position.left = x + 'px';
+					       $scope.popOver.position.top = y+ 'px';
+					       $scope.popOver.display = true;
+					       $scope.popOver.hover = true;
+					  } ,
 					  showPopover: function(mouseEvent, chip, keys) {
 						   for(var index in keys){
 							   var item = keys[index];
@@ -28,6 +51,7 @@ angular.module('fingerPrintApp').controller(
 									   keymanagementService.getAll(item.key).then(function(data){
 										   if(data.data.status){
 											   $scope.valueChip.autoComplete.items = data.data.data[0].values;
+											   $scope.valueChip.options.autofocus = true;
 										   }
 									   });
 								   }
@@ -44,6 +68,7 @@ angular.module('fingerPrintApp').controller(
 					      $scope.popOver.position.left = mouseEvent.pageX + 'px';
 					      $scope.popOver.position.top = mouseEvent.pageY+ 'px';
 					      $scope.popOver.display = true;
+					      $scope.popOver.hover = false;
 					  }  
 			  }
 			  
@@ -73,6 +98,8 @@ angular.module('fingerPrintApp').controller(
 			      $scope.customFullscreen = (wantsFullScreen === true);
 			    });
 			  };
+			  
+			 //UUID 
 			  $scope.uuid =  function() {
 				            function _p8(s) {
 				                var p = (Math.random().toString(5)+"000000000").substr(2,8);
@@ -80,6 +107,7 @@ angular.module('fingerPrintApp').controller(
 				            }
 				            return _p8() ;
 			  }
+			  
 			//KEY CHIPS  
 			$scope.keyChip = {
 					autoComplete: {
@@ -89,11 +117,20 @@ angular.module('fingerPrintApp').controller(
 						var copy = angular.copy(chip);
 						copy.values = [];
 						if(selected.length > 0){
+							var proceed = true;
 							for(var index in selected){
 								var select = selected[index];
+								if(proceed){
+									copy.popupDisplay = true;
+									proceed = false;
+								} else {
+									copy.popupDisplay = false;
+								}
 								$scope.keyChip.fillUniqueObject(copy, select.keys);
+							
 							}
 						} else {
+							copy.popupDisplay = true;
 							return copy;
 						}
 						
@@ -141,6 +178,9 @@ angular.module('fingerPrintApp').controller(
 			
 			//VALUE CHIPS  
 			$scope.valueChip = {
+					options: {
+						autofocus: true
+					},
 					autoComplete: {
 						items: []
 					},

@@ -38,11 +38,16 @@ angular
 							ChartJsProvider.setOptions('Doughnut', {
 								animateScale : true
 							});
-
+							$mdThemingProvider.theme('tooltiptheme').primaryPalette(
+							'red').dark().foregroundPalette['3'] = "white";
 							$mdThemingProvider.theme('default').primaryPalette(
-									'blue').accentPalette('red')
-									.backgroundPalette('grey');
+							'blue');
+							
+					        
 
+							
+							$mdThemingProvider.setDefaultTheme('default');
+							
 							$ocLazyLoadProvider.config({
 								debug : false,
 								events : true,
@@ -176,6 +181,8 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
+														         	'resources/scripts/directives/urlmanagement/mdAutocompleteDirective.js',
+														         	'resources/scripts/directives/urlmanagement/mdChipDirective.js',
 														         	'resources/scripts/services/keymanagement/keymanagementService.js',
 														         	'resources/scripts/services/urlmanagement/URLTaggingService.js',
 																	'resources/scripts/controllers/urlmanagement/URLTaggingController.js',

@@ -32,9 +32,10 @@ public class URLManagementService {
 		// TODO Auto-generated method stub
 		ResponsePaginationForm<URLForm> response = new ResponsePaginationForm<>();
 		response.setCount(URLImportService.getCount("%"+url+"%"));
-		Long end = (Long.valueOf(limit)+1)*Long.valueOf(page);
-		Long start = (end-(Long.valueOf(limit)+1));
-		List<URLImportModel> urlImportModels = URLImportService.getAll("%"+url+"%", start, end);
+		Long limitNum = (Long.valueOf(limit)+1);
+		Long end = limitNum*Long.valueOf(page);
+		Long start = (end-limitNum);
+		List<URLImportModel> urlImportModels = URLImportService.getAll("%"+url+"%", start, limitNum);
 	    List<URLForm> urls = new ArrayList<>();
 	    for(URLImportModel urlImportModel: urlImportModels) {
 	    	URLForm form = new URLForm();

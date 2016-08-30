@@ -51,7 +51,7 @@
 	
 </head>
 
-<body ng-app="fingerPrintApp"  ng-cloak class="j-fill-grey ">
+<body ng-app="fingerPrintApp"  ng-cloak class="j-fill-grey " >
 
 
 		<!-- <md-grid-list md-cols="20" md-row-height="80px">
@@ -151,95 +151,9 @@
 	      </div>
 	    </div>
   </md-toolbar>
-	<!-- 	 <md-toolbar class="md-primary">
-		      <div class="md-toolbar-tools md-whiteframe-z1">
-		      	<md-button class="md-icon-button " aria-label="Home" ng-click="iconate(options)"><i id="icon" class="fa  fa-bars fa-1x j-color-white"></i></md-button>
-
-		        <span flex></span>
-		        <md-button ui-sref="home" class="md-icon-button md-background" aria-label="Home">
-		          <md-icon md-svg-icon="resources/img/icons/home.svg"></md-icon>
-		        </md-button>
-		        <md-button ui-sref="test" class="md-icon-button" aria-label="Testing Section">
-		          <md-icon md-svg-icon="resources/img/icons/test.svg"></md-icon>
-		        </md-button>
-		        <md-button ui-sref="profile" class="md-icon-button" aria-label="Profile">
-		          <md-icon md-svg-icon="resources/img/icons/fingerprint.svg"></md-icon>
-		          </md-button>
-		        <md-button ui-sref="monitoring" class="md-icon-button" aria-label="Monitoring">
-		          <md-icon md-svg-icon="resources/img/icons/monitor.svg"></md-icon>
-		        </md-button>
-		      </div>
-		    </md-toolbar> -->
-		    <md-progress-linear class="md-warn" md-mode="determinate" ng-show="showLoading" value="{{determinateValue}}"></md-progress-linear>
-		    <div ui-view ></div>
-	    <!-- <section layout="column" layout-fill>
-	    	<md-toolbar flex>
-		      <div class="md-toolbar-tools">
-		      	<span flex></span>
-		        <md-button class="md-icon-button" aria-label="Home">
-		          <md-icon md-svg-icon="resources/img/icons/home.svg" style="color: white;"></md-icon>
-		        </md-button>
-		        <md-button class="md-icon-button" aria-label="Encoding">
-		          <md-icon md-svg-icon="resources/img/icons/encoding.svg" style="color: white;"></md-icon>
-		        </md-button>
-		        <md-button class="md-icon-button" aria-label="Reports">
-		          <md-icon md-svg-icon="resources/img/icons/reports.svg" style="color: white;"></md-icon>
-		        </md-button>
-		      </div>
-		    </md-toolbar>
-	    	
-		    
-	    </section> -->
+   <md-progress-linear class="md-warn" md-mode="determinate" ng-show="showLoading" value="{{determinateValue}}"></md-progress-linear>
+   <div ui-view ></div>
 	   
-		<!-- <md-toolbar class="md-background">
-		      <div class="md-toolbar-tools">
-		        	<md-fab-speed-dial md-open=false md-direction="right"
-	                       class="md-fling">
-				        <md-fab-trigger>
-				          <md-button aria-label="menu" class="md-fab md-primary">
-				            <md-icon md-svg-src="resources/img/icons/menu.svg"></md-icon>
-				          </md-button>
-				        </md-fab-trigger>
-				        <md-fab-actions>
-				          <md-button aria-label="Twitter" class="md-fab md-raised md-mini">
-				          	<md-tooltip md-direction="left">
-					          Encoding
-					        </md-tooltip>
-				            <md-icon md-svg-src="resources/img/icons/twitter.svg" aria-label="Twitter"></md-icon>
-				          </md-button>
-				          <md-button aria-label="Facebook" class="md-fab md-raised md-mini">
-				            <md-icon md-svg-src="resources/img/icons/facebook.svg" aria-label="Facebook"></md-icon>
-				          </md-button>
-				          <md-button aria-label="Google Hangout" class="md-fab md-raised md-mini">
-				            <md-icon md-svg-src="resources/img/icons/hangout.svg" aria-label="Google Hangout"></md-icon>
-				          </md-button>
-				        </md-fab-actions>
-			      </md-fab-speed-dial>
-		      </div>
-    	</md-toolbar> --> 
-       <!-- <md-fab-toolbar md-open=false count="0"
-                  md-direction="right">
-	    <md-fab-trigger class="align-with-text">
-	      <md-button aria-label="menu" class="md-fab md-primary">
-	        <md-icon md-svg-src="resources/img/icons/menu.svg"></md-icon>
-	      </md-button>
-	    </md-fab-trigger>
-	    <md-toolbar>
-	      <md-fab-actions class="md-toolbar-tools">
-	        <md-button aria-label="comment" class="md-icon-button md-warn">
-	          <md-icon md-svg-src="img/icons/ic_comment_24px.svg"></md-icon>
-	        </md-button>
-	        <md-button aria-label="label" class="md-icon-button">
-	          <md-icon md-svg-src="img/icons/ic_label_24px.svg"></md-icon>
-	        </md-button>
-	        <md-button aria-label="photo" class="md-icon-button">
-	          <md-icon md-svg-src="img/icons/ic_photo_24px.svg"></md-icon>
-	        </md-button>
-	      </md-fab-actions>
-	    </md-toolbar>
-	  </md-fab-toolbar> -->
-	  
-
 	<script src="resources/vendors/fingerprint/client.min.js"></script>
 	<script src="resources/vendors/jquery/jquery.min.js"></script>
 	<script src="resources/vendors/fingerprint/beaverbird.min.js"></script>

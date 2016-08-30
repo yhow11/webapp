@@ -36,6 +36,7 @@
 					        	<span>{{item.path}}</span>
 						    	<md-chips ng-model="item.keys" md-on-remove="keyChip.onRemoveChip($chip, urlTable.selected)" md-transform-chip="keyChip.onTransformChip($chip, urlTable.selected)">
 						    		<md-autocomplete 
+						    		  class="keyAutoComplete"
 						               md-autofocus="false"
 						               md-no-cache="true" 
 						               md-min-length="0" 
@@ -67,7 +68,7 @@
         </div>
 	</md-card>
 </div>
-<div class="pop-availability" ng-show="popOver.display"
+<md-card  md-theme="tooltiptheme" class="pop-availability" ng-show="popOver.display"
            ng-style="{left:popOver.position.left,
                        top:popOver.position.top}" > 
     <div layout="row" layout-align="center center">
@@ -78,11 +79,12 @@
 	      <md-icon style="color: white;">close</md-icon>
 	    </md-button>
     </div>
-    <div class="pop-content">
-    	<md-chips ng-model="popOver.items" md-on-remove="valueChip.onRemoveChip($chip, popOver.chip, urlTable.selected)" md-transform-chip="valueChip.onTransformChip($chip, popOver.chip, urlTable.selected)"  md-require-match="valueChip.autoComplete.items.length > 0">
+    <div class="pop-content"  layout layout-padding>
+    	<p ng-if="showLoading && popOver.display">Please wait..</p>
+    	<md-chips ng-if="!showLoading  && popOver.display" flex ng-model="popOver.items" md-on-remove="valueChip.onRemoveChip($chip, popOver.chip, urlTable.selected)" md-transform-chip="valueChip.onTransformChip($chip, popOver.chip, urlTable.selected)"  md-require-match="valueChip.autoComplete.items.length > 0">
     		<md-autocomplete 
-    		   ng-disabled="showLoading"
-               md-autofocus="false"
+    		   class="placeholder-white"
+               md-autofocus="popOver.hover"
                md-no-cache="true" 
                md-min-length="0" 
                md-selected-item="item.selected" 
@@ -101,5 +103,5 @@
    	    <!-- <md-chips ng-model="popOver.items" >
    		</md-chips> -->
     </div>
-</div>
+</md-card>
 

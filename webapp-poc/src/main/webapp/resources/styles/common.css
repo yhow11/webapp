@@ -183,7 +183,7 @@ md-tooltip ._md-content {
 	border-radius: 4px;
 	font-weight: 500;
 	font-size: 14px;
-	background-color: rgba(0,0,0,0.54);
-	opacity: 1;
-	color: white;
+}
+.pop-availability md-chips.md-tooltiptheme-theme .md-chips, md-chips .md-chips {
+    box-shadow: 0 2px white;
 }
