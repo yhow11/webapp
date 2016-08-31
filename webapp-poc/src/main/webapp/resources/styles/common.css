@@ -187,3 +187,9 @@ md-tooltip ._md-content {
 .pop-availability md-chips.md-tooltiptheme-theme .md-chips, md-chips .md-chips {
     box-shadow: 0 2px white;
 }
+.position-fix-left-bottom {
+  position:fixed;
+  right:48px;
+  bottom: 48px;
+  z-index: 2;
+}

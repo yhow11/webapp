@@ -11,6 +11,9 @@ angular.module('fingerPrintApp').controller(
 					save: function(items){
 						importURLService.save(items).then(function(data){
 							if(data.data.status){
+								$scope.sitemapURLForm.$setPristine();
+								$scope.sitemapURLForm.$setUntouched();
+								$scope.urlTable.sitemapURL = '';
 								$scope.urlTable.items = [];
 								$rootScope.toast("Success!", "md-primary");
 							}

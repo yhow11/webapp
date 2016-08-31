@@ -33,11 +33,8 @@
 					  </table>
 				</md-table-container>
         </md-card-content>
-        <div layout layout-align="center" style="padding-bottom:25px">
-        	 <md-button aria-label="Save" ng-click="urlTable.save(urlTable.items)" ng-disabled="showLoading" class="md-raised md-primary" flex="20" flex-gt-sm="10">
-		          <md-icon md-svg-icon="resources/img/icons/save.svg" ></md-icon> Save
-		     </md-button>
-        </div>
 	</md-card>
 </div>
-
+<md-button aria-label="Save" ng-click="urlTable.save(urlTable.items)" ng-hide="urlTable.items.length == 0" ng-disabled="showLoading" class="md-fab md-accent position-fix-left-bottom" flex="20" flex-gt-sm="10">
+      <md-icon md-svg-icon="resources/img/icons/save.svg" ></md-icon>
+ </md-button>
