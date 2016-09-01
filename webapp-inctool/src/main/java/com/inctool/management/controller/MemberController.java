@@ -28,7 +28,7 @@ public class MemberController {
     public @ResponseBody ResponseForm<MemberForm> getAll() throws Exception {
        
         ResponseForm<MemberForm> response = new ResponseForm<MemberForm>();
-        response.setData(memberService.findAll());
+        response.setData(memberService.getAll());
         response.setMessage("SUCCESS");
         response.setStatus(true);
         return response;
@@ -39,7 +39,7 @@ public class MemberController {
         ResponseForm<MemberForm> response = new ResponseForm<MemberForm>();
         if(id != null && id != "") {
         	List<MemberForm> memberForms = new ArrayList<>();
-        	MemberForm memberForm = memberService.findOne(id);
+        	MemberForm memberForm = memberService.get(id);
         	memberForms.add(memberForm);
         	response.setData(memberForms);
         } else {

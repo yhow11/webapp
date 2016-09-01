@@ -14,19 +14,14 @@
 	href="resources/vendors/angularjs/angular-material/angular-material.min.css">
 <link rel="stylesheet"
 	href="resources/vendors/angularjs/angular-md-data-table/md-data-table.min.css">
-	<link rel="stylesheet"
+<link rel="stylesheet"
 	href="resources/vendors/fontawesome/font-awesome.min.css">
 <link rel="stylesheet"
 	href="resources/vendors/angularjs/angular-chart.js/angular-chart.css">
-<link rel="stylesheet"
-	href="resources/vendors/iconate/iconate.min.css">
-<link rel="stylesheet"
-	href="resources/vendors/nspopover/nsPopover.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        rel="stylesheet">
-<link rel="stylesheet"
-	href="resources/styles/common.css">
-	 <script type="text/javascript">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link rel="stylesheet" href="resources/styles/common.css">
+<script type="text/javascript">
 	/* (function() {
 		var didInit = false;
 		function initMunchkin() {
@@ -47,14 +42,14 @@
 		s.onload = initMunchkin;
 		document.getElementsByTagName('head')[0].appendChild(s);
 	})(); */
-	</script>
-	
+</script>
+
 </head>
 
-<body ng-app="fingerPrintApp"  ng-cloak class="j-fill-grey " >
+<body ng-app="fingerPrintApp" ng-cloak class="j-fill-grey ">
 
 
-		<!-- <md-grid-list md-cols="20" md-row-height="80px">
+	<!-- <md-grid-list md-cols="20" md-row-height="80px">
 		  <md-grid-tile md-colspan="16" md-rowspan="1" class="j-fill-green">
 		  	
 		  </md-grid-tile>
@@ -64,101 +59,49 @@
 		  <md-grid-tile md-colspan="2" md-rowspan="1" class="j-fill-red">
 		  </md-grid-tile>
 		</md-grid-list> -->
-		
+
 	<md-toolbar class="md-menu-toolbar">
-	    <div layout="row">
-	      <md-toolbar-filler layout layout-align="center center">
-	        <md-button ui-sref="home" class="md-icon-button md-background" aria-label="Home">
-	          <md-icon md-svg-icon="resources/img/icons/home.svg"></md-icon>
-	        </md-button>
-	      </md-toolbar-filler>
-	      <div>
-	        <h2 class="md-toolbar-tools">Nurture Retargeting Tool</h2>
-	        <md-menu-bar>
-	          <md-menu>
-	            <button ng-click="$mdOpenMenu()">
-	              Demo
-	            </button>
-	            <md-menu-content>
-	              <md-menu-item>
-	                <md-button ui-sref="test"  aria-label="Testing Section">
-			          User Tracking Demo
-			        </md-button>
-	              </md-menu-item>
-	              <md-menu-divider></md-menu-divider>
-	              <md-menu-item>
-	                 <md-button ui-sref="profile" aria-label="Profile">
-			          User Profile Demo
-			         </md-button>
-	              </md-menu-item>
-	            </md-menu-content>
-	          </md-menu>
-	          <md-menu>
-	            <button ng-click="$mdOpenMenu()">
-	              Admin
-	            </button>
-	            <md-menu-content>
-	              <md-menu-item>
-	                <md-button ui-sref="monitoring" aria-label="Profile">
-	                  History
-	                </md-button>
-	              </md-menu-item>
-	              <md-menu-divider></md-menu-divider>
-	              <md-menu-item >
-	              	 <md-menu>
-	              	 	<md-button  ng-click="$mdOpenMenu()">
-				               Key Management
-			            </md-button >
-		                 <md-menu-content>
-			              <md-menu-item>
-			                <md-button ui-sref="keymanagement.addnew" aria-label="Profile">
-			                  Add New
-			                </md-button>
-			              </md-menu-item>
-			              <md-menu-divider></md-menu-divider>
-			              <md-menu-item>
-			                <md-button ui-sref="keymanagement.view">
-			                  View
-			                </md-button>
-			              </md-menu-item>
-			            </md-menu-content>
-	              	 </md-menu>
-	              </md-menu-item>
-	              <md-menu-divider></md-menu-divider>
-	              <md-menu-item >
-	              	 <md-menu>
-	              	 	<md-button  ng-click="$mdOpenMenu()">
-				               URL Management
-			            </md-button >
-		                 <md-menu-content>
-			              <md-menu-item>
-			                <md-button ui-sref="urlmanagement.urltagging">
-			                   Tag
-			                </md-button>
-			              </md-menu-item>
-			              <md-menu-divider></md-menu-divider>
-			              <md-menu-item>
-			                <md-button ui-sref="urlmanagement.urlimport">
-			                   Import
-			                </md-button>
-			              </md-menu-item>
-			            </md-menu-content>
-	              	 </md-menu>
-	              </md-menu-item>
-	            </md-menu-content>
-	          </md-menu>
-	        </md-menu-bar>
-	      </div>
-	    </div>
-  </md-toolbar>
-   <md-progress-linear class="md-warn" md-mode="determinate" ng-show="showLoading" value="{{determinateValue}}"></md-progress-linear>
-   <div ui-view ></div>
-	   
-	<script src="resources/vendors/fingerprint/client.min.js"></script>
+	<div layout="row">
+		<md-toolbar-filler layout layout-align="center center">
+		<md-button ui-sref="home" class="md-icon-button md-background"
+			aria-label="Home"> <md-icon
+			md-svg-icon="resources/img/icons/home.svg"></md-icon> </md-button> </md-toolbar-filler>
+		<div>
+			<h2 class="md-toolbar-tools">Nurture Retargeting Tool</h2>
+			<md-menu-bar> <md-menu>
+			<button ng-click="$mdOpenMenu()">Demo</button>
+			<md-menu-content> <md-menu-item> <md-button
+				ui-sref="test" aria-label="Testing Section"> User
+			Tracking Demo </md-button> </md-menu-item> <md-menu-divider></md-menu-divider> <md-menu-item>
+			<md-button ui-sref="profile" aria-label="Profile"> User
+			Profile Demo </md-button> </md-menu-item> </md-menu-content> </md-menu> <md-menu>
+			<button ng-click="$mdOpenMenu()">Admin</button>
+			<md-menu-content> <md-menu-item> <md-button
+				ui-sref="monitoring" aria-label="Profile"> History </md-button> </md-menu-item> <md-menu-divider></md-menu-divider>
+			<md-menu-item> <md-menu> <md-button
+				ng-click="$mdOpenMenu()"> Key Management </md-button> <md-menu-content>
+			<md-menu-item> <md-button
+				ui-sref="keymanagement.addnew" aria-label="Profile"> Add
+			New </md-button> </md-menu-item> <md-menu-divider></md-menu-divider> <md-menu-item>
+			<md-button ui-sref="keymanagement.view"> View </md-button> </md-menu-item> </md-menu-content> </md-menu> </md-menu-item> <md-menu-divider></md-menu-divider>
+			<md-menu-item> <md-menu> <md-button
+				ng-click="$mdOpenMenu()"> URL Management </md-button> <md-menu-content>
+			<md-menu-item> <md-button
+				ui-sref="urlmanagement.urltagging"> Tag </md-button> </md-menu-item> <md-menu-divider></md-menu-divider>
+			<md-menu-item> <md-button
+				ui-sref="urlmanagement.urlimport"> Import </md-button> </md-menu-item> </md-menu-content> </md-menu> </md-menu-item> </md-menu-content> </md-menu> </md-menu-bar>
+		</div>
+	</div>
+	</md-toolbar>
+	<md-progress-linear class="md-warn" md-mode="determinate"
+		ng-show="showLoading" value="{{determinateValue}}"></md-progress-linear>
+	<div ui-view></div>
+
+	<!-- <script src="resources/vendors/fingerprint/client.min.js"></script> -->
 	<script src="resources/vendors/jquery/jquery.min.js"></script>
-	<script src="resources/vendors/fingerprint/beaverbird.min.js"></script>
-		<script src="resources/vendors/crypto/md5.js"></script>
-	
+	<!-- <script src="resources/vendors/fingerprint/beaverbird.min.js"></script> -->
+	<script src="resources/vendors/crypto/md5.js"></script>
+
 	<script src="resources/vendors/angularjs/angular/angular.js"></script>
 	<script
 		src="resources/vendors/angularjs/angular-animate/angular-animate.min.js"></script>
@@ -166,50 +109,55 @@
 		src="resources/vendors/angularjs/angular-aria/angular-aria.min.js"></script>
 	<script
 		src="resources/vendors/angularjs/angular-material/angular-material.min.js"></script>
-		<script
+	<script
 		src="resources/vendors/angularjs/angular-material-icons/angular-material-icons.min.js"></script>
 	<script
 		src="resources/vendors/angularjs/angular-route/angular-route.min.js"></script>
-	<script
-		src="resources/vendors/angularjs/angular-message/messages.js"></script>
-	
-			
+	<script src="resources/vendors/angularjs/angular-message/messages.js"></script>
 	<script
 		src="resources/vendors/angularjs/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script
 		src="resources/vendors/angularjs/angular-md-data-table/md-data-table.min.js"></script>
-		<script
-		src="resources/vendors/angularjs/angularjs-highchart/adapters/standalone-framework.js"></script>
-		<script
-		src="resources/vendors/angularjs/angularjs-highchart/highcharts.js"></script>
-		<script
-		src="resources/vendors/angularjs/angularjs-highchart/modules/exporting.js"></script>
-		<script
-		src="resources/vendors/angularjs/angularjs-highchart/highcharts-more.js"></script>
-		
-	<script
-		src="resources/vendors/angularjs/angularjs-highchart/highcharts-ng.min.js"></script>
 	<script
 		src="resources/vendors/angularjs/angular-storage/ngStorage.min.js"></script>
-	<script
-		src="resources/vendors/angularjs/angular-chart.js/Chart.bundle.min.js"></script>
-		<script
-		src="resources/vendors/angularjs/angular-chart.js/angular-chart.min.js"></script>
-	<script
-		src="resources/vendors/nspopover/nsPopover.js"></script>	
 	<script src="resources/vendors/oclazyload/dist/ocLazyLoad.min.js"></script>
-	<script src="resources/vendors/iconate/iconate.min.js"></script>
-	<script
-		src="resources/vendors/websocket/sockjs.js"></script>
-	<script
-		src="resources/vendors/websocket/stomp.js"></script>
-		<script src="resources/vendors/moment/moment.js"></script>
-	<script src="resources/vendors/fingerprint/fingerprint2.js"></script>
-	<script src="resources/vendors/infinitescroll/ng-infinite-scroll.min.js"></script>
-	<script src="<c:url value="resources/scripts/app.js"/>"></script>
-	<script
-		src="resources/scripts/directives/charts/chart.js"></script>
+	<script src="resources/vendors/websocket/sockjs.js"></script>
 	
+	
+	<script src="resources/vendors/websocket/stomp.js"></script>
+	<script src="resources/vendors/moment/moment.js"></script>
+	<script
+		src="resources/vendors/infinitescroll/ng-infinite-scroll.min.js"></script>
+		
+	<script src="<c:url value="resources/scripts/app.js"/>"></script>
+	<script type="text/javascript">
+		function loadScript(url, callback){
+	
+		    var script = document.createElement("script")
+		    script.type = "text/javascript";
+	
+		    if (script.readyState){  //IE
+		        script.onreadystatechange = function(){
+		            if (script.readyState == "loaded" ||
+		                    script.readyState == "complete"){
+		                script.onreadystatechange = null;
+		                callback();
+		            }
+		        };
+		    } else {  //Others
+		        script.onload = function(){
+		            callback();
+		        };
+		    }
+	
+		    script.src = url;
+		    document.getElementsByTagName("head")[0].appendChild(script);
+		}
+		loadScript("http://localhost:8080/webapp-poc/resources/vendors/fingerprint/fingerprint2.js", function(){
+			FingerPrint.init();
+			console.log("fingerprint tracker has been loaded");
+		});
+	</script>
 </body>
 
 </html>

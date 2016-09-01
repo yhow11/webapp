@@ -12,9 +12,9 @@ var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
 angular
 		.module(
 				'fingerPrintApp',
-				[ 'chart.js', 'oc.lazyLoad', 'ui.router', 'ngStorage',
+				[ 'oc.lazyLoad', 'ui.router', 'ngStorage',
 						'md.data.table', 'ngMaterial', 'ngMessages',
-						'ngMdIcons', 'highcharts-ng', 'infinite-scroll', 'nsPopover' ])
+						'ngMdIcons', 'infinite-scroll' ])
 		.config(
 				[
 						'$mdThemingProvider',
@@ -22,22 +22,10 @@ angular
 						'$urlRouterProvider',
 						'$ocLazyLoadProvider',
 						'$httpProvider',
-						'ChartJsProvider',
 						function($mdThemingProvider, $stateProvider,
 								$urlRouterProvider, $ocLazyLoadProvider,
-								$httpProvider, ChartJsProvider) {
+								$httpProvider) {
 
-							// Configure all charts
-							ChartJsProvider.setOptions({
-								colours : [ '#97BBCD', '#DCDCDC', '#F7464A',
-										'#46BFBD', '#FDB45C', '#949FB1',
-										'#4D5360' ],
-								responsive : true
-							});
-							// Configure all doughnut charts
-							ChartJsProvider.setOptions('Doughnut', {
-								animateScale : true
-							});
 							$mdThemingProvider.theme('tooltiptheme').primaryPalette(
 							'red').dark().foregroundPalette['3'] = "white";
 							$mdThemingProvider.theme('default').primaryPalette(
@@ -446,6 +434,12 @@ angular
 					connect();
 					function connect() {
 						var socket = new SockJS(baseUrl + '/notify');
+						var oldInit = window.onbeforeunload;
+						window.onbeforeunload = function (event) {
+							if (oldInit) oldInit(event);
+					    	socket.close();
+					    	console.log("socket closed.");
+						}
 						$rootScope.stompReceivers = Stomp.over(socket);
 						$rootScope.stompReceivers
 								.connect(

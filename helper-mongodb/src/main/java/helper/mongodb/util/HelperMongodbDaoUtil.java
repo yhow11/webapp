@@ -3,11 +3,15 @@ package helper.mongodb.util;
 import java.util.List;
 import java.util.Map;
 
-import helper.mongodb.base.HelperMongodbDao;
+import com.mongodb.DBObject;
+
+import helper.mongodb.dao.HelperMongodbDao;
 
 public class HelperMongodbDaoUtil {
 
-	public static <T> List<T> findAll(Map<String, String> parameters, HelperMongodbDao<T> dao) throws Exception{
+	/*public static List<DBObject> generatePipelines(Object object) throws Exception{
+		Class<?> clazz = object.getClass();
+		
 		return dao.findAll(parameters);
-	}
+	}*/
 }

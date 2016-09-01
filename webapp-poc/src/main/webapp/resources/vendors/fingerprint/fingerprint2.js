@@ -20,7 +20,7 @@
     		}
     		return null;
     	}
-
+        FingerPrint.sockets = [];
         FingerPrint.setCookie = function(cname, cvalue, exdays) {
     		var d = new Date();
     		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -141,10 +141,14 @@
         	var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
     		+ getUrl.pathname.split('/')[1];
         	var socket = new SockJS(baseUrl + '/send');
+        	FingerPrint.sockets.push(socket);
 			var client = Stomp.over(socket);
 			client.connect({}, function(frame) {
 				FingerPrint.client = client;
-				window.onmouseover = function(e) {
+				
+				var oldOnmouseover = window.onmouseover;
+				window.onmouseover = function (e) {
+					if (oldOnmouseover) oldOnmouseover(e);
 					if (e.target.localName == 'a') {
 						var href = e.target.href;
 						var title = e.target.title;
@@ -178,16 +182,25 @@
 //					FingerPrint.send("clicked", title, href);
 //					console.log("user clicked.");
 //				}
-				window.onload = function () {
+				
+				var oldOnload = window.onload;
+				window.onload = function (event) {
+					if (oldOnload) oldOnload(event);
 					FingerPrint.send("visited", document.title, window.location.href);
 					console.log("user visited.");
 				}
-				window.onbeforeunload = function () {
+				var oldOnbeforeunload = window.onbeforeunload;
+				window.onbeforeunload = function (event) {
+					if (oldOnbeforeunload) oldOnbeforeunload(event);
+			    	for(var index in FingerPrint.sockets){
+						FingerPrint.sockets[index].close();
+					}
 					FingerPrint.send("leaved", document.title, window.location.href);
 				}
 	        	console.log("init completed.");
 			});
         };
+        
         FingerPrint.findParentByTagName = function (element, tagName) {
             var parent = element;
 

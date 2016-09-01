@@ -50,12 +50,12 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.map(memberDao.save(memberMapper.map(memberForm)));
 	}
 	@Override
-	public List<MemberForm> findAll()  throws Exception {
+	public List<MemberForm> getAll()  throws Exception {
 		// TODO Auto-generated method stub
 		return memberMapper.mapForms(memberDao.findAll());
 	}
 	@Override
-	public MemberForm findOne(String id)   throws Exception{
+	public MemberForm get(String id)   throws Exception{
 		// TODO Auto-generated method stub
 		return memberMapper.map(memberDao.findOne(id));
 	}
