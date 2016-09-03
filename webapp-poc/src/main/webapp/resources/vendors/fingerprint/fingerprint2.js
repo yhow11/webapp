@@ -121,7 +121,7 @@
         FingerPrint.getData = function(){
         	return JSON.parse(window.localStorage.fingerPrintData);
         }
-        FingerPrint.init = function(){
+        FingerPrint.init = function(socketURL){
 
         	var timestamp_cookie = FingerPrint.readCookie('fingerprint_timestamp');
 
@@ -137,10 +137,7 @@
         			|| guid == "null") {
         		FingerPrint.generateSessionID();
         	} 
-        	var getUrl = window.location;
-        	var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
-    		+ getUrl.pathname.split('/')[1];
-        	var socket = new SockJS(baseUrl + '/send');
+        	var socket = new SockJS(socketURL + '/send');
         	FingerPrint.sockets.push(socket);
 			var client = Stomp.over(socket);
 			client.connect({}, function(frame) {

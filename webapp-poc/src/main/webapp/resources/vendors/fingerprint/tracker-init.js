@@ -20,9 +20,34 @@ function loadScript(url, callback) {
 	script.src = url;
 	document.getElementsByTagName("head")[0].appendChild(script);
 }
+
+var baseURL = 'http://54.187.110.176:8191/webapp-poc/';
+var fingerprintDir = baseURL+'resources/vendors/fingerprint/';
+var cryptoDir = baseURL+'resources/vendors/crypto/';
+var websocketDir = baseURL+'resources/vendors/websocket/';
 loadScript(
-		"http://54.187.110.176:8191/webapp-poc/resources/vendors/fingerprint/fingerprint2.js",
+		fingerprintDir+"client.min.js",
 		function() {
-			FingerPrint.init();
-			console.log("fingerprint tracker has been loaded");
+			loadScript(
+					fingerprintDir+"beaverbird.min.js",
+					function() {
+						loadScript(
+								cryptoDir+'md5.js',
+								function() {
+									loadScript(
+											websocketDir+"sockjs.js",
+											function() {
+												loadScript(
+														websocketDir+"stomp.js",
+														function() {
+															loadScript(
+																	fingerprintDir+"fingerprint2.js",
+																	function() {
+																		FingerPrint.init(baseURL);
+																		console.log("fingerprint tracker has been loaded");
+																	});
+														});
+											});
+								});
+					});
 		});
