@@ -137,7 +137,7 @@
         			|| guid == "null") {
         		FingerPrint.generateSessionID();
         	} 
-        	var socket = new SockJS(socketURL + '/send');
+        	var socket = new SockJS(socketURL + 'send');
         	FingerPrint.sockets.push(socket);
 			var client = Stomp.over(socket);
 			client.connect({}, function(frame) {

@@ -23,7 +23,7 @@ public class WebSocketContext extends AbstractWebSocketMessageBrokerConfigurer {
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		RequestUpgradeStrategy upgradeStrategy = new TomcatRequestUpgradeStrategy();
-		registry.addEndpoint("/send")
+		registry.addEndpoint("/send").setAllowedOrigins("*")
 		        .withSockJS();
 
 		registry.addEndpoint("/notify")
