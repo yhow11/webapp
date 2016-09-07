@@ -81,7 +81,7 @@ angular
 															name : 'fingerPrintApp',
 															files : [
 																	'resources/scripts/services/eventService.js',
-																	'resources/scripts/services/infiniteScroll.js',
+																	'resources/scripts/services/profileInfiniteScroll.js',
 																	'resources/scripts/controllers/profileController.js',
 
 															]
@@ -432,7 +432,7 @@ angular
 					$rootScope.stompReceivers = null;
 					connect();
 					function connect() {
-						var socket = new SockJS(baseUrl + '/notify');
+						var socket = new SockJS('http://54.213.0.17:8191/webapp-poc/notify');
 						var oldInit = window.onbeforeunload;
 						window.onbeforeunload = function (event) {
 							if (oldInit) oldInit(event);

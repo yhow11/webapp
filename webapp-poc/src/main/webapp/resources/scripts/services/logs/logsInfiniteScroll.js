@@ -5,7 +5,6 @@ angular.module('fingerPrintApp').
   var LogsInfiniteScroll = function() {
     this.items = [];
     this.busy = false;
-    this.after = '0';
     this.limit = '50';
   };
 
@@ -14,20 +13,15 @@ angular.module('fingerPrintApp').
     if (this.busy) return;
     this.busy = true;
     
-    logsService.getAll(this.after,  String(Number(this.after) + Number(this.limit))).then(function(data){
+    logsService.getAll(String(self.items.length+1),  String(self.items.length+1 + Number(this.limit))).then(function(data){
     	if(data.data){
     		if(data.data.status) {
     			var items = data.data.data;
-    			if(items.length > 1) {
-    				 this.after = items[items.length - 1].timeStamp;
-    				 for (var i = 0; i < items.length; i++) {
-    					 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL")
-    			    	  this.items.push(items[i]);
-    			      }
-    		     
-    			}
-    			
-    			this.busy = false;
+				for (var i = 0; i < items.length; i++) {
+					 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL");
+					 self.items.push(items[i]);
+			    }
+    			self.busy = false;
     		}
     	}
 		

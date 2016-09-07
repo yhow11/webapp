@@ -1,12 +1,13 @@
 package common.query;
 
+import common.query.enums.QuerySortEnum;
+
 public class QueryParam<T> {
 
-	public final static String SORT_DESC = "desc";
-	public final static String SORT_ASC = "asc";
 	private Long limit;
 	private Long offset;
-	private String sort = QueryParam.SORT_ASC;
+	private QuerySortEnum sort = QuerySortEnum.ASC;
+	private String sortBy;
 	private Class<T> modelClass;
 	private T model;
 
@@ -52,16 +53,24 @@ public class QueryParam<T> {
 		return this.paramClass;
 	}
 
-	public String getSort() {
+	public QuerySortEnum getSort() {
 		return sort;
 	}
 
-	public void setSort(String sort) {
+	public void setSort(QuerySortEnum sort) {
 		this.sort = sort;
 	}
 
 	public Class<T> getModelClass() {
 		return modelClass;
+	}
+
+	public String getSortBy() {
+		return sortBy;
+	}
+
+	public void setSortBy(String sortBy) {
+		this.sortBy = sortBy;
 	}
 
 }

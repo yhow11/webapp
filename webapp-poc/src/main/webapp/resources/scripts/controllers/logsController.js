@@ -15,7 +15,7 @@ angular.module('fingerPrintApp').controller(
 					for (var i = 0; i < items.length; i++) {
 						 items[i].timeStamp = moment(new Date(Number(items[i].timeStamp))).format("LLL");
 				    }
-					$scope.reddit.items = items.concat($scope.reddit.items);
+					$scope.logsInfiniteScroll.items = items.concat($scope.logsInfiniteScroll.items);
 					$scope.$apply();
 				}
 			});

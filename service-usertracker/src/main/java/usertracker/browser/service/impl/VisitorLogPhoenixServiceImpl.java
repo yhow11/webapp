@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 
 import common.query.QueryParam;
+import common.query.enums.QuerySortEnum;
 import helper.phoenix.dao.impl.PhoenixDaoImpl;
 import usertracker.browser.model.VisitorLogModel;
 import usertracker.browser.service.VisitorLogService;
@@ -52,6 +53,8 @@ public class VisitorLogPhoenixServiceImpl extends PhoenixDaoImpl implements Visi
 	public List<VisitorLogModel> getAll(Long offset, Long limit) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<VisitorLogModel> param = new QueryParam<VisitorLogModel>(VisitorLogModel.class);
+		param.setSort(QuerySortEnum.DESC);
+		param.setSortBy("id");
 		param.setLimit(limit);
 		param.setOffset(offset);
 		return super.search(param);

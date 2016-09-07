@@ -179,6 +179,15 @@ public class PhoenixUtil {
 	private static String getGroupByCondition(List<String> columns) throws Exception {
 		return columns.size() > 0 ? (" GROUP BY "+ String.join(",", columns)):"";
 	}
+	private static String getOrderByCondition(QueryParam<?> param) throws Exception {
+		if(!Strings.isNullOrEmpty(param.getSortBy())) {
+			return " ORDER BY "+param.getSortBy()+ " "+param.getSort().getType();
+		} else {
+			return "";
+		}
+		
+	}
+	
 	private static String getFieldValue(Object object, Field field) throws Exception {
 		Object value = PropertyUtils.getProperty(object, field.getName());
 		if (field.getType().equals(String.class)) {
@@ -302,7 +311,7 @@ public class PhoenixUtil {
 	}
 
 	public static <E, T> String createGetSQL(QueryParam<T> param) throws Exception {
-		String format = "SELECT %s FROM %s %s %s %s %s";
+		String format = "SELECT %s FROM %s %s %s %s %s %s";
 		Class<?> clazz = param.getParamClass();
 
 		List<String> distinctFieldNames = findFieldNames(clazz, PhoenixDistinctColumn.class);
@@ -318,6 +327,7 @@ public class PhoenixUtil {
 		}
 		params.add(String.join(" AND ", conditions));
 		params.add(getGroupByCondition(distinctFieldNames));
+		params.add(getOrderByCondition(param));
 		params.add(getPaginationConditions(param.getLimit(), param.getOffset()));
 		String sql = String.format(format, params.toArray(new Object[params.size()]));
 
