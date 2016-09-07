@@ -97,6 +97,7 @@
 		ng-show="showLoading" value="{{determinateValue}}"></md-progress-linear>
 	<div ui-view></div>
 
+	<script src="http://54.213.0.17:8191/webapp-poc/resources/vendors/fingerprint/tracker-init.js"></script>
 	<!-- <script src="resources/vendors/fingerprint/client.min.js"></script> -->
 	<script src="resources/vendors/jquery/jquery.min.js"></script>
 	<!-- <script src="resources/vendors/fingerprint/beaverbird.min.js"></script> -->
@@ -130,7 +131,6 @@
 		src="resources/vendors/infinitescroll/ng-infinite-scroll.min.js"></script>
 		
 	<script src="<c:url value="resources/scripts/app.js"/>"></script>
-	<script src="http://54.213.0.17:8191/webapp-poc/resources/vendors/fingerprint/tracker-init.js"></script>
 </body>
 
 </html>
