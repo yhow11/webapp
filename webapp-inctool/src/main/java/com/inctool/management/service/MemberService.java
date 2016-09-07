@@ -1,8 +1,9 @@
 package com.inctool.management.service;
 
-import java.util.List;
-
 import com.inctool.management.form.MemberForm;
+
+import common.query.form.FormParam;
+import common.query.form.FormResponse;
 
 public interface MemberService {
 
@@ -10,5 +11,5 @@ public interface MemberService {
 	public MemberForm save(MemberForm memberForm) throws Exception;
 	public MemberForm get(String id) throws Exception;
 	public MemberForm findDetails(String id) throws Exception;
-	public List<MemberForm> getAll() throws Exception;
+	public FormResponse<MemberForm> getAll(FormParam<MemberForm> param) throws Exception;
 }

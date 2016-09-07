@@ -4,18 +4,11 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import common.service.JService;
 import usertracker.browser.model.DeviceFPModel;
 
 @Transactional
-public interface DeviceFPService {
-	
-	public DeviceFPModel save(DeviceFPModel model) throws Exception;
-
-	public void delete(String id) throws Exception;
-
-	public DeviceFPModel get(String id) throws Exception;
-	
-	public DeviceFPModel getOrCreate(String id, String av) throws Exception;
-	
+public interface DeviceFPService extends JService<DeviceFPModel, DeviceFPModel> {
 	public List<DeviceFPModel> getAll(String avID) throws Exception;
+	public DeviceFPModel getOrCreate(String id, String av) throws Exception;
 }

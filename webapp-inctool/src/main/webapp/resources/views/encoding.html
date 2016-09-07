@@ -51,7 +51,7 @@
 		    </md-button>
 		</md-data-table-toolbar>
 		<md-data-table-container>
-		  <table md-data-table md-row-select="selected" md-progress="deffered" sortable-columns="true">
+		  <table data-md-table data-md-row-select="memberTable.options.rowSelection" multiple="{{memberTable.options.multiSelect}}" data-ng-model="memberTable.selected" >
 		    <thead>
 		      <tr>
 		      	<th name="reference"></th>
@@ -67,7 +67,7 @@
 		      </tr>
 		    </thead>
 		    <tbody>
-		      <tr md-auto-select ng-repeat="member in members | filter : searchValue">
+		      <tr md-auto-select ng-repeat="member in memberTable.items | filter : searchValue">
 		      	<td>{{member.reference}}</td>
 		      	<td>{{member.name}}</td>
 		        <td>{{member.area}}</td>
@@ -86,7 +86,6 @@
 		    </tbody>
 		  </table>
 		</md-data-table-container>	
-		<md-data-table-pagination md-limit="3" md-page="1" md-total="9"></md-data-table-pagination>
-
+		<data-md-table-pagination md-limit="memberTable.query.limit" md-limit-options="memberTable.limitOptions" md-page="memberTable.query.page" md-total="{{memberTable.totalCount}}" md-on-paginate="memberTable.onPaginate" md-page-select="memberTable.options.pageSelect" md-boundary-links="memberTable.options.boundaryLinks"></data-md-table-pagination>
 </md-card>
 			

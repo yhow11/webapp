@@ -91,11 +91,11 @@ angular
 
 											})
 									.state(
-											'membership',
+											'memberprofile',
 											{
-												url : '/membership/:id',
-												controller : 'MembershipController',
-												templateUrl : 'resources/views/membership.html',
+												url : '/memberprofile/:id',
+												controller : 'MemberProfileController',
+												templateUrl : 'resources/views/member-profile.html',
 												resolve : {
 													loadMyFiles : function(
 															$ocLazyLoad) {
@@ -104,7 +104,59 @@ angular
 																	name : 'incToolApp',
 																	files : [
 																			'resources/scripts/services/memberService.js',
-																			'resources/scripts/controllers/membershipController.js',
+																			'resources/scripts/controllers/memberprofileController.js',
+
+																	]
+																})
+													}
+												}
+
+											})
+									.state(
+									'worker',
+									{
+										abstract: true,
+										template : '<ui-view  ></ui-view>',
+										url : '/worker'
+
+									})
+									.state(
+											'worker.profile',
+											{
+												url : '/worker/profile/:id',
+												controller : 'WorkerProfileController',
+												templateUrl : 'resources/views/worker/profile.html',
+												resolve : {
+													loadMyFiles : function(
+															$ocLazyLoad) {
+														return $ocLazyLoad
+																.load({
+																	name : 'incToolApp',
+																	files : [
+																			'resources/scripts/services/workerService.js',
+																			'resources/scripts/controllers/worker/profileController.js',
+
+																	]
+																})
+													}
+												}
+
+											})
+									.state(
+											'worker.list',
+											{
+												url : '/worker/list',
+												controller : 'WorkerListController',
+												templateUrl : 'resources/views/worker/list.html',
+												resolve : {
+													loadMyFiles : function(
+															$ocLazyLoad) {
+														return $ocLazyLoad
+																.load({
+																	name : 'incToolApp',
+																	files : [
+																			'resources/scripts/services/workerService.js',
+																			'resources/scripts/controllers/worker/listController.js',
 
 																	]
 																})

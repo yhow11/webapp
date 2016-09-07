@@ -2,11 +2,9 @@ package com.inctool.management.service.impl;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.inctool.management.dao.MemberDao;
 import com.inctool.management.enums.MemberEnum;
 import com.inctool.management.form.AttendanceForm;
 import com.inctool.management.form.MemberForm;
@@ -15,17 +13,23 @@ import com.inctool.management.service.AttendanceService;
 import com.inctool.management.service.MemberService;
 import com.inctool.management.util.AttendanceUtil;
 
+import common.query.QueryParam;
+import common.query.form.FormParam;
+import common.query.form.FormResponse;
+import service.membermanagement.model.INCMemberModel;
+import service.membermanagement.service.INCMemberService;
+
 public class MemberServiceImpl implements MemberService {
 
-	private MemberDao memberDao;
+	private INCMemberService iNCMemberService;
 	private MemberMapper memberMapper;
 	
 	public MemberServiceImpl() {
 		// TODO Auto-generated constructor stub
 	}
-	public MemberServiceImpl(MemberDao memberDao, MemberMapper memberMapper) {
+	public MemberServiceImpl(INCMemberService iNCMemberService, MemberMapper memberMapper) {
 		// TODO Auto-generated constructor stub
-		this.memberDao = memberDao;
+		this.iNCMemberService = iNCMemberService;
 		this.memberMapper = memberMapper;
 	}
 	@Override
@@ -47,17 +51,12 @@ public class MemberServiceImpl implements MemberService {
 			memberForm.setR309(AttendanceUtil.fillSchedule(attendanceService, memberForm.getR309()));
 			memberForm.setR309Attendance(AttendanceUtil.fillAttendance(attendanceService, new AttendanceForm(), memberForm.getR309()));
 		}
-		return memberMapper.map(memberDao.save(memberMapper.map(memberForm)));
-	}
-	@Override
-	public List<MemberForm> getAll()  throws Exception {
-		// TODO Auto-generated method stub
-		return memberMapper.mapForms(memberDao.findAll());
+		return memberMapper.unmarshal(iNCMemberService.save(memberMapper.marshal(memberForm)));
 	}
 	@Override
 	public MemberForm get(String id)   throws Exception{
 		// TODO Auto-generated method stub
-		return memberMapper.map(memberDao.findOne(id));
+		return memberMapper.unmarshal(iNCMemberService.get(id));
 	}
 	
 	public static void main(String []args) {
@@ -76,12 +75,32 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberForm findDetails(String id)   throws Exception{
 		// TODO Auto-generated method stub
-		return memberMapper.map(memberDao.findDetails(id));
+		return null;
 	}
 	@Override
 	public void remove(String id)  throws Exception {
 		// TODO Auto-generated method stub
-		memberDao.remove(id);
+		iNCMemberService.remove(iNCMemberService.get(id));
+	}
+	@Override
+	public FormResponse<MemberForm> getAll(FormParam<MemberForm> param) throws Exception {
+		// TODO Auto-generated method stub
+		Long limit = Long.valueOf(param.getLimit());
+		Long page = Long.valueOf(param.getPage());
+		Long offset = (page*limit)-limit;
+		INCMemberModel model = memberMapper.marshal(param.getData());
+		
+		QueryParam<INCMemberModel> queryParam = new QueryParam<>(INCMemberModel.class);
+		queryParam.setLimit(limit);
+		
+		queryParam.setOffset(offset);
+		queryParam.setLimit(limit);
+		queryParam.setModel(model);
+		FormResponse<MemberForm> response = new FormResponse<>();
+		Long totalCount = iNCMemberService.getCount(queryParam);
+		response.setTotalCount(String.valueOf(totalCount));
+		response.setData(memberMapper.unmarshal(iNCMemberService.getAll(queryParam)));
+		return response;
 	}
 
 }

@@ -2,15 +2,11 @@ package usertracker.browser.service;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import common.service.JService;
 import usertracker.browser.model.AnonymousVisitorModel;
 
 @Transactional
-public interface AnonymousVisitorService {
+public interface AnonymousVisitorService  extends JService<AnonymousVisitorModel, AnonymousVisitorModel> {
 	
-	public AnonymousVisitorModel save(AnonymousVisitorModel model) throws Exception;
-
-	public void delete(String id) throws Exception;
-
-	public AnonymousVisitorModel get(String id) throws Exception;
 	
 }

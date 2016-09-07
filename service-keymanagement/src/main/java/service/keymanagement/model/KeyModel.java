@@ -10,7 +10,7 @@ import helper.phoenix.annotation.entity.PhoenixTable;
 import helper.phoenix.object.QueryHelperParam;
 
 @PhoenixTable(table="keyTable")
-public class KeyModel extends QueryHelperParam implements Serializable {
+public class KeyModel implements Serializable {
 
 	/**
 	 * 

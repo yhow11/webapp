@@ -5,6 +5,14 @@ import javax.servlet.Filter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.inctool.config.AppContext;
+import com.inctool.config.DaoContext;
+import com.inctool.config.MapperContext;
+import com.inctool.config.MongoContext;
+import com.inctool.config.SecurityContext;
+import com.inctool.config.ServiceContext;
+import com.inctool.config.WebAppContext;
+
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override

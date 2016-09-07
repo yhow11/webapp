@@ -47,6 +47,11 @@
 			<artifactId>phoenix-core</artifactId>
 			<version>4.8.0-HBase-1.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.jofel</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

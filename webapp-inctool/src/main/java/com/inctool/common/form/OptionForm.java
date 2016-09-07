@@ -1,10 +1,10 @@
 package com.inctool.common.form;
 
-import com.inctool.common.annotation.MapUtilField;
+import common.mapper.annotation.MapUtilField;
 
 public class OptionForm {
 	
-	@MapUtilField(name="name")
+	@MapUtilField
 	private String name;
 
 	public String getName() {

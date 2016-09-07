@@ -1,0 +1,37 @@
+
+
+<md-card flex-gt-sm layout="column" layout-align="center" layout-padding>
+		
+		<md-data-table-toolbar class="toolbar-with-fab" ng-hide="search" layout="row">
+		    <h4 class="md-title j-color-grey">Logs</h4>
+		    <span flex-gt-sm></span>
+		    <md-button class="md-icon-button" ng-click="search = true">
+		      <md-icon>filter_list</md-icon>
+		    </md-button>
+		</md-data-table-toolbar>
+		<md-data-table-toolbar class="toolbar-with-fab" ng-show="search" layout="row" layout-padding>
+		    <md-input-container class="md-block" flex-gt-sm>
+				<label>Search</label> <input 
+					ng-model="searchValue" >
+			</md-input-container>
+		    <md-button class="md-icon-button" ng-click="search = false">
+		      <md-icon>close</md-icon>
+		    </md-button>
+		</md-data-table-toolbar>
+		 	<div  infinite-scroll='logsInfiniteScroll.nextPage()' infinite-scroll-disabled='logsInfiniteScroll.busy' infinite-scroll-distance='0.6'>
+		    <div layout="row"  ng-repeat='item in logsInfiniteScroll.items | filter:searchValue'>
+		      <span >{{item.timeStamp}}&nbsp;</span>
+		      <span >{{item.webFP}}</span>
+		      <span >{{item.deviceFP}}</span>
+		      <span >{{item.type}}</span>
+		      <span >{{item.url}}</span>
+		      <span >{{item.title}}&nbsp;</span>
+		      <span >{{item.sessionID}}</span>
+		    </div>
+		    
+		      <div style='clear: both;'></div>		     
+		    <div ng-show='reddit.busy'>Loading data...</div>
+		  </div>
+  		
+</md-card>
+ 

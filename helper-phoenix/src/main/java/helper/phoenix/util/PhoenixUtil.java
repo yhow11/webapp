@@ -11,16 +11,15 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
-import org.springframework.core.annotation.AnnotationUtils;
 
 import com.google.common.base.Strings;
 
+import common.query.QueryParam;
 import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixID;
 import helper.phoenix.annotation.entity.PhoenixSequence;
 import helper.phoenix.annotation.entity.PhoenixTable;
 import helper.phoenix.annotation.query.PhoenixDistinctColumn;
-import helper.phoenix.annotation.query.PhoenixPaginated;
 
 public class PhoenixUtil {
 
@@ -144,42 +143,31 @@ public class PhoenixUtil {
 		return fields;
 	}
 
-	private static List<String> getConditions(Object object) throws Exception {
-		Class<?> clazz = object.getClass();
-		Class<?> superClazz = object.getClass().getSuperclass();
-		List<String> conditions = new ArrayList<>();
-		for (Field field : clazz.getDeclaredFields()) {
-			if (field.isAnnotationPresent(PhoenixColumn.class)) {
-				Object value = PropertyUtils.getProperty(object, field.getName());
-				if (value != null) {
-					if (field.getType().equals(String.class)) {
-						conditions.add(field.getName() + " like " + getFieldValue(object, field));
-					} else {
-						conditions.add(field.getName() + " = " + getFieldValue(object, field));
-					}
+	private static List<String> getConditions(Object object, List<String> fieldNames) throws Exception {
 
+		List<String> conditions = new ArrayList<>();
+		for (String name : fieldNames) {
+			Object value = PropertyUtils.getProperty(object, name);
+			if (value != null) {
+				if (PropertyUtils.getPropertyType(object, name).equals(String.class)) {
+					conditions.add(name + " like " + getFieldValue(object, name));
+				} else {
+					conditions.add(name + " = " + getFieldValue(object, name));
 				}
+
 			}
 		}
 
 		return conditions;
 	}
 
-	private static String getPaginationConditions(Object object) throws Exception {
-		Class<?> clazz = object.getClass();
+	private static String getPaginationConditions(Long limit, Long offset) throws Exception {
 		List<String> conditions = new ArrayList<>();
-
-		if (AnnotationUtils.findAnnotation(clazz, PhoenixPaginated.class) != null) {
-			Long offset = (Long) PropertyUtils.getProperty(object,
-					AnnotationUtils.findAnnotation(clazz, PhoenixPaginated.class).offsetField());
-			Long limit = (Long) PropertyUtils.getProperty(object,
-					AnnotationUtils.findAnnotation(clazz, PhoenixPaginated.class).limitField());
-			if (limit != null) {
-				conditions.add("limit " + limit);
-			}
-			if (offset != null) {
-				conditions.add("offset " + offset);
-			}
+		if (limit != null) {
+			conditions.add("limit " + limit);
+		}
+		if (offset != null) {
+			conditions.add("offset " + offset);
 		}
 		if (conditions.size() > 0) {
 			return String.join(" ", conditions);
@@ -212,8 +200,7 @@ public class PhoenixUtil {
 	}
 	private static String getFieldValue(Object object, String fieldName) throws Exception {
 		Object value = PropertyUtils.getProperty(object, fieldName);
-		Field field = getField(object.getClass(), fieldName);
-		if (field.getType().equals(String.class)) {
+		if (PropertyUtils.getPropertyType(object, fieldName).equals(String.class)) {
 			return "'" + (value != null ? String.valueOf(value) : "") + "'";
 		} else {
 			return value != null ? String.valueOf(value) : "";
@@ -314,33 +301,40 @@ public class PhoenixUtil {
 		return sqls;
 	}
 
-	public static String createGetSQL(Object value) throws Exception {
-		String format = "SELECT %s FROM %s WHERE %s %s %s";
-		Class<?> clazz = value.getClass();
+	public static <E, T> String createGetSQL(QueryParam<T> param) throws Exception {
+		String format = "SELECT %s FROM %s %s %s %s %s";
+		Class<?> clazz = param.getParamClass();
 
 		List<String> distinctFieldNames = findFieldNames(clazz, PhoenixDistinctColumn.class);
 		List<String> fieldNames = findFieldNames(clazz, PhoenixColumn.class);
 		List<String> params = new ArrayList<String>();
 		params.add(String.join(",", distinctFieldNames.size() > 0? distinctFieldNames: fieldNames));
 		params.add(clazz.getAnnotation(PhoenixTable.class).table());
-		params.add(String.join(" AND ", getConditions(value)));
+		List<String> conditions = getConditions(param.getModel(), fieldNames);
+		if(conditions.size() > 0) {
+			params.add("WHERE");
+		} else {
+			params.add("");
+		}
+		params.add(String.join(" AND ", conditions));
 		params.add(getGroupByCondition(distinctFieldNames));
-		params.add(getPaginationConditions(value));
+		params.add(getPaginationConditions(param.getLimit(), param.getOffset()));
 		String sql = String.format(format, params.toArray(new Object[params.size()]));
 
 		return sql;
 	}
-	public static String createCountSQL(Object value) throws Exception {
-		String format = "select COUNT(*) from (SELECT %s FROM %s WHERE %s  %s)";
-		Class<?> clazz = value.getClass();
+	public static String createCountSQL(QueryParam<?> param) throws Exception {
+		String format = "select COUNT(*) from (SELECT %s FROM %s WHERE %s  %s  %s)";
+		Class<?> clazz = param.getParamClass();
 
-		List<String> distinctFieldNames = findFieldNames(value.getClass(), PhoenixDistinctColumn.class);
-		List<String> allFieldNames = findFieldNames(value.getClass(), PhoenixColumn.class); 
+		List<String> distinctFieldNames = findFieldNames(clazz, PhoenixDistinctColumn.class);
+		List<String> allFieldNames = findFieldNames(clazz, PhoenixColumn.class); 
 		List<String> params = new ArrayList<String>();
 		params.add(String.join(",", distinctFieldNames.size() > 0? distinctFieldNames: allFieldNames));
 		params.add(clazz.getAnnotation(PhoenixTable.class).table());
-		params.add(String.join(" AND ", getConditions(value)));
+		params.add(String.join(" AND ", getConditions(param.getModel(), allFieldNames)));
 		params.add(getGroupByCondition(distinctFieldNames));
+		params.add(getPaginationConditions(param.getLimit(), param.getOffset()));
 		String sql = String.format(format, params.toArray(new Object[params.size()]));
 
 		return sql;

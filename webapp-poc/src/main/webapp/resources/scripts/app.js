@@ -203,11 +203,11 @@ angular
 
 									})
 									.state(
-											'monitoring',
+											'logs',
 											{
-												url : '/monitoring',
-												controller : 'MonitoringController',
-												templateUrl : 'resources/views/monitoring.html',
+												url : '/logs',
+												controller : 'LogsController',
+												templateUrl : 'resources/views/logs.html',
 												resolve : {
 													loadMyFiles : function(
 															$ocLazyLoad) {
@@ -215,10 +215,9 @@ angular
 																.load({
 																	name : 'fingerPrintApp',
 																	files : [
-																			'resources/scripts/services/eventService.js',
-																			'resources/scripts/services/monitoring/monitoringService.js',
-																			'resources/scripts/services/monitoring/monitoringInfiniteScroll.js',
-																			'resources/scripts/controllers/monitoring/monitoringController.js',
+																			'resources/scripts/services/logs/logsService.js',
+																			'resources/scripts/services/logs/logsInfiniteScroll.js',
+																			'resources/scripts/controllers/logsController.js',
 
 																	]
 																})

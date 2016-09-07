@@ -26,9 +26,60 @@
 	href="resources/styles/common.css">
 </head>
 
-<body ng-app="incToolApp" layout="column" ng-cloak>
-
-
+<body ng-app="incToolApp" >
+	<md-toolbar class="md-menu-toolbar">
+		<div layout="row">
+			<md-toolbar-filler layout layout-align="center center">
+			<md-button ui-sref="home" class="md-icon-button md-background"
+				aria-label="Home"> <md-icon
+				md-svg-icon="resources/img/icons/home.svg"></md-icon> </md-button> </md-toolbar-filler>
+			<div>
+				<h2 class="md-toolbar-tools">Nurture Retargeting Tool</h2>
+				<md-menu-bar> 
+					<md-menu>
+						<button ng-click="$mdOpenMenu()">Management</button>
+						<md-menu-content> 
+							<md-menu-item>
+								<md-menu>
+									<md-button ng-click="$mdOpenMenu()">Member</md-button>
+									<md-menu-content> 
+										<md-menu-item> 
+											<md-button ui-sref="member.profile" aria-label="profile">Add</md-button> 
+										</md-menu-item> 
+										<md-menu-divider></md-menu-divider> 
+										<md-menu-item> 
+											<md-button ui-sref="member.list" aria-label="profile">View</md-button> 
+										</md-menu-item> 
+									</md-menu-content>
+								</md-menu>
+							</md-menu-item> 
+							<md-menu-divider></md-menu-divider> 
+							<md-menu-item> 
+									<md-menu>
+										<md-button ng-click="$mdOpenMenu()">Worker</md-button>
+										<md-menu-content> 
+											<md-menu-item> 
+												<md-button ui-sref="worker.profile" aria-label="profile">Add</md-button> 
+											</md-menu-item> 
+											<md-menu-divider></md-menu-divider> 
+											<md-menu-item> 
+												<md-button ui-sref="worker.list" aria-label="profile">View</md-button> 
+											</md-menu-item> 
+										</md-menu-content>
+									</md-menu>
+							</md-menu-item> 
+						</md-menu-content>
+					</md-menu>
+				</md-menu-bar>
+			</div>
+		</div>
+	</md-toolbar>
+	
+ 	<md-progress-linear class="md-warn" md-mode="determinate" ng-show="showLoading" value="{{determinateValue}}"></md-progress-linear>
+		    
+	<div ui-view></div>
+	
+	
 		<!-- <md-grid-list md-cols="20" md-row-height="80px">
 		  <md-grid-tile md-colspan="16" md-rowspan="1" class="j-fill-green">
 		  	
@@ -39,7 +90,7 @@
 		  <md-grid-tile md-colspan="2" md-rowspan="1" class="j-fill-red">
 		  </md-grid-tile>
 		</md-grid-list> -->
-		 <md-toolbar class="md-primary">
+		 <!-- <md-toolbar class="md-primary">
 		      <div class="md-toolbar-tools md-whiteframe-z1">
 		      	<md-button class="md-icon-button " aria-label="Home" ng-click="iconate(options)"><i id="icon" class="fa  fa-bars fa-1x j-color-white"></i></md-button>
 
@@ -58,7 +109,7 @@
 		    <md-progress-linear class="md-warn" md-mode="determinate" ng-show="showLoading" value="{{determinateValue}}"></md-progress-linear>
 		    <md-content flex layout="row" class="j-fill-grey " layout-align="center" >
 		    	<div ui-view  flex="100" ></div>
-		    </md-content>
+		    </md-content> -->
 	    <!-- <section layout="column" layout-fill>
 	    	<md-toolbar flex>
 		      <div class="md-toolbar-tools">

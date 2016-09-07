@@ -43,8 +43,8 @@ angular.module('incToolApp')
             };
         }
    return {
-	   getAll: function() {
-           return $http.post('api/member/getAll').then(handleSuccess, handleError('Error getting all members'));
+	   getAll: function(data, page, limit) {
+           return $http.post('api/member/getAll', {page: page, limit: limit, data: data}).then(handleSuccess, handleError('Error getting all members'));
        },
 
        get: function(id) {

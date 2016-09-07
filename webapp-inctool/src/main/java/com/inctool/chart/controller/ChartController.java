@@ -18,18 +18,18 @@ import plugin.highchart.service.ChartService;
 @RequestMapping("api/chart")
 public class ChartController {
 
-	@Autowired
-	private ChartService chartService;
-	
-	
-	@RequestMapping(value = "getMonthyCandidatesOfCompletion", method = RequestMethod.POST)
-    public @ResponseBody ResponseForm<Series> getMonthyCandidatesOfCompletion(@RequestParam("id") String type) throws ParseException {
-       
-        ResponseForm<Series> response = new ResponseForm<Series>();
-        response.setData(chartService.getMonthlyCountOfCompletion(type, ""));
-        response.setMessage("SUCCESS");
-        response.setStatus(true);
-        return response;
-    }
+//	@Autowired
+//	private ChartService chartService;
+//	
+//	
+//	@RequestMapping(value = "getMonthyCandidatesOfCompletion", method = RequestMethod.POST)
+//    public @ResponseBody ResponseForm<Series> getMonthyCandidatesOfCompletion(@RequestParam("id") String type) throws ParseException {
+//       
+//        ResponseForm<Series> response = new ResponseForm<Series>();
+//        response.setData(chartService.getMonthlyCountOfCompletion(type, ""));
+//        response.setMessage("SUCCESS");
+//        response.setStatus(true);
+//        return response;
+//    }
 	
 }

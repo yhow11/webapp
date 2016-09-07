@@ -7,7 +7,7 @@ import helper.phoenix.annotation.query.PhoenixDistinctColumn;
 import helper.phoenix.object.QueryHelperParam;
 
 @PhoenixTable(table="urlImportTable")
-public class URLImportGroupByURLModel extends QueryHelperParam {
+public class URLImportGroupByURLModel {
 	
 	@PhoenixID
 	@PhoenixDistinctColumn

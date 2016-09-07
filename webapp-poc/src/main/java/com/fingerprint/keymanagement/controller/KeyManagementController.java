@@ -26,8 +26,8 @@ public class KeyManagementController {
 	}
 	
 	@RequestMapping(value = "keymanagement/getAllByPagination", method = RequestMethod.GET)
-	public @ResponseBody  ResponseForm<KeyForm> getAllByPagination(@RequestParam(name="start") String start, @RequestParam(name="end") String end) throws Exception {
-		return keyValueManagementService.getAllByPagination(start, end);
+	public @ResponseBody  ResponseForm<KeyForm> getAllByPagination(@RequestParam(name="start") String start, @RequestParam(name="end") String end, @RequestParam(name="value") String value) throws Exception {
+		return keyValueManagementService.getAll(value, start, end);
 	}
 	@RequestMapping(value = "keymanagement/getAll", method = RequestMethod.GET)
 	public @ResponseBody  ResponseForm<KeyForm> getAll(@RequestParam(name="key") String key) throws Exception {

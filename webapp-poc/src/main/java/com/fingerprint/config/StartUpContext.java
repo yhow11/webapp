@@ -6,23 +6,20 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 
-import helper.phoenix.dao.impl.PhoenixDaoImpl;
-import service.keymanagement.model.KeyModel;
+import helper.phoenix.dao.impl.SimplePhoenixDaoImpl;
 
 @Configuration
-@Transactional
 @PropertySource({"classpath:com/fingerprint/properties/schema.properties"})
 public class StartUpContext implements ApplicationListener<ContextRefreshedEvent> {
 
 	@Value("${auto.create.table.class}")
 	private String tableClasses;
-	
-	@Autowired
-	private PhoenixDaoImpl phoenixDaoImpl;
+//	
+//	@Autowired
+//	private SimplePhoenixDaoImpl simplePhoenixDaoImpl;
 	
 	private static boolean isTablesCreated = false;
 	
@@ -30,7 +27,7 @@ public class StartUpContext implements ApplicationListener<ContextRefreshedEvent
 		try{
 			if(!Strings.isNullOrEmpty(tableClasses) && !isTablesCreated){
 				for(String clazzName: tableClasses.split(",")){
-					phoenixDaoImpl.createTable(Class.forName(clazzName));
+//					simplePhoenixDaoImpl.createTable(Class.forName(clazzName));
 				}
 				isTablesCreated = true;
 			}

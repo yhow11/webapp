@@ -22,7 +22,7 @@
 							<md-icon class="j-cursor-pointer" ng-click="search = false; searchValue='' ">close</md-icon>
 					</md-input-container>
 				</md-data-table-toolbar>
-				 <md-list layout="column" layout-padding  infinite-scroll='keymanagementInfiniteScroll.nextPage()' infinite-scroll-disabled='keymanagementInfiniteScroll.busy' infinite-scroll-distance='0.6'>
+				 <md-list layout="column" layout-padding  infinite-scroll='keymanagementInfiniteScroll.nextPage(searchValue || "")' infinite-scroll-disabled='keymanagementInfiniteScroll.busy' infinite-scroll-distance='0.6'>
 				    <md-list-item layout="row" layout-align="center"   ng-repeat='item in keymanagementInfiniteScroll.items | filter:searchValue'>
 				      <span flex-gt-xs="30" hide  show-gt-xs>{{item.key}}</span>
 				      <span flex-gt-xs="50" hide  show-gt-xs>{{getValueStr(item)}}</span>

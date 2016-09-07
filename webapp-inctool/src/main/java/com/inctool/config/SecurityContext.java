@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.inctool.config.ServiceContext;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityContext extends WebSecurityConfigurerAdapter {
@@ -49,9 +51,9 @@ public class SecurityContext extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    	 auth
-         .userDetailsService(servicesContext.userDetailsService())
-         .passwordEncoder(passwordEncoder());
+//    	 auth
+//         .userDetailsService(servicesContext.userDetailsService())
+//         .passwordEncoder(passwordEncoder());
     }
 
     /**

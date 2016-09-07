@@ -9,7 +9,7 @@ angular.module('incToolApp').controller(
 		function($rootScope, $scope, $stateParams, $mdDialog, $mdMedia, $state, memberService, $log) {
 			$scope.search = false;
 			$scope.status = '  ';
-			$scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+		
 			$scope.options = function(option, member){
 				if(option.name == "Edit") {
 					$state.go("membership", { id: member.id});	
@@ -24,44 +24,59 @@ angular.module('incToolApp').controller(
 					});
 				}
 			};
-			$scope.showAdvanced = function(ev, member) {
-				var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
-						&& $scope.customFullscreen;
-
-				$mdDialog.show({
-					controller : RegistraionController,
-					templateUrl : 'resources/views/dialog/registration.html',
-					parent : angular.element(document.body),
-					targetEvent : ev,
-					locals : {
-						member : member
-					},
-					clickOutsideToClose : true,
-					fullscreen : useFullScreen
-				}).then(
-						function(answer) {
-							$scope.status = 'You said the information was "'
-									+ answer + '".';
-						}, function() {
-							$scope.status = 'You cancelled the dialog.';
-						});
-				$scope.$watch(function() {
-					return $mdMedia('xs') || $mdMedia('sm');
-				}, function(wantsFullScreen) {
-					$scope.customFullscreen = (wantsFullScreen === true);
-				});
-
-				function RegistraionController($scope, $mdDialog, member) {
-					$scope.closeDialog = function() {
-						$mdDialog.hide();
-					};
-					$scope.showHints = false;
-					$scope.member = member;
-				}
-				;
-			};
 
 			// MD table
+			$scope.memberTable = {
+					searchValue: null,
+					search: function(searchForm){
+						memberService.getAll({reference: $scope.memberTable.searchValue}, $scope.memberTable.query.page, $scope.memberTable.query.limit).then(function(data){
+							if(data.data.status){
+								$scope.memberTable.items = data.data;
+								
+							}
+						});
+					},
+					items: [],
+					query: {
+							    order: 'name',
+							    limit: 5,
+							    page: 1
+				    },
+				    onPaginate: function(page, limit) {
+					   	 memberService.getAll({reference: $scope.memberTable.searchValue}, page, limit).then(function(data){
+							 if(data.status == 200) {
+								 $scope.memberTable.items = data.data.data;
+							 }
+							 
+						});
+					},
+				    onReorder: function(order) {
+
+					},
+					selected: [],
+					onSelect: function(item){
+						
+					},
+					onDeselect: function(item){
+						
+					},
+					limitOptions: [5, 10, 15, {
+					    label: 'All',
+					    value: function () {
+					      return $scope.memberTable.items ? $scope.memberTable.items.count : 0;
+					    }
+				     }],
+					options: {
+						    rowSelection: true,
+						    multiSelect: true,
+						    autoSelect: true,
+						    decapitate: false,
+						    largeEditDialog: false,
+						    boundaryLinks: false,
+						    limitSelect: true,
+						    pageSelect: true
+						  }	
+			}
 			$scope.tableAction = function(ev, action, member) {
 				if (action.name == 'Edit') {
 					$scope.showAdvanced(ev, member);
@@ -70,13 +85,9 @@ angular.module('incToolApp').controller(
 
 			
 			$scope.selected = [];
-
-			 memberService.getAll().then(function(data){
+			memberService.getAll(null, $scope.memberTable.query.page, $scope.memberTable.query.limit).then(function(data){
 				 if(data.status == 200) {
-					 if(data.data.status) {
-						 $scope.members = data.data.data;
-					 }
-					 
+					 $scope.memberTable.items = data.data.data;
 				 }
 				 
 			});

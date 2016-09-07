@@ -1,16 +1,16 @@
 package com.inctool.management.form;
 
-import com.inctool.common.annotation.MapUtilField;
+import common.mapper.annotation.MapUtilField;
 
 public class AttendanceForm {
 	
-	@MapUtilField(name="present")
+	@MapUtilField
 	protected String present;
-	@MapUtilField(name="absent")
+	@MapUtilField
 	protected String absent;
-	@MapUtilField(name="left")
+	@MapUtilField
 	protected String left;
-	@MapUtilField(name="completionDate")
+	@MapUtilField
 	protected String completionDate;
 	
 	

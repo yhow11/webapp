@@ -1,21 +1,19 @@
 package com.fingerprint.keymanagement.service;
 
 import com.fingerprint.keymanagement.mapper.KeyMapper;
-import com.fingerprint.keymanagement.mapper.ValueMapper;
 import com.fingerprint.keymanagement.object.KeyForm;
 import com.fingerprint.object.ResponseForm;
 
+import common.query.util.QueryUtil;
 import service.keymanagement.KeyManagementService;
 
 public class KeyValueManagementService {
 
 	private KeyMapper keyMapper;
-	private ValueMapper valueMapper;
 	private KeyManagementService keyManagementService;
-	public KeyValueManagementService(KeyMapper keyMapper, ValueMapper valueMapper, KeyManagementService keyManagementService) {
+	public KeyValueManagementService(KeyMapper keyMapper, KeyManagementService keyManagementService) {
 		// TODO Auto-generated constructor stub
 		this.keyMapper = keyMapper;
-		this.valueMapper = valueMapper;
 		this.keyManagementService = keyManagementService;
 		
 	}
@@ -29,10 +27,10 @@ public class KeyValueManagementService {
 		return response;
 	}
 	
-	public ResponseForm<KeyForm> getAllByPagination(String start, String end) throws Exception{
+	public ResponseForm<KeyForm> getAll(String key, String offset, String limit) throws Exception{
 		ResponseForm<KeyForm> response =  new ResponseForm<KeyForm>();
 		response.setStatus(true);
-		response.getData().addAll(keyMapper.unmarshall(keyManagementService.getAll(Long.valueOf(start), Long.valueOf(end))));
+		response.getData().addAll(keyMapper.unmarshall(keyManagementService.getAll(key, Long.valueOf(offset), Long.valueOf(limit))));
 		return response;
 	}
 	
@@ -57,7 +55,7 @@ public class KeyValueManagementService {
 	public ResponseForm<KeyForm> delete(String key) throws Exception{
 		ResponseForm<KeyForm> response =  new ResponseForm<KeyForm>();
 		response.setStatus(true);
-		keyManagementService.delete(key);
+		keyManagementService.remove(key);
 		return response;
 	}
 }

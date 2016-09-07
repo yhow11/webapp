@@ -17,6 +17,9 @@ import com.inctool.common.form.ResponseForm;
 import com.inctool.management.form.MemberForm;
 import com.inctool.management.service.MemberService;
 
+import common.query.form.FormParam;
+import common.query.form.FormResponse;
+
 @Controller
 @RequestMapping("api/member")
 public class MemberController {
@@ -25,13 +28,8 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@RequestMapping(value = "getAll", method = RequestMethod.POST)
-    public @ResponseBody ResponseForm<MemberForm> getAll() throws Exception {
-       
-        ResponseForm<MemberForm> response = new ResponseForm<MemberForm>();
-        response.setData(memberService.getAll());
-        response.setMessage("SUCCESS");
-        response.setStatus(true);
-        return response;
+    public @ResponseBody FormResponse<MemberForm> getAll(@RequestBody FormParam<MemberForm> param) throws Exception {
+        return memberService.getAll(param);
     }
 	@RequestMapping(value = "get", method = RequestMethod.POST)
     public @ResponseBody ResponseForm<MemberForm> get(@RequestParam("id") String id) throws Exception {
@@ -39,8 +37,8 @@ public class MemberController {
         ResponseForm<MemberForm> response = new ResponseForm<MemberForm>();
         if(id != null && id != "") {
         	List<MemberForm> memberForms = new ArrayList<>();
-        	MemberForm memberForm = memberService.get(id);
-        	memberForms.add(memberForm);
+//        	MemberForm memberForm = memberService.get(id);
+//        	memberForms.add(memberForm);
         	response.setData(memberForms);
         } else {
         	response.setData(getMemberTemplate());
@@ -58,7 +56,7 @@ public class MemberController {
         response.setMessage("SUCCESS");
         response.setStatus(true);
         try {
-        	memberService.remove(id);
+//        	memberService.remove(id);
         } catch (Exception e) {
         	response.setMessage("FAILED");
         	 response.setStatus(false);
@@ -75,13 +73,10 @@ public class MemberController {
         return response;
     }
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-    public @ResponseBody ResponseForm<MemberForm> get(@RequestBody MemberForm memberForm) throws Exception {
+    public @ResponseBody FormResponse<MemberForm> get(@RequestBody MemberForm memberForm) throws Exception {
        
-        ResponseForm<MemberForm> response = new ResponseForm<MemberForm>();
-        List<MemberForm> memberForms = new ArrayList<>();
-        memberForms.add(memberService.save(memberForm));
-        response.setData(memberForms);
-        response.setMessage("SUCCESS");
+		FormResponse<MemberForm> response = new FormResponse<>();
+        response.getData().add(memberService.save(memberForm));
         response.setStatus(true);
         return response;
     }

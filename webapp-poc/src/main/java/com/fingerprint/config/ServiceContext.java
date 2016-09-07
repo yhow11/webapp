@@ -3,9 +3,11 @@ package com.fingerprint.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.fingerprint.event.service.EventService;
 import com.fingerprint.event.service.impl.EventServiceImpl;
@@ -17,25 +19,25 @@ import com.fingerprint.urlmanagement.service.URLManagementService;
 import com.fingerprint.util.service.impl.KafkaService;
 
 import service.keymanagement.KeyManagementService;
-import service.keymanagement.impl.KeyManagementServiceImpl;
-import service.urlmanagement.URLService;
-import service.urlmanagement.impl.URLImportServiceImpl;
-import service.urlmanagement.impl.URLSiteMapServiceImpl;
-import service.urlmanagement.impl.URLTaggedServiceImpl;
-import service.urlmanagement.model.URLImportModel;
-import service.urlmanagement.model.URLTaggedModel;
+import service.keymanagement.impl.KeyManagementPhoenixServiceImpl;
+import service.urlmanagement.URLImportService;
+import service.urlmanagement.URLSiteMapService;
+import service.urlmanagement.URLTaggedService;
+import service.urlmanagement.impl.URLImportPhoenixServiceImpl;
+import service.urlmanagement.impl.URLSiteMapJAXBServiceImpl;
+import service.urlmanagement.impl.URLTaggedPhoenixServiceImpl;
 import usertracker.browser.service.AnonymousVisitorService;
 import usertracker.browser.service.BrowserFPService;
 import usertracker.browser.service.DeviceFPService;
 import usertracker.browser.service.SessionService;
 import usertracker.browser.service.VisitorLogService;
 import usertracker.browser.service.WebEventService;
-import usertracker.browser.service.impl.AnonymousVisitorServiceImpl;
-import usertracker.browser.service.impl.BrowserFPServiceImpl;
-import usertracker.browser.service.impl.DeviceFPServiceImpl;
-import usertracker.browser.service.impl.SessionServiceImpl;
-import usertracker.browser.service.impl.VisitorLogServiceImpl;
-import usertracker.browser.service.impl.WebEventServiceImpl;
+import usertracker.browser.service.impl.AnonymousVisitorPhoenixServiceImpl;
+import usertracker.browser.service.impl.BrowserFPPhoenixServiceImpl;
+import usertracker.browser.service.impl.DeviceFPPhoenixServiceImpl;
+import usertracker.browser.service.impl.SessionPhoenixServiceImpl;
+import usertracker.browser.service.impl.VisitorLogPhoenixServiceImpl;
+import usertracker.browser.service.impl.WebEventPhoenixServiceImpl;
 
 @Configuration
 @PropertySource({ "classpath:com/fingerprint/properties/application.properties",
@@ -51,6 +53,10 @@ public class ServiceContext {
 	@Autowired
 	private DaoContext context;
 
+
+	@Autowired
+	private PhoenixContext phoenixContext;
+	
 	@Autowired
 	private ConfigContext configContext;
 
@@ -74,32 +80,32 @@ public class ServiceContext {
 
 	@Bean
 	public VisitorLogService visitorLogService() throws Exception {
-		return new VisitorLogServiceImpl(context.phoenixDaoImpl());
+		return new VisitorLogPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 
 	@Bean
 	public WebEventService webEventService() throws Exception {
-		return new WebEventServiceImpl(context.phoenixDaoImpl());
+		return new WebEventPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 
 	@Bean
 	public SessionService sessionService() throws Exception {
-		return new SessionServiceImpl(context.phoenixDaoImpl());
+		return new SessionPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 
 	@Bean
 	public AnonymousVisitorService anonymousVisitorService() throws Exception {
-		return new AnonymousVisitorServiceImpl(context.phoenixDaoImpl());
+		return new AnonymousVisitorPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 
 	@Bean
 	public BrowserFPService browserFPService() throws Exception {
-		return new BrowserFPServiceImpl(context.phoenixDaoImpl());
+		return new BrowserFPPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 
 	@Bean
 	public DeviceFPService deviceFPService() throws Exception {
-		return new DeviceFPServiceImpl(context.phoenixDaoImpl());
+		return new DeviceFPPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 
 	@Bean
@@ -110,27 +116,27 @@ public class ServiceContext {
 
 	@Bean
 	public KeyManagementService keyManagementService() throws Exception {
-		return new KeyManagementServiceImpl(context.phoenixDaoImpl());
+		return new KeyManagementPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 	
 	@Bean
 	public KeyValueManagementService keyValueManagementService() throws Exception {
-		return new KeyValueManagementService(mapperContext.keyMapper(), mapperContext.valueMapper(), keyManagementService());
+		return new KeyValueManagementService(mapperContext.keyMapper(), keyManagementService());
 	}
 	
 	@Bean
-	public URLService<URLImportModel> URLImportService() throws Exception {
-		return new URLImportServiceImpl(context.phoenixDaoImpl());
+	public URLImportService URLImportService() throws Exception {
+		return new URLImportPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 	
 	@Bean
-	public URLService<URLTaggedModel> URLTaggedService() throws Exception {
-		return new URLTaggedServiceImpl(context.phoenixDaoImpl());
+	public URLTaggedService URLTaggedService() throws Exception {
+		return new URLTaggedPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 	
 	@Bean
-	public URLService<URLImportModel> URLSiteMapService() throws Exception {
-		return new URLSiteMapServiceImpl(context.jaxbDao());
+	public URLSiteMapService URLSiteMapService() throws Exception {
+		return new URLSiteMapJAXBServiceImpl(context.jaxbDao());
 	}
 	
 	@Bean

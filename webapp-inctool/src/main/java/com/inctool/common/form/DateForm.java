@@ -3,20 +3,21 @@ package com.inctool.common.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inctool.common.annotation.MapUtilField;
 import com.inctool.common.enums.WorshipServiceEnum;
+
+import common.mapper.annotation.MapUtilField;
 
 public class DateForm {
 
-	@MapUtilField(name="id")
+	@MapUtilField
 	private String id;
-	@MapUtilField(name="date")
+	@MapUtilField
 	private String date;
-	@MapUtilField(name="startDate")
+	@MapUtilField
 	private String startDate;
-	@MapUtilField(name="endDate")
+	@MapUtilField
 	private String endDate;
-	@MapUtilField(name="status")
+	@MapUtilField
 	private String status = WorshipServiceEnum.NA.toString();
 	
 	private List<DateForm> absents = new ArrayList<DateForm>();

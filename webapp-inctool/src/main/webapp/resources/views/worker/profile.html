@@ -1,0 +1,66 @@
+<form name="workerForm" layout-gt-sm="row">
+	<div>
+		<md-card>
+			  <md-toolbar class="md-primary">
+			     <div class="md-toolbar-tools j-fill-white">
+			      <h2 class="j-color-green">Personal Information</h2>
+			    </div>
+			  </md-toolbar>
+		     <md-card-content layout="column" layout-margin >
+		     	
+		        <div >
+	     			<md-input-container class="md-block" >
+						<label>ID Number</label> <input ng-model="worker.id" required ng-pattern="/^\d+$/" name="id">
+						<div ng-messages="workerForm.id.$error">
+							<div ng-message="required">Please enter value.</div>
+							<div ng-message="pattern">Please enter numeric values only.</div>
+						</div>
+					</md-input-container>
+					<md-input-container class="md-block" >
+						<label>Name</label> <input ng-model="worker.name" >
+					</md-input-container>
+	     		</div>
+		     </md-card-content>
+		 </md-card>
+		 
+	</div>
+	<div>
+		<md-card>
+			  <md-toolbar class="md-primary">
+			     <div class="md-toolbar-tools j-fill-white">
+			      <h2 class="j-color-green">Graph</h2>
+			    </div>
+			  </md-toolbar>
+		     <md-card-content layout="column" layout-margin >
+		     	
+		     </md-card-content>
+		 </md-card>
+	</div>
+</form>
+
+ 
+ 
+ <md-fab-speed-dial md-open="isSpeedDialOpen" md-direction="up"
+                     class="md-fling position-fix-left-bottom">
+    <md-fab-trigger>
+      <md-button aria-label="menu" class="md-fab md-warn">
+        <md-icon md-svg-src="resources/img/icons/menu.svg"></md-icon>
+      </md-button>
+    </md-fab-trigger>
+    <md-fab-actions>
+      <md-button aria-label="Save" class="md-fab md-raised md-mini" ng-click="save()">
+        <md-icon style="color: rgb(76, 175, 80);"
+            aria-label="save"
+            class="material-icons step">
+             done
+        </md-icon>
+      </md-button>
+      <md-button ui-sref="encoding" aria-label="Cancel" class="md-fab md-raised md-mini">
+         <md-icon style="color: rgb(76, 175, 80);"
+            aria-label="save"
+            class="material-icons step">
+             clear
+        </md-icon>
+      </md-button>
+    </md-fab-actions>
+  </md-fab-speed-dial>

@@ -4,6 +4,7 @@ import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixID;
 import helper.phoenix.annotation.entity.PhoenixSequence;
 import helper.phoenix.annotation.entity.PhoenixTable;
+import helper.phoenix.annotation.query.PhoenixDistinctColumn;
 import helper.phoenix.annotation.query.PhoenixPaginated;
 
 @PhoenixTable(table="testTable")
@@ -13,6 +14,7 @@ public class TestModel{
 	@PhoenixSequence
 	@PhoenixColumn(type="BIGINT")
 	private Long id;
+	@PhoenixDistinctColumn
 	@PhoenixColumn(type="INTEGER")
 	private int count;
 	public Long getId() {

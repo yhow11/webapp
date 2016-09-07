@@ -19,12 +19,12 @@ import usertracker.browser.service.DeviceFPService;
 import usertracker.browser.service.SessionService;
 import usertracker.browser.service.VisitorLogService;
 import usertracker.browser.service.WebEventService;
-import usertracker.browser.service.impl.AnonymousVisitorServiceImpl;
-import usertracker.browser.service.impl.BrowserFPServiceImpl;
-import usertracker.browser.service.impl.DeviceFPServiceImpl;
-import usertracker.browser.service.impl.SessionServiceImpl;
-import usertracker.browser.service.impl.VisitorLogServiceImpl;
-import usertracker.browser.service.impl.WebEventServiceImpl;
+import usertracker.browser.service.impl.AnonymousVisitorPhoenixServiceImpl;
+import usertracker.browser.service.impl.BrowserFPPhoenixServiceImpl;
+import usertracker.browser.service.impl.DeviceFPPhoenixServiceImpl;
+import usertracker.browser.service.impl.SessionPhoenixServiceImpl;
+import usertracker.browser.service.impl.VisitorLogPhoenixServiceImpl;
+import usertracker.browser.service.impl.WebEventPhoenixServiceImpl;
 
 @Configuration
 @PropertySource({"classpath:kafka.properties", "classpath:spark.properties"})
@@ -37,35 +37,38 @@ public class ServiceConfig {
 	private String metaDataBrokerList;
 	
 	@Autowired
+	private PhoenixContext phoenixContext;
+	
+	@Autowired
 	private DaoConfig daoConfig;
 	
 	@Bean
 	public VisitorLogService visitorLogService() throws Exception{
-		return new VisitorLogServiceImpl(daoConfig.phoenixDaoImpl());
+		return new VisitorLogPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 	@Bean
 	public WebEventService webEventService() throws Exception{
-		return new WebEventServiceImpl(daoConfig.phoenixDaoImpl());
+		return new WebEventPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 	
 	@Bean
 	public SessionService sessionService() throws Exception{
-		return new SessionServiceImpl(daoConfig.phoenixDaoImpl());
+		return new SessionPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 	
 	@Bean
 	public AnonymousVisitorService anonymousVisitorService() throws Exception{
-		return new AnonymousVisitorServiceImpl(daoConfig.phoenixDaoImpl());
+		return new AnonymousVisitorPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 	
 	@Bean
 	public BrowserFPService browserFPService() throws Exception{
-		return new BrowserFPServiceImpl(daoConfig.phoenixDaoImpl());
+		return new BrowserFPPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 	
 	@Bean
 	public DeviceFPService deviceFPService() throws Exception{
-		return new DeviceFPServiceImpl(daoConfig.phoenixDaoImpl());
+		return new DeviceFPPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 	
 	@Bean

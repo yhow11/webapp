@@ -3,29 +3,34 @@ package com.inctool.management.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inctool.common.annotation.MapUtilField;
 import com.inctool.common.form.DateForm;
 import com.inctool.management.enums.MemberEnum;
 
-public class MemberForm extends PersonForm {
+import common.mapper.annotation.MapUtilField;
+import common.query.form.FormParam;
 
-	@MapUtilField(name="id")
+public class MemberForm extends PersonForm{
+
+	@MapUtilField
 	private String id;
-	@MapUtilField(name="reference")
+	@MapUtilField
 	private String reference;
-	@MapUtilField(name="status")
+	@MapUtilField
 	private String status = MemberEnum.GUEST.toString();
-	@MapUtilField(name="createdDate")
+	@MapUtilField
 	private String createdDate;
 	
-	@MapUtilField(name="dcode")
+	@MapUtilField
 	private String dcode;
-	@MapUtilField(name="lcode")
+	@MapUtilField
 	private String lcode;
-	@MapUtilField(name="area")
+	@MapUtilField
 	private String area;
-	@MapUtilField(name="group")
+	@MapUtilField
 	private String group;
+	
+	private String page;
+	private String limit;
 	
 	private AttendanceForm r310Attendance;
 	private AttendanceForm r305Attendance;

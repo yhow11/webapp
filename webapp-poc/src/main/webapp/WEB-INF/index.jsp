@@ -77,7 +77,7 @@
 			Profile Demo </md-button> </md-menu-item> </md-menu-content> </md-menu> <md-menu>
 			<button ng-click="$mdOpenMenu()">Admin</button>
 			<md-menu-content> <md-menu-item> <md-button
-				ui-sref="monitoring" aria-label="Profile"> History </md-button> </md-menu-item> <md-menu-divider></md-menu-divider>
+				ui-sref="logs" aria-label="Logs"> Logs </md-button> </md-menu-item> <md-menu-divider></md-menu-divider>
 			<md-menu-item> <md-menu> <md-button
 				ng-click="$mdOpenMenu()"> Key Management </md-button> <md-menu-content>
 			<md-menu-item> <md-button
