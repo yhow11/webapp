@@ -6,8 +6,8 @@
  */
 angular.module('fingerPrintApp').controller(
 		'ProfileController',
-		function($rootScope, $scope, eventService, Reddit) {
-			$scope.reddit = new Reddit();
+		function($rootScope, $scope, eventService, ProfileInfiniteScroll) {
+			$scope.profileInfiniteScroll = new ProfileInfiniteScroll();
 			var params = FingerPrint.getData();
 			eventService.getAnonymousUser(params).then(function(data){
 				if(data.data.status) {
@@ -34,7 +34,7 @@ angular.module('fingerPrintApp').controller(
 									  myItems.push(items[i]);	 
 								 }
 						    }
-							$scope.reddit.items = myItems.concat($scope.reddit.items);
+							$scope.profileInfiniteScroll.items = myItems.concat($scope.profileInfiniteScroll.items);
 							$scope.$apply();
 						}
 					});

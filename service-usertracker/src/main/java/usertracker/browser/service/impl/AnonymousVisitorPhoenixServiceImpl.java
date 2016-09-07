@@ -32,7 +32,7 @@ public class AnonymousVisitorPhoenixServiceImpl extends PhoenixDaoImpl implement
 	public AnonymousVisitorModel get(String id) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<AnonymousVisitorModel> param = new QueryParam<AnonymousVisitorModel>(AnonymousVisitorModel.class);
-		param.getModel().setId(id);
+		param.getModel().setId("%"+id);
 		return super.searchOne(param);
 	}
 
