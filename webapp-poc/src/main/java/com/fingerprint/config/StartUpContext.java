@@ -17,9 +17,9 @@ public class StartUpContext implements ApplicationListener<ContextRefreshedEvent
 
 	@Value("${auto.create.table.class}")
 	private String tableClasses;
-//	
-//	@Autowired
-//	private SimplePhoenixDaoImpl simplePhoenixDaoImpl;
+	
+	@Autowired
+	private SimplePhoenixDaoImpl simplePhoenixDaoImpl;
 	
 	private static boolean isTablesCreated = false;
 	
@@ -27,7 +27,7 @@ public class StartUpContext implements ApplicationListener<ContextRefreshedEvent
 		try{
 			if(!Strings.isNullOrEmpty(tableClasses) && !isTablesCreated){
 				for(String clazzName: tableClasses.split(",")){
-//					simplePhoenixDaoImpl.createTable(Class.forName(clazzName));
+					simplePhoenixDaoImpl.createTable(Class.forName(clazzName));
 				}
 				isTablesCreated = true;
 			}

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.Transactional;
 
 import helper.phoenix.dao.impl.PhoenixDaoImpl;
 import usertracker.browser.model.AnonymousVisitorModel;
@@ -17,7 +16,6 @@ import usertracker.browser.model.VisitorLogModel;
 import usertracker.browser.model.WebEventModel;
 
 @Configuration
-@Transactional
 public class StartUpContext implements ApplicationListener<ApplicationEvent> {
 
 	@Autowired
@@ -32,12 +30,12 @@ public class StartUpContext implements ApplicationListener<ApplicationEvent> {
 		Logger.getLogger("org.apache.spark.streaming.scheduler.JobGenerator").setLevel(Level.INFO);
 		
 		try {
-			phoenixDaoImpl.createTable(VisitorLogModel.class);
-			phoenixDaoImpl.createTable(AnonymousVisitorModel.class);
-			phoenixDaoImpl.createTable(BrowserFPModel.class);
-			phoenixDaoImpl.createTable(DeviceFPModel.class);
-			phoenixDaoImpl.createTable(SessionModel.class);
-			phoenixDaoImpl.createTable(WebEventModel.class);
+//			phoenixDaoImpl.createTable(VisitorLogModel.class);
+//			phoenixDaoImpl.createTable(AnonymousVisitorModel.class);
+//			phoenixDaoImpl.createTable(BrowserFPModel.class);
+//			phoenixDaoImpl.createTable(DeviceFPModel.class);
+//			phoenixDaoImpl.createTable(SessionModel.class);
+//			phoenixDaoImpl.createTable(WebEventModel.class);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
