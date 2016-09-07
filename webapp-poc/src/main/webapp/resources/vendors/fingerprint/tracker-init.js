@@ -21,7 +21,7 @@ function loadScript(url, callback) {
 	document.getElementsByTagName("head")[0].appendChild(script);
 }
 
-var baseURL = 'http://54.187.110.176:8191/webapp-poc/';
+var baseURL = 'http://54.213.0.17:8191/webapp-poc/';
 var fingerprintDir = baseURL+'resources/vendors/fingerprint/';
 var cryptoDir = baseURL+'resources/vendors/crypto/';
 var websocketDir = baseURL+'resources/vendors/websocket/';
