@@ -2,16 +2,13 @@ package com.fingerprint.keymanagement.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.fingerprint.keymanagement.object.KeyForm;
-import com.fingerprint.keymanagement.object.ValueForm;
-import com.fingerprint.mapper.Mapper;
 
-import joptsimple.internal.Strings;
+import common.mapper.ListMapper;
 import service.keymanagement.model.KeyModel;
 
-public class KeyMapper implements Mapper<KeyForm, KeyModel> {
+public class KeyMapper implements ListMapper<KeyModel, KeyForm> {
 
 	private ValueMapper valueMapper;
 	

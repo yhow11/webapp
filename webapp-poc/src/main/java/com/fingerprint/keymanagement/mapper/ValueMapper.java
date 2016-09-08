@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import com.fingerprint.keymanagement.object.ValueForm;
-import com.fingerprint.mapper.OneToManyMapper;
 
+import common.mapper.OneToManyMapper;
 import joptsimple.internal.Strings;
 import service.keymanagement.model.KeyModel;
 

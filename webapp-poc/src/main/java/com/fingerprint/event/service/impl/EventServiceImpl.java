@@ -8,28 +8,24 @@ import com.fingerprint.event.service.EventService;
 import usertracker.browser.model.AnonymousVisitorModel;
 import usertracker.browser.model.BrowserFPModel;
 import usertracker.browser.model.SessionModel;
-import usertracker.browser.model.VisitorLogModel;
 import usertracker.browser.model.WebEventModel;
 import usertracker.browser.service.AnonymousVisitorService;
 import usertracker.browser.service.BrowserFPService;
 import usertracker.browser.service.DeviceFPService;
 import usertracker.browser.service.SessionService;
-import usertracker.browser.service.VisitorLogService;
 import usertracker.browser.service.WebEventService;
 
 public class EventServiceImpl implements EventService {
 
-	private VisitorLogService visitorLogService;
 	private AnonymousVisitorService anonymousVisitorService; 
 	private WebEventService webEventService;
 	private BrowserFPService browserFPService; 
 	private DeviceFPService deviceFPService;
 	private SessionService sessionService;
 	
-	public EventServiceImpl(VisitorLogService visitorLogService, AnonymousVisitorService anonymousVisitorService,
+	public EventServiceImpl(AnonymousVisitorService anonymousVisitorService,
 			WebEventService webEventService, BrowserFPService browserFPService, DeviceFPService deviceFPService,
 			SessionService sessionService) {
-		this.visitorLogService = visitorLogService;
 		this.anonymousVisitorService = anonymousVisitorService;
 		this.webEventService = webEventService;
 		this.browserFPService = browserFPService;
@@ -72,13 +68,6 @@ public class EventServiceImpl implements EventService {
 		}
 		return null;
 	}
-
-	@Override
-	public List<VisitorLogModel> getVisitorLogs(String start, String end) throws Exception {
-		// TODO Auto-generated method stub
-		return visitorLogService.getAll(Long.valueOf(start), Long.valueOf(end));
-	}
-	
 	@Override
 	public List<SessionModel> getSessions(String sessionID, String browserFP) throws Exception {
 		// TODO Auto-generated method stub

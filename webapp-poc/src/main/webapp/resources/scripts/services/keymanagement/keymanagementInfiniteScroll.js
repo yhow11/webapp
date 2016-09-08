@@ -15,7 +15,7 @@ angular.module('fingerPrintApp').
 	  if (this.busy) return;
 	    this.busy = true;
     
-	    keymanagementService.getAllByPagination('0', this.limit, '').then(function(data){
+	    keymanagementService.getAllByPagination('0', this.limit).then(function(data){
     	if(data.data){
     		if(data.data.status) {
     			self.items = data.data.data;
@@ -33,7 +33,7 @@ angular.module('fingerPrintApp').
 	  if (this.busy) return;
 	    this.busy = true;
     
-	    keymanagementService.getAllByPagination(this.after,  String(Number(this.after) + Number(this.limit)), value).then(function(data){
+	    keymanagementService.getAll(this.after,  String(Number(this.after) + Number(this.limit))).then(function(data){
     	if(data.data){
     		if(data.data.status) {
     			var items = data.data.data;

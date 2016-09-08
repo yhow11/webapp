@@ -150,7 +150,10 @@ public class PhoenixUtil {
 			Object value = PropertyUtils.getProperty(object, name);
 			if (value != null) {
 				if (PropertyUtils.getPropertyType(object, name).equals(String.class)) {
-					conditions.add(name + " like " + getFieldValue(object, name));
+					String orTemplate = "(%s OR %s)";
+					String likeClause = name + " like " + getFieldValue(object, name);
+					String equalsClause = name + " = " + getFieldValue(object, name);
+					conditions.add(String.format(orTemplate, likeClause, equalsClause));
 				} else {
 					conditions.add(name + " = " + getFieldValue(object, name));
 				}

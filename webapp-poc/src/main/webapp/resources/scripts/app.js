@@ -81,6 +81,7 @@ angular
 															name : 'fingerPrintApp',
 															files : [
 																	'resources/scripts/services/eventService.js',
+																	'resources/scripts/services/sessionService.js',
 																	'resources/scripts/services/profileInfiniteScroll.js',
 																	'resources/scripts/controllers/profileController.js',
 

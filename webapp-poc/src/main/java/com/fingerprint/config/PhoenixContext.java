@@ -3,9 +3,6 @@ package com.fingerprint.config;
 import java.util.Random;
 
 import org.hibernate.SessionFactory;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DataSourceConnectionProvider;
-import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,13 +10,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import helper.phoenix.dao.impl.PhoenixDaoImpl;
-import usertracker.browser.model.VisitorLogModel;
 
 @Configuration
 @EnableTransactionManagement

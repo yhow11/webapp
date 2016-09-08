@@ -18,7 +18,7 @@ import service.membermanagement.model.OptionModel;
 public class MemberMapperImpl implements MemberMapper {
 
 	@Override
-	public INCMemberModel marshal(MemberForm memberForm) throws Exception {
+	public INCMemberModel marshall(MemberForm memberForm) throws Exception {
 		// TODO Auto-generated method stub
 		if(memberForm != null) {
 			INCMemberModel model = MapUtil.map(INCMemberModel.class, memberForm);
@@ -45,7 +45,7 @@ public class MemberMapperImpl implements MemberMapper {
 	}
 
 	@Override
-	public MemberForm unmarshal(INCMemberModel memberModel) throws Exception {
+	public MemberForm unmarshall(INCMemberModel memberModel) throws Exception {
 		// TODO Auto-generated method stub
 		if(memberModel != null) {
 			MemberForm form = MapUtil.map(MemberForm.class, memberModel);
@@ -72,23 +72,35 @@ public class MemberMapperImpl implements MemberMapper {
 	}
 
 	@Override
-	public List<INCMemberModel> marshal(List<MemberForm> memberForms) throws Exception {
+	public List<INCMemberModel> marshall(List<MemberForm> memberForms) throws Exception {
 		// TODO Auto-generated method stub
 		List<INCMemberModel> memberModels = new ArrayList<>();
 		for (MemberForm memberForm : memberForms) {
-			memberModels.add(this.marshal(memberForm));
+			memberModels.add(this.marshall(memberForm));
 		}
 		return memberModels;
 	}
 
 	@Override
-	public List<MemberForm> unmarshal(List<INCMemberModel> incModels) throws Exception {
+	public List<MemberForm> unmarshall(List<INCMemberModel> incModels) throws Exception {
 		// TODO Auto-generated method stub
 		List<MemberForm> memberForms = new ArrayList<>();
 		for (INCMemberModel memberModel : incModels) {
-			memberForms.add(this.unmarshal(memberModel));
+			memberForms.add(this.unmarshall(memberModel));
 		}
 		return memberForms;
+	}
+
+	@Override
+	public INCMemberModel marshall(MemberForm e, INCMemberModel target) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MemberForm unmarshall(INCMemberModel t, MemberForm target) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

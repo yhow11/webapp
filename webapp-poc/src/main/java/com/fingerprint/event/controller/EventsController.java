@@ -40,17 +40,6 @@ public class EventsController {
 	private SimpMessagingTemplate template;
 	
 	
-	@RequestMapping(value = "event/getAll", method = RequestMethod.GET)
-	public @ResponseBody  ResponseForm<VisitorLogModel> getAll(@RequestParam("start") String start, @RequestParam("end") String end) throws Exception {
-		
-		ResponseForm<VisitorLogModel> response =  new ResponseForm<VisitorLogModel>();
-		List<VisitorLogModel> events =  eventService.getVisitorLogs(start, end);
-
-		response.setStatus(true);
-		response.setData(events);
-		
-		return response;
-	}
 	
 	@RequestMapping(value = "event/getWebEvents", method = RequestMethod.POST)
 	public @ResponseBody  ResponseForm<WebEventModel> getWebEvents(@RequestBody FingerPrintFormParam fingerPrintFormParam, @RequestParam("start") String start, @RequestParam("end") String end) throws Exception {
@@ -71,21 +60,6 @@ public class EventsController {
 	}
 	
 
-	@RequestMapping(value = "event/getSessions", method = RequestMethod.POST)
-	public @ResponseBody  ResponseForm<SessionModel> getSessions(@RequestBody FingerPrintFormParam fingerPrintFormParam) throws Exception {
-		
-		ResponseForm<SessionModel> response =  new ResponseForm<SessionModel>();
-		List<SessionModel> sessions = eventService.getSessions(fingerPrintFormParam.getSessionID(), fingerPrintFormParam.getBrowserFP());
-		
-		if(sessions != null) {
-			response.setStatus(true);
-			response.setData(sessions);
-		} else {
-			response.setStatus(false);
-	    	response.setMessage(ResponseForm.NO_DATA);
-		}
-		return response;
-	}
 	
 	@RequestMapping(value = "event/getAnonymousUser", method = RequestMethod.POST)
 	public @ResponseBody  ResponseForm<FingerPrintSectionForm> getAll(@RequestBody FingerPrintFormParam fingerPrintFormParam) throws Exception {
@@ -96,23 +70,6 @@ public class EventsController {
 	
 		return response;
 	}
-	/*@RequestMapping(value = "event/test", method = RequestMethod.GET)
-	public @ResponseBody  ResponseForm<VisitorLogModel> test() throws Exception {
-		List<VisitorLogModel> events = visitorLogService.find(VisitorLogModel.class, "visited","type");
-		ResponseForm<VisitorLogModel> response = new ResponseForm<>();
-		
-        RestTemplate rt = new RestTemplate();
-
-        rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-
-        rt.getMessageConverters().add(new StringHttpMessageConverter());
-
-        String uri = new String("http://localhost:8080/webapp-poc/notifyEvents");
-
-
-        String result = rt.postForObject(uri, events, String.class);
-		return response;
-	}*/
 	@RequestMapping(value = "notifyEvents", method = RequestMethod.POST)
 	public String notifyEvents(@RequestBody UserParam<?> data) throws Exception {
 		template.convertAndSend("/event/notifyReceivers",data);

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fingerprint.keymanagement.manager.KeyManager;
 import com.fingerprint.keymanagement.object.KeyForm;
-import com.fingerprint.keymanagement.service.KeyValueManagementService;
 import com.fingerprint.object.ResponseForm;
 
 
@@ -17,29 +17,25 @@ import com.fingerprint.object.ResponseForm;
 public class KeyManagementController {
 
 	@Autowired
-	private KeyValueManagementService keyValueManagementService;
+	private KeyManager keyManager;
 	
 	
 	@RequestMapping(value = "keymanagement/save", method = RequestMethod.POST)
 	public @ResponseBody  ResponseForm<KeyForm> save(@RequestBody KeyForm keyForm) throws Exception {
-		return keyValueManagementService.save(keyForm);
+		return keyManager.save(keyForm);
 	}
 	
-	@RequestMapping(value = "keymanagement/getAllByPagination", method = RequestMethod.GET)
-	public @ResponseBody  ResponseForm<KeyForm> getAllByPagination(@RequestParam(name="start") String start, @RequestParam(name="end") String end, @RequestParam(name="value") String value) throws Exception {
-		return keyValueManagementService.getAll(value, start, end);
-	}
 	@RequestMapping(value = "keymanagement/getAll", method = RequestMethod.GET)
-	public @ResponseBody  ResponseForm<KeyForm> getAll(@RequestParam(name="key") String key) throws Exception {
-		return keyValueManagementService.getAll(key);
+	public @ResponseBody  ResponseForm<KeyForm> getAll(@RequestParam(name="start") String start, @RequestParam(name="end") String end) throws Exception {
+		return keyManager.getAll(start, end);
 	}
-	@RequestMapping(value = "keymanagement/getByKey", method = RequestMethod.GET)
-	public @ResponseBody  ResponseForm<KeyForm> getByKey(@RequestParam(name="key") String key) throws Exception {
-		return keyValueManagementService.getByKey(key);
+	@RequestMapping(value = "keymanagement/checkExists", method = RequestMethod.GET)
+	public boolean checkExists(@RequestParam(name="key") String key) throws Exception {
+		return keyManager.checkExists(key);
 	}
 	
 	@RequestMapping(value = "keymanagement/delete", method = RequestMethod.DELETE)
 	public @ResponseBody  ResponseForm<KeyForm> delete(@RequestParam(name="key") String key) throws Exception {
-		return keyValueManagementService.delete(key);
+		return keyManager.delete(key);
 	}
 }

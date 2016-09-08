@@ -48,7 +48,7 @@ public class DeviceFPPhoenixServiceImpl extends PhoenixDaoImpl implements Device
 	public DeviceFPModel get(String id) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<DeviceFPModel> param = new QueryParam<DeviceFPModel>(DeviceFPModel.class);
-		param.getModel().setId("%"+id);
+		param.getModel().setId(id);
 		return super.searchOne(param);
 	}
 

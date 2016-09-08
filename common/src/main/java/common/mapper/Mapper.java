@@ -2,7 +2,8 @@ package common.mapper;
 
 public interface Mapper<T, E> {
 
-	public T marshal(E e) throws Exception;
-	public E unmarshal(T t) throws Exception;
-	
+	public T marshall(E param) throws Exception;
+	public E unmarshall(T param) throws Exception;
+	public T marshall(E e, T target) throws Exception;
+	public E unmarshall(T t, E target) throws Exception;
 }

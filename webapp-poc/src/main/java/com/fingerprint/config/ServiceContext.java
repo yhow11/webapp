@@ -3,21 +3,21 @@ package com.fingerprint.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.fingerprint.event.service.EventService;
 import com.fingerprint.event.service.impl.EventServiceImpl;
-import com.fingerprint.keymanagement.service.KeyValueManagementService;
+import com.fingerprint.keymanagement.manager.KeyManager;
 import com.fingerprint.management.service.JUserService;
 import com.fingerprint.management.service.impl.UserDetailsServiceImpl;
 import com.fingerprint.management.service.impl.UserServiceImpl;
 import com.fingerprint.urlmanagement.service.URLManagementService;
 import com.fingerprint.util.service.impl.KafkaService;
+import com.fingerprint.visitor.manager.AnonymousVisitorManager;
 
+import com.fingerprint.session.manager.SessionManager;
 import service.keymanagement.KeyManagementService;
 import service.keymanagement.impl.KeyManagementPhoenixServiceImpl;
 import service.urlmanagement.URLImportService;
@@ -108,20 +108,16 @@ public class ServiceContext {
 		return new DeviceFPPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 
+	
 	@Bean
 	public EventService eventService() throws Exception {
-		return new EventServiceImpl(visitorLogService(), anonymousVisitorService(), webEventService(),
+		return new EventServiceImpl(anonymousVisitorService(), webEventService(),
 				browserFPService(), deviceFPService(), sessionService());
 	}
 
 	@Bean
 	public KeyManagementService keyManagementService() throws Exception {
 		return new KeyManagementPhoenixServiceImpl(phoenixContext.sessionFactory());
-	}
-	
-	@Bean
-	public KeyValueManagementService keyValueManagementService() throws Exception {
-		return new KeyValueManagementService(mapperContext.keyMapper(), keyManagementService());
 	}
 	
 	@Bean

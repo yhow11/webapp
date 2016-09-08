@@ -44,7 +44,7 @@ public class BrowserFPPhoenixServiceImpl extends PhoenixDaoImpl implements Brows
 	public BrowserFPModel get(String id) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<BrowserFPModel> param = new QueryParam<BrowserFPModel>(BrowserFPModel.class);
-		param.getModel().setId("%"+id);
+		param.getModel().setId(id);
 		return super.searchOne(param);
 	}
 	@Override

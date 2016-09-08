@@ -35,7 +35,6 @@ public class KeyManagementPhoenixServiceImpl extends PhoenixDaoImpl implements K
 		// TODO Auto-generated method stub
 		QueryParam<KeyModel> param = new QueryParam<KeyModel>(KeyModel.class);
 		param.getModel().settKey(key);
-		param.setLimit(1L);
 		return super.searchOne(param);
 	}
 
@@ -58,19 +57,23 @@ public class KeyManagementPhoenixServiceImpl extends PhoenixDaoImpl implements K
 	}
 
 	@Override
-	public List<KeyModel> getAll(String key, Long offset, Long limit) throws Exception {
+	public List<KeyModel> getAll(Long offset, Long limit) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<KeyModel> param = new QueryParam<KeyModel>(KeyModel.class);
 		param.setLimit(limit);
 		param.setOffset(offset);
-		param.getModel().settKey("%"+key+"%");
 		return super.search(param);
 	}
 
 	@Override
-	public List<KeyModel> getAll(String key) throws Exception {
+	public boolean checkExists(String key) throws Exception {
 		// TODO Auto-generated method stub
-		return getAll(key, null, null);
+		QueryParam<KeyModel> param = new QueryParam<KeyModel>(KeyModel.class);
+		param.getModel().settKey(key);
+		if(super.searchOne(param) != null){
+			return true;
+		}
+		return false;
 	}
 
 	@Override

@@ -1,17 +1,16 @@
-package com.fingerprint.keymanagement.service;
+package com.fingerprint.keymanagement.manager;
 
 import com.fingerprint.keymanagement.mapper.KeyMapper;
 import com.fingerprint.keymanagement.object.KeyForm;
 import com.fingerprint.object.ResponseForm;
 
-import common.query.util.QueryUtil;
 import service.keymanagement.KeyManagementService;
 
-public class KeyValueManagementService {
+public class KeyManager {
 
 	private KeyMapper keyMapper;
 	private KeyManagementService keyManagementService;
-	public KeyValueManagementService(KeyMapper keyMapper, KeyManagementService keyManagementService) {
+	public KeyManager(KeyMapper keyMapper, KeyManagementService keyManagementService) {
 		// TODO Auto-generated constructor stub
 		this.keyMapper = keyMapper;
 		this.keyManagementService = keyManagementService;
@@ -27,29 +26,18 @@ public class KeyValueManagementService {
 		return response;
 	}
 	
-	public ResponseForm<KeyForm> getAll(String key, String offset, String limit) throws Exception{
+	public ResponseForm<KeyForm> getAll(String offset, String limit) throws Exception{
 		ResponseForm<KeyForm> response =  new ResponseForm<KeyForm>();
 		response.setStatus(true);
-		response.getData().addAll(keyMapper.unmarshall(keyManagementService.getAll(key, Long.valueOf(offset), Long.valueOf(limit))));
+		response.getData().addAll(keyMapper.unmarshall(keyManagementService.getAll(Long.valueOf(offset), Long.valueOf(limit))));
 		return response;
 	}
 	
-	public ResponseForm<KeyForm> getAll(String key) throws Exception{
-		ResponseForm<KeyForm> response =  new ResponseForm<KeyForm>();
-		response.setStatus(true);
-		response.getData().addAll(keyMapper.unmarshall(keyManagementService.getAll(key)));
-		return response;
-	}
-	
-	public ResponseForm<KeyForm> getByKey(String key) throws Exception{
-		ResponseForm<KeyForm> response =  new ResponseForm<KeyForm>();
-		
+	public boolean checkExists(String key) throws Exception{
 		if(keyManagementService.get(key) != null){
-			response.setStatus(false);
-		} else {
-			response.setStatus(true);
+			return true;
 		}
-		return response;
+		return false;
 	}
 	
 	public ResponseForm<KeyForm> delete(String key) throws Exception{

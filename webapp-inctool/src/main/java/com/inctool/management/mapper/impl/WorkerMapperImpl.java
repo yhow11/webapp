@@ -12,7 +12,7 @@ import service.membermanagement.model.INCWorkerModel;
 public class WorkerMapperImpl implements WorkerMapper {
 
 	@Override
-	public List<INCWorkerModel> marshal(List<WorkerForm> e) throws Exception {
+	public List<INCWorkerModel> marshall(List<WorkerForm> e) throws Exception {
 		// TODO Auto-generated method stub
 		List<INCWorkerModel> models = new ArrayList<>();
 		for(WorkerForm form: e){
@@ -22,7 +22,7 @@ public class WorkerMapperImpl implements WorkerMapper {
 	}
 
 	@Override
-	public List<WorkerForm> unmarshal(List<INCWorkerModel> t) throws Exception {
+	public List<WorkerForm> unmarshall(List<INCWorkerModel> t) throws Exception {
 		// TODO Auto-generated method stub
 		List<WorkerForm> forms = new ArrayList<>();
 		for(INCWorkerModel model: t){
@@ -32,7 +32,7 @@ public class WorkerMapperImpl implements WorkerMapper {
 	}
 
 	@Override
-	public INCWorkerModel marshal(WorkerForm e) throws Exception {
+	public INCWorkerModel marshall(WorkerForm e) throws Exception {
 		// TODO Auto-generated method stub
 		if(e != null) {
 			INCWorkerModel model = MapUtil.map(INCWorkerModel.class, e);
@@ -44,13 +44,25 @@ public class WorkerMapperImpl implements WorkerMapper {
 	}
 
 	@Override
-	public WorkerForm unmarshal(INCWorkerModel t) throws Exception {
+	public WorkerForm unmarshall(INCWorkerModel t) throws Exception {
 		// TODO Auto-generated method stub
 		if(t != null) {
 			return MapUtil.map(WorkerForm.class, t);
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public INCWorkerModel marshall(WorkerForm e, INCWorkerModel target) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public WorkerForm unmarshall(INCWorkerModel t, WorkerForm target) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

@@ -51,12 +51,12 @@ public class MemberServiceImpl implements MemberService {
 			memberForm.setR309(AttendanceUtil.fillSchedule(attendanceService, memberForm.getR309()));
 			memberForm.setR309Attendance(AttendanceUtil.fillAttendance(attendanceService, new AttendanceForm(), memberForm.getR309()));
 		}
-		return memberMapper.unmarshal(iNCMemberService.save(memberMapper.marshal(memberForm)));
+		return memberMapper.unmarshall(iNCMemberService.save(memberMapper.marshall(memberForm)));
 	}
 	@Override
 	public MemberForm get(String id)   throws Exception{
 		// TODO Auto-generated method stub
-		return memberMapper.unmarshal(iNCMemberService.get(id));
+		return memberMapper.unmarshall(iNCMemberService.get(id));
 	}
 	
 	public static void main(String []args) {
@@ -88,7 +88,7 @@ public class MemberServiceImpl implements MemberService {
 		Long limit = Long.valueOf(param.getLimit());
 		Long page = Long.valueOf(param.getPage());
 		Long offset = (page*limit)-limit;
-		INCMemberModel model = memberMapper.marshal(param.getData());
+		INCMemberModel model = memberMapper.marshall(param.getData());
 		
 		QueryParam<INCMemberModel> queryParam = new QueryParam<>(INCMemberModel.class);
 		queryParam.setLimit(limit);
@@ -99,7 +99,7 @@ public class MemberServiceImpl implements MemberService {
 		FormResponse<MemberForm> response = new FormResponse<>();
 		Long totalCount = iNCMemberService.getCount(queryParam);
 		response.setTotalCount(String.valueOf(totalCount));
-		response.setData(memberMapper.unmarshal(iNCMemberService.getAll(queryParam)));
+		response.setData(memberMapper.unmarshall(iNCMemberService.getAll(queryParam)));
 		return response;
 	}
 

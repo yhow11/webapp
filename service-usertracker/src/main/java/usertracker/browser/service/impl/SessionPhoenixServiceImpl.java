@@ -73,7 +73,7 @@ public class SessionPhoenixServiceImpl extends PhoenixDaoImpl implements Session
 	public List<SessionModel> getAll(String avID) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<SessionModel> param = new QueryParam<SessionModel>(SessionModel.class);
-		param.getModel().setAnonymousVisitorID("%"+avID);
+		param.getModel().setAnonymousVisitorID(avID);
 		return super.search(param);
 	}
 

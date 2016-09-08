@@ -13,7 +13,6 @@ public interface EventService {
 
 	public AnonymousVisitorModel getAV(String sessionID, String browserFP) throws Exception;
 	public List<WebEventModel> getWebEvents(String sessionID, String browserFP, String start, String end) throws Exception;
-	public List<VisitorLogModel> getVisitorLogs(String start, String end) throws Exception;
 	public List<SessionModel> getSessions(String sessionID, String browserFP) throws Exception;
 	public FingerPrintSectionForm createFingerPrintSectionForm(String sessionID, String browserFP) throws Exception;
 }
