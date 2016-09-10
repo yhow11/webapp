@@ -31,14 +31,12 @@ public class ServiceConfig {
 	@Value("${kafka.topics}")
 	private String topics;
 	
-	@Value("${kafka.metadata.broker.list}")
+	@Value("${kafka.zookeepers}")
 	private String metaDataBrokerList;
 	
 	@Autowired
 	private PhoenixContext phoenixContext;
 	
-	@Autowired
-	private DaoConfig daoConfig;
 	
 	@Bean
 	public VisitorLogService visitorLogService() throws Exception{

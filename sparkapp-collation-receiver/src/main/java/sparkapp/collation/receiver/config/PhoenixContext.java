@@ -7,15 +7,19 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import usertracker.browser.model.VisitorLogModel;
 
 @Configuration
+@EnableTransactionManagement
+@ComponentScan({"helper.phoenix.dao.impl"})
 @PropertySource({"classpath:phoenix.properties"})
 public class PhoenixContext {
 
@@ -25,8 +29,6 @@ public class PhoenixContext {
 	@Value("${phoenix.url}")
 	private String URL;
 	
-    @Autowired
-    private AppContext configContext;
     
     @Bean
     public DriverManagerDataSource dataSource() {
