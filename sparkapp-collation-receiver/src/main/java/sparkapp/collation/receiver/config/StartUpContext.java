@@ -8,12 +8,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 
 import helper.phoenix.dao.impl.PhoenixDaoImpl;
-import usertracker.browser.model.AnonymousVisitorModel;
-import usertracker.browser.model.BrowserFPModel;
-import usertracker.browser.model.DeviceFPModel;
-import usertracker.browser.model.SessionModel;
-import usertracker.browser.model.VisitorLogModel;
-import usertracker.browser.model.WebEventModel;
 
 @Configuration
 public class StartUpContext implements ApplicationListener<ApplicationEvent> {

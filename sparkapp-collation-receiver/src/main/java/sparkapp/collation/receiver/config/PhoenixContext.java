@@ -1,5 +1,6 @@
 package sparkapp.collation.receiver.config;
 
+import java.util.Properties;
 import java.util.Random;
 
 import org.hibernate.SessionFactory;
@@ -25,7 +26,7 @@ public class PhoenixContext {
 	private String URL;
 	
     @Autowired
-    private ConfigContext configContext;
+    private AppContext configContext;
     
     @Bean
     public DriverManagerDataSource dataSource() {
@@ -46,10 +47,21 @@ public class PhoenixContext {
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource());
      
         sessionBuilder.addAnnotatedClasses(VisitorLogModel.class);
-        sessionBuilder.addProperties(configContext.hibernateProperties());
+        sessionBuilder.addProperties(hibernateProperties());
         return sessionBuilder.buildSessionFactory();
     }
-    
+
+	@Bean
+	public Properties hibernateProperties() {
+	    Properties properties = new Properties();
+//	    properties.put("hibernate.show_sql", "true");
+//	    properties.put("hibernate.format_sql", "true");
+	    properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+//	    properties.put("hibernate.hbm2ddl.auto", "create-drop");
+	    
+	    return properties;
+	}
+	
     @Bean
     public HibernateTransactionManager hibernateTransactionManager() {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager(

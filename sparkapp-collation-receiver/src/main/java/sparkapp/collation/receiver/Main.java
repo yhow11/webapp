@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.client.RestTemplate;
 
-import sparkapp.collation.receiver.config.ConfigContext;
+import sparkapp.collation.receiver.config.AppContext;
 import sparkapp.collation.receiver.config.DaoConfig;
 import sparkapp.collation.receiver.config.KafkaContext;
 import sparkapp.collation.receiver.config.MapperConfig;
@@ -32,7 +32,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigContext.class, DaoConfig.class,
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppContext.class, DaoConfig.class,
 				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, StartUpContext.class);
 		
 		RestTemplate rt = (RestTemplate) ctx.getBean("restTemplateService");
@@ -86,7 +86,7 @@ public class Main {
 					UserParam<WebEventModel> data = new UserParam<WebEventModel>();
 					data.setType(WebEventModel.class.getSimpleName());
 					data.getData().addAll(webEventModels);
-					rt.postForObject("http://poc:8191/webapp-poc/notifyEvents", data, String.class);
+					rt.postForObject("http://poc:8191/webapp-poc/logs/broadcast", data, String.class);
 				} catch (Exception e) {
 					System.out.print(e.getMessage());
 				}
@@ -98,7 +98,7 @@ public class Main {
 					UserParam<VisitorLogModel> data = new UserParam<VisitorLogModel>();
 					data.setType(VisitorLogModel.class.getSimpleName());
 					data.getData().addAll(visitorLogModels);
-					rt.postForObject("http://poc:8191/webapp-poc/notifyEvents", data, String.class);
+					rt.postForObject("http://poc:8191/webapp-poc/logs/broadcast", data, String.class);
 				} catch (Exception e) {
 					System.out.print(e.getMessage());
 				}

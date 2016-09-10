@@ -148,7 +148,7 @@
 					if (oldOnmouseover) oldOnmouseover(e);
 					if (e.target.localName == 'a') {
 						var href = e.target.href;
-						var title = e.target.title;
+						var title = e.target.title != ''?  e.target.title:e.target.innerText;;
 						FingerPrint.send("hover", title, href);
 					}
 				}
@@ -157,34 +157,15 @@
 				    var element = FingerPrint.findParentByTagName(event.target || event.srcElement, "A");
 				    if (element) {
 				        var href = element.href;
-						var title = element.title;
+						var title = element.title != ''?  element.title:element.innerText;
 						FingerPrint.send("clicked", title, href);
 				    }
 				}, false);
-//				window.onclick = function(e) {
-//					var href = "N/A";
-//					var title = "N/A";
-//					if (e.target.localName == 'a') {
-//						href = e.target.href;
-//						title = e.target.title;
-//					} else if (e.target.localName == 'button') {
-//						title = e.target.label;
-//					} else if (e.target.localName == 'img') {
-//						var parent = e.target.parentElement;
-//						if(parent.localName == 'a') {
-//							href = parent.href;
-//							title = parent.title;
-//						}
-//					}
-//					FingerPrint.send("clicked", title, href);
-//					console.log("user clicked.");
-//				}
 				
 				var oldOnload = window.onload;
 				window.onload = function (event) {
 					if (oldOnload) oldOnload(event);
 					FingerPrint.send("visited", document.title, window.location.href);
-					console.log("user visited.");
 				}
 				var oldOnbeforeunload = window.onbeforeunload;
 				window.onbeforeunload = function (event) {
@@ -215,22 +196,19 @@
         		.send(
         				"/app/send",
         				{},
-        				JSON
-        						.stringify({
-        							log : data.lead_id
-        									+ "|"
-        									+ data.browserFP
-        									+ "|"
-        									+ data.deviceFP
-        									+ "|"
-        									+ data.timeStamp
-        									+ "|"+type+"|"
-        									+ url
-        									+ "|"
-        									+ title
-        									+ "|"
-        									+ data.sessionID
-        						}));
+        				data.lead_id
+						+ "|"
+						+ data.browserFP
+						+ "|"
+						+ data.deviceFP
+						+ "|"
+						+ data.timeStamp
+						+ "|"+type+"|"
+						+ url
+						+ "|"
+						+ title
+						+ "|"
+						+ data.sessionID);
         	} else {
         		console.log("client is not yet connected.");
         	}

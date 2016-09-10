@@ -9,8 +9,6 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import helper.kafka.service.KafkaService;
-import helper.kafka.service.impl.KafkaServiceImpl;
 import sparkapp.collation.receiver.service.ReceiverService;
 import sparkapp.collation.receiver.service.impl.ReceiverServiceImpl;
 import usertracker.browser.service.AnonymousVisitorService;
@@ -75,11 +73,6 @@ public class ServiceConfig {
 	public ReceiverService receiverService() throws Exception {
 		return new ReceiverServiceImpl(visitorLogService(), anonymousVisitorService(), webEventService(),
 				browserFPService(), deviceFPService(), sessionService());
-	}
-	
-	@Bean
-	public KafkaService kafkaService() throws Exception{
-		return new KafkaServiceImpl(metaDataBrokerList, topics);
 	}
 	
 	@Bean

@@ -226,161 +226,6 @@ angular
 												}
 
 											});
-							// .state('dashboard.home',{
-							// url:'/home',
-							// controller: 'MainCtrl',
-							// params: {
-							// org: null
-							// },
-							// templateUrl:'resources/views/dashboard/home.html',
-							// resolve: {
-							// loadMyFiles:function($ocLazyLoad) {
-							// return $ocLazyLoad.load({
-							// name:'sbAdminApp',
-							// files:[
-							// 'resources/scripts/controllers/homeController.js',
-							// 'resources/scripts/directives/timeline/timeline.js',
-							// 'resources/scripts/directives/notifications/notifications.js',
-							// 'resources/scripts/directives/chat/chat.js',
-							// 'resources/scripts/directives/dashboard/stats/stats.js'
-							// ]
-							// })
-							// }
-							// }
-							// })
-							// .state('dashboard.form',{
-							// templateUrl:'resources/views/form.html',
-							// url:'/form'
-							// })
-							// .state('dashboard.blank',{
-							// templateUrl:'resources/views/pages/blank.html',
-							// url:'/blank'
-							// })
-							// .state('login',{
-							// templateUrl:'resources/views/pages/login.html',
-							// url:'/login',
-							// controller:'LoginCtrl',
-							// resolve: {
-							// loadMyFile:function($ocLazyLoad) {
-							// return $ocLazyLoad.load({
-							// name:'sbAdminApp',
-							// files:['resources/scripts/controllers/loginController.js',
-							// 'resources/scripts/services/authenticationService.js',
-							// 'resources/scripts/services/userService.js']
-							// })
-							// }
-							// }
-							// })
-							// .state('dashboard.chart',{
-							// templateUrl:'resources/views/chart.html',
-							// url:'/chart',
-							// controller:'ChartCtrl',
-							// resolve: {
-							// loadMyFile:function($ocLazyLoad) {
-							// return $ocLazyLoad.load({
-							// name:'chart.js',
-							// files:[
-							// 'resources/bower_components/angular-chart.js/dist/angular-chart.min.js',
-							// 'resources/bower_components/angular-chart.js/dist/angular-chart.css'
-							// ]
-							// }),
-							// $ocLazyLoad.load({
-							// name:'sbAdminApp',
-							// files:['resources/scripts/controllers/chartContoller.js']
-							// })
-							// }
-							// }
-							// })
-							// .state('dashboard.spaces',{
-							// templateUrl:'resources/views/spaces.html',
-							// url:'/spaces',
-							// controller: 'SpacesCtrl',
-							// params: {
-							// space: null
-							// },
-							// resolve: {
-							// loadMyFile:function($ocLazyLoad) {
-							// return $ocLazyLoad.load({
-							// name:'sbAdminApp',
-							// files:['resources/scripts/controllers/spacesController.js']
-							// }),
-							// $ocLazyLoad.load(
-							// {
-							// name:'datatables',
-							// files:['resources/bower_components/datatables/datatables.min.js',
-							// 'resources/styles/datatables.min.css',
-							// 'resources/bower_components/angular-datatables/angular-datatables.min.js']
-							// }),
-							// $ocLazyLoad.load(
-							// {
-							// name:'datatables.bootstrap',
-							// files:['resources/bower_components/angular-datatables/angular-datatables.bootstrap.min.js',
-							// 'resources/styles/datatables.bootstrap.min.css']
-							// })
-							//              
-							// }
-							// }
-							// }).state('dashboard.apps',{
-							// templateUrl:'resources/views/apps.html',
-							// url:'/apps',
-							// params: {
-							// application: null
-							// },
-							// resolve: {
-							// loadMyFile:function($ocLazyLoad) {
-							// return $ocLazyLoad.load({
-							// name:'sbAdminApp',
-							// files:['resources/scripts/controllers/appsController.js',
-							// 'resources/scripts/controllers/tableController.js']
-							// }),
-							// $ocLazyLoad.load(
-							// {
-							// name:'datatables',
-							// files:['resources/bower_components/datatables/datatables.min.js',
-							// 'resources/styles/datatables.min.css',
-							// 'resources/bower_components/angular-datatables/angular-datatables.min.js']
-							// }),
-							// $ocLazyLoad.load(
-							// {
-							// name:'datatables.fixedcolumns',
-							// files:['resources/bower_components/datatables/dataTables.fixedColumns.min.js',
-							// 'resources/styles/fixedColumns.dataTables.min.css',
-							// 'resources/bower_components/angular-datatables/angular-datatables.fixedcolumns.min.js']
-							// }),
-							// $ocLazyLoad.load(
-							// {
-							// name:'datatables.bootstrap',
-							// files:['resources/bower_components/angular-datatables/angular-datatables.bootstrap.min.js',
-							// 'resources/styles/datatables.bootstrap.min.css']
-							// })
-							//              
-							// }
-							// }
-							// })
-							// .state('dashboard.panels-wells',{
-							// templateUrl:'resources/views/ui-elements/panels-wells.html',
-							// url:'/panels-wells'
-							// })
-							// .state('dashboard.buttons',{
-							// templateUrl:'resources/views/ui-elements/buttons.html',
-							// url:'/buttons'
-							// })
-							// .state('dashboard.notifications',{
-							// templateUrl:'resources/views/ui-elements/notifications.html',
-							// url:'/notifications'
-							// })
-							// .state('dashboard.typography',{
-							// templateUrl:'resources/views/ui-elements/typography.html',
-							// url:'/typography'
-							// })
-							// .state('dashboard.icons',{
-							// templateUrl:'resources/views/ui-elements/icons.html',
-							// url:'/icons'
-							// })
-							// .state('dashboard.grid',{
-							// templateUrl:'resources/views/ui-elements/grid.html',
-							// url:'/grid'
-							// })
 						} ])
 		.run(
 				function($rootScope, $state, $location, $localStorage, $http,
@@ -433,7 +278,8 @@ angular
 					$rootScope.stompReceivers = null;
 					connect();
 					function connect() {
-						var socket = new SockJS('http://54.213.0.17:8191/webapp-poc/notify');
+						var origin = location.protocol + "//" + location.host;
+						var socket = new SockJS(origin+'/webapp-poc/app/send');
 						var oldInit = window.onbeforeunload;
 						window.onbeforeunload = function (event) {
 							if (oldInit) oldInit(event);
@@ -446,7 +292,7 @@ angular
 										{},
 										function(frame) {
 											
-											$rootScope.stompReceivers.subscribe('/event/notifyReceivers', function(
+											$rootScope.stompReceivers.subscribe('/logs/broadcast', function(
 													data) {
 												var response = JSON.parse(JSON.stringify(data.body));
 												$rootScope.$emit('notifyReceivers', {data: JSON.parse(response)});

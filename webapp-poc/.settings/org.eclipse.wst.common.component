@@ -30,6 +30,9 @@
         <dependent-module archiveName="service-usertracker-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/service-usertracker/service-usertracker">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="helper-kafka-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/helper-kafka/helper-kafka">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="webapp-poc"/>
         <property name="java-output-path" value="/webapp-poc/target/classes"/>
     </wb-module>

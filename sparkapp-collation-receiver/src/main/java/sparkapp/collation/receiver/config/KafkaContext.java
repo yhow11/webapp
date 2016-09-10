@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.spark.SparkConf;
@@ -17,6 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import helper.kafka.service.KafkaHelper;
+import helper.kafka.service.impl.KafkaHelperImpl;
 import kafka.serializer.StringDecoder;
 
 @Configuration
@@ -31,6 +34,10 @@ public class KafkaContext {
 	
 	@Value("${spark.appname}")
 	private String appName;
+	
+	@Value("${kafka.zookeepers}")
+	private String zookeepers;
+
 	
 	@Bean
 	public  Map<String, String> kafkaConfig(){
@@ -57,4 +64,23 @@ public class KafkaContext {
 		return new JavaStreamingContext(sc, new Duration(5000));
 	}
 	
+
+	@Bean
+	public Properties kafkaPropetiers() {
+		Properties kafkaProps = new Properties();
+		kafkaProps.put("metadata.broker.list", metaDataBrokerList);
+		kafkaProps.put("bootstrap.servers", metaDataBrokerList);
+
+		kafkaProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		kafkaProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		kafkaProps.put("acks", "1");
+
+		kafkaProps.put("retries", "1");
+		kafkaProps.put("linger.ms", 5);
+		return kafkaProps;
+	}
+	@Bean
+	public KafkaHelper kafkaHelper() throws Exception{
+		return new KafkaHelperImpl(kafkaPropetiers(), zookeepers, topics);
+	}
 }
