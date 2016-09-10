@@ -279,7 +279,7 @@ angular
 					connect();
 					function connect() {
 						var origin = location.protocol + "//" + location.host;
-						var socket = new SockJS(origin+'/webapp-poc/app/send');
+						var socket = new SockJS(origin+'/webapp-poc/send');
 						var oldInit = window.onbeforeunload;
 						window.onbeforeunload = function (event) {
 							if (oldInit) oldInit(event);
