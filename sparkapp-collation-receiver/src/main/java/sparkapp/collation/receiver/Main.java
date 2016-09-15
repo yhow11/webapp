@@ -9,6 +9,9 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.phoenix.spark.SparkSqlContextFunctions;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Encoder;
+import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SQLContext;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairInputDStream;
@@ -19,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import scala.Option;
 import scala.collection.Seq;
+import service.keymanagement.model.KeyModel;
 import sparkapp.collation.receiver.config.AppContext;
 import sparkapp.collation.receiver.config.DaoConfig;
 import sparkapp.collation.receiver.config.KafkaContext;
@@ -61,6 +65,12 @@ public class Main {
 		param.put("zkUrl", "poc:2181");
 		df = sQLContext.load("org.apache.phoenix.spark", param);
 		df.show();
+		Encoder<KeyModel> encoder = Encoders.bean(KeyModel.class);
+		Dataset<KeyModel> dataset = df.as(encoder);
+		for(KeyModel key: dataset.collectAsList()){
+			System.out.println(key.gettKey());
+		}
+		
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
 
