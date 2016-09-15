@@ -76,7 +76,7 @@ public class Main {
 		param.put("table", "urlTaggedTable");
 		param.put("zkUrl", "poc:2181");
 		sQLContext.read().format("org.apache.phoenix.spark").options(param).load().show();
-		sQLContext.sql("SELECT * URLTAGGEDTABLE").show();
+		sQLContext.sql("SELECT * FROM URLTAGGEDTABLE").show();
 //		DataFrame urlTaggedTable = sQLContext.load("org.apache.phoenix.spark", param);
 //		param = new HashMap<String, String>();
 //		param.put("table", "metricTable");
