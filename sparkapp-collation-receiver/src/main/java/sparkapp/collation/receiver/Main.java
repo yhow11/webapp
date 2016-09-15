@@ -80,7 +80,7 @@ public class Main {
 		param.put("zkUrl", "poc:2181");
 		DataFrame metricTable = sQLContext.load("org.apache.phoenix.spark", param);
 
-		urlTaggedTable.join(metricTable, col("tkey").equalTo(metricTable.col("tkey")));
+		urlTaggedTable.join(metricTable, col("TKEY").equalTo(metricTable.col("TKEY")));
 		
 		urlTaggedTable.show();
 		
