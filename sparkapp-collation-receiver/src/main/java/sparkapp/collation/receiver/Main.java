@@ -65,10 +65,11 @@ public class Main {
 		param.put("zkUrl", "poc:2181");
 		df = sQLContext.load("org.apache.phoenix.spark", param);
 		df.show();
-		Encoder<KeyModel> encoder = Encoders.bean(KeyModel.class);
-		Dataset<KeyModel> dataset = df.as(encoder);
-		for(KeyModel key: dataset.collectAsList()){
-			System.out.println(key.gettKey());
+		Encoder<KeyForm> encoder = Encoders.bean(KeyForm.class);
+		Dataset<KeyForm> dataset = df.as(encoder);
+		dataset.show();
+		for(KeyForm key: dataset.collectAsList()){
+			System.out.println(key.getTKEY());
 		}
 		
 		
