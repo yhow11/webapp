@@ -15,6 +15,7 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SQLContext;
+import org.apache.spark.sql.SaveMode;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
@@ -74,15 +75,17 @@ public class Main {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("table", "urlTaggedTable");
 		param.put("zkUrl", "poc:2181");
-		DataFrame urlTaggedTable = sQLContext.load("org.apache.phoenix.spark", param);
-		param = new HashMap<String, String>();
-		param.put("table", "metricTable");
-		param.put("zkUrl", "poc:2181");
-		DataFrame metricTable = sQLContext.load("org.apache.phoenix.spark", param);
-
-		sQLContext.sql("SELECT * FROM urlTaggedTable ut join metricTable m on ut.TKEY = m.TKEY").show();;
-		
+//		DataFrame urlTaggedTable = sQLContext.load("org.apache.phoenix.spark", param);
+//		param = new HashMap<String, String>();
+//		param.put("table", "metricTable");
+//		param.put("zkUrl", "poc:2181");
+//		DataFrame metricTable = sQLContext.load("org.apache.phoenix.spark", param);
+//
 //		DataFrame joinTable = urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
+//		
+		sQLContext.read().format("org.apache.phoenix.spark").options(param).load().show();
+		
+//		joinTable.write().format("org.apache.phoenix.spark").mode(SaveMode.Append).saveAsTable("WIW");
 //		
 //		joinTable.show();
 		
