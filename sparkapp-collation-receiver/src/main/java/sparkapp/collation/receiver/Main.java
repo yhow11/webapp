@@ -70,6 +70,7 @@ public class Main {
 		dataset.show();
 		for(KeyForm key: dataset.collectAsList()){
 			System.out.println(key.getTKEY());
+			System.out.println(key.getTVALUES());
 		}
 		
 		
