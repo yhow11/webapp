@@ -51,6 +51,7 @@ public class Main {
 		Option<String> zkURL = Option.apply("poc:2181");
 		
 		DataFrame df = sparkPhoenixSQL.phoenixTableAsDataFrame("keyTable", columnSeq, predicate, zkURL, new Configuration());
+		df.show();
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
 
