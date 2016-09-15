@@ -22,6 +22,7 @@ import sparkapp.collation.receiver.config.KafkaContext;
 import sparkapp.collation.receiver.config.MapperConfig;
 import sparkapp.collation.receiver.config.PhoenixContext;
 import sparkapp.collation.receiver.config.ServiceConfig;
+import sparkapp.collation.receiver.config.SparkContext;
 import sparkapp.collation.receiver.config.StartUpContext;
 import sparkapp.collation.receiver.mapper.WebEventVisitorLogMapper;
 import sparkapp.collation.receiver.service.ReceiverService;
@@ -36,7 +37,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppContext.class, DaoConfig.class,
-				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, StartUpContext.class);
+				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, SparkContext.class, StartUpContext.class);
 		
 		SparkSqlContextFunctions sparkPhoenixSQL = (SparkSqlContextFunctions) ctx.getBean("sparkSqlContextFunctions");
 		RestTemplate rt = (RestTemplate) ctx.getBean("restTemplateService");
