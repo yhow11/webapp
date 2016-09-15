@@ -80,9 +80,9 @@ public class Main {
 		param.put("zkUrl", "poc:2181");
 		DataFrame metricTable = sQLContext.load("org.apache.phoenix.spark", param);
 
-		urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
+		DataFrame joinTable = urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
 		
-		urlTaggedTable.show();
+		joinTable.show();
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
 
