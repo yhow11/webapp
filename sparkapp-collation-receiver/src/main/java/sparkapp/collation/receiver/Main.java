@@ -75,6 +75,8 @@ public class Main {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("table", "urlTaggedTable");
 		param.put("zkUrl", "poc:2181");
+		sQLContext.read().format("org.apache.phoenix.spark").options(param).load().show();
+		sQLContext.sql("SELECT * URLTAGGEDTABLE").show();
 //		DataFrame urlTaggedTable = sQLContext.load("org.apache.phoenix.spark", param);
 //		param = new HashMap<String, String>();
 //		param.put("table", "metricTable");
@@ -83,7 +85,7 @@ public class Main {
 //
 //		DataFrame joinTable = urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
 //		
-		sQLContext.read().format("org.apache.phoenix.spark").options(param).load().show();
+		
 		
 //		joinTable.write().format("org.apache.phoenix.spark").mode(SaveMode.Append).saveAsTable("WIW");
 //		
