@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.spark.sql.functions.col;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.phoenix.spark.SparkSqlContextFunctions;
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.sql.Column;
 import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
@@ -51,28 +53,36 @@ public class Main {
 		ReceiverService receiverService = (ReceiverService) ctx.getBean("receiverService");
 		VisitorLogStringMapper visitorLogStringMapper = (VisitorLogStringMapper) ctx.getBean("visitorLogStringMapper");
 
-		List<String> columnList = new ArrayList<String>();
-		columnList.add("tKey");
-		columnList.add("tValues");
-		Seq<String> columnSeq = scala.collection.JavaConversions.asScalaBuffer(columnList);
-		Option<String> predicate = Option.apply("");
-		Option<String> zkURL = Option.apply("poc:2181");
-		
-		DataFrame df = sparkPhoenixSQL.phoenixTableAsDataFrame("keyTable", columnSeq, predicate, zkURL, new Configuration());
-		df.show();
-//		Map<String, String> param = new HashMap<String, String>();
-//		param.put("table", "keyTable");
-//		param.put("zkUrl", "poc:2181");
-//		df = sQLContext.load("org.apache.phoenix.spark", param);
+//		List<String> columnList = new ArrayList<String>();
+//		columnList.add("tKey");
+//		columnList.add("tValues");
+//		Seq<String> columnSeq = scala.collection.JavaConversions.asScalaBuffer(columnList);
+//		Option<String> predicate = Option.apply("");
+//		Option<String> zkURL = Option.apply("poc:2181");
+//		
+//		DataFrame df = sparkPhoenixSQL.phoenixTableAsDataFrame("keyTable", columnSeq, predicate, zkURL, new Configuration());
 //		df.show();
-		Encoder<KeyModel> encoder = Encoders.bean(KeyModel.class);
-		Dataset<KeyModel> dataset = df.as(encoder);
-		dataset.show();
-		for(KeyModel key: dataset.collectAsList()){
-			System.out.println(key.gettKey());
-			System.out.println(key.gettValues());
-		}
+	
+//		Encoder<KeyModel> encoder = Encoders.bean(KeyModel.class);
+//		Dataset<KeyModel> dataset = df.as(encoder);
+//		dataset.show();
+//		for(KeyModel key: dataset.collectAsList()){
+//			System.out.println(key.gettKey());
+//			System.out.println(key.gettValues());
+//		}
 		
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("table", "urlTaggedTable");
+		param.put("zkUrl", "poc:2181");
+		DataFrame urlTaggedTable = sQLContext.load("org.apache.phoenix.spark", param);
+		param = new HashMap<String, String>();
+		param.put("table", "metricTable");
+		param.put("zkUrl", "poc:2181");
+		DataFrame metricTable = sQLContext.load("org.apache.phoenix.spark", param);
+
+		urlTaggedTable.join(metricTable, col("tkey").equalTo(metricTable.col("tkey")));
+		
+		urlTaggedTable.show();
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
 
@@ -105,6 +115,8 @@ public class Main {
 				WebEventModel webEvent = new WebEventVisitorLogMapper(av.getId()).marshall(visitorLogModel);
 				webEventModels.add(webEvent);
 				receiverService.save(webEvent);
+				
+				
 				System.out.println("Created New WebEvent " + webEvent.getId());
 
 			}

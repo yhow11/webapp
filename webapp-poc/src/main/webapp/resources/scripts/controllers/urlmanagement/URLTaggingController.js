@@ -170,7 +170,7 @@ angular.module('fingerPrintApp').controller(
 					}
 			};
 			
-			keymanagementService.getAll("", "").then(function(data){
+			keymanagementService.getAll("","", "").then(function(data){
 		    	if(data.data.status){
 		    		$scope.keyChip.autoComplete.allKeys =  data.data.data;
 		    	}
