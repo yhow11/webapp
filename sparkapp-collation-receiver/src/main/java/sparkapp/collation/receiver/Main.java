@@ -52,25 +52,25 @@ public class Main {
 		VisitorLogStringMapper visitorLogStringMapper = (VisitorLogStringMapper) ctx.getBean("visitorLogStringMapper");
 
 		List<String> columnList = new ArrayList<String>();
-		columnList.add("TKEY");
-		columnList.add("TVALUES");
+		columnList.add("tKey");
+		columnList.add("tValues");
 		Seq<String> columnSeq = scala.collection.JavaConversions.asScalaBuffer(columnList);
 		Option<String> predicate = Option.apply("");
 		Option<String> zkURL = Option.apply("poc:2181");
 		
 		DataFrame df = sparkPhoenixSQL.phoenixTableAsDataFrame("keyTable", columnSeq, predicate, zkURL, new Configuration());
 		df.show();
-		Map<String, String> param = new HashMap<String, String>();
-		param.put("table", "keyTable");
-		param.put("zkUrl", "poc:2181");
-		df = sQLContext.load("org.apache.phoenix.spark", param);
-		df.show();
-		Encoder<KeyForm> encoder = Encoders.bean(KeyForm.class);
-		Dataset<KeyForm> dataset = df.as(encoder);
+//		Map<String, String> param = new HashMap<String, String>();
+//		param.put("table", "keyTable");
+//		param.put("zkUrl", "poc:2181");
+//		df = sQLContext.load("org.apache.phoenix.spark", param);
+//		df.show();
+		Encoder<KeyModel> encoder = Encoders.bean(KeyModel.class);
+		Dataset<KeyModel> dataset = df.as(encoder);
 		dataset.show();
-		for(KeyForm key: dataset.collectAsList()){
-			System.out.println(key.getTKEY());
-			System.out.println(key.getTVALUES());
+		for(KeyModel key: dataset.collectAsList()){
+			System.out.println(key.gettKey());
+			System.out.println(key.gettValues());
 		}
 		
 		
