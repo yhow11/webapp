@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nurtureretargeting.admin.keymanagement.manager.KeyManager;
 import com.nurtureretargeting.admin.keymanagement.object.KeyForm;
-import com.nurtureretargeting.object.ResponseForm;
+
+import common.form.ResponseForm;
 
 
 @Controller
@@ -26,8 +27,8 @@ public class KeyManagementController {
 	}
 	
 	@RequestMapping(value = "keymanagement/getAll", method = RequestMethod.GET)
-	public @ResponseBody  ResponseForm<KeyForm> getAll(@RequestParam(name="start") String start, @RequestParam(name="end") String end) throws Exception {
-		return keyManager.getAll(start, end);
+	public @ResponseBody  ResponseForm<KeyForm> getAll(@RequestParam(name="value") String value, @RequestParam(name="start") String start, @RequestParam(name="end") String end) throws Exception {
+		return keyManager.getAll(value, start, end);
 	}
 	@RequestMapping(value = "keymanagement/checkExists", method = RequestMethod.GET)
 	public boolean checkExists(@RequestParam(name="key") String key) throws Exception {

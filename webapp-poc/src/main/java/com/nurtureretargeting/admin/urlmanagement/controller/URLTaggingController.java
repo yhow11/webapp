@@ -10,20 +10,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.nurtureretargeting.admin.urlmanagement.manager.URLTaggingManager;
 import com.nurtureretargeting.admin.urlmanagement.object.URLForm;
-import com.nurtureretargeting.admin.urlmanagement.service.URLManagementService;
-import com.nurtureretargeting.object.ResponsePaginationForm;
+
+import common.form.ResponsePaginationForm;
 
 @Controller
 public class URLTaggingController {
 
 	@Autowired
-	private URLManagementService URLTaggingService;
+	private URLTaggingManager URLTaggingManager;
 	
-	@RequestMapping(value = "urltagging/getAllURLs", method = RequestMethod.GET)
+	@RequestMapping(value = "urltagging/getAll", method = RequestMethod.GET)
 	public @ResponseBody  ResponsePaginationForm<URLForm> getAll(@RequestParam("url") String url, @RequestParam("page") String page, @RequestParam("limit") String limit) throws Exception {
 		 
-		ResponsePaginationForm<URLForm> response =  URLTaggingService.getAllTaggedURLs(url, page, limit);
+		ResponsePaginationForm<URLForm> response =  URLTaggingManager.getAll(url, page, limit);
 		response.setStatus(true);
 		return response;
 	}
@@ -31,7 +32,7 @@ public class URLTaggingController {
 	@RequestMapping(value = "urltagging/save", method = RequestMethod.POST)
 	public @ResponseBody  ResponsePaginationForm<URLForm> save(@RequestBody List<URLForm> urlForms) throws Exception {
 		
-		ResponsePaginationForm<URLForm> response =  URLTaggingService.saveTaggedURLs(urlForms);
+		ResponsePaginationForm<URLForm> response =  URLTaggingManager.save(urlForms);
 		response.setStatus(true);
 		return response;
 	}

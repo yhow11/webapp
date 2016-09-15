@@ -18,4 +18,6 @@ public class MapperConfig {
 	public VisitorLogRowMapper visitorLogRowMapper() throws Exception{
 		return new VisitorLogRowMapper();
 	}
+	
+	
 }

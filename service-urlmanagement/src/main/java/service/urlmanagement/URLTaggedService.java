@@ -10,6 +10,5 @@ import service.urlmanagement.model.URLTaggedModel;
 @Transactional
 public interface URLTaggedService extends JService<URLTaggedModel, URLTaggedModel> {
 	public List<URLTaggedModel> getAll(String url) throws Exception;
-
 	public void delete(String url) throws Exception;
 }

@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nurtureretargeting.object.ResponseForm;
-
+import common.form.ResponseForm;
 import usertracker.base.UserParam;
 import usertracker.browser.model.VisitorLogModel;
 import usertracker.browser.service.VisitorLogService;

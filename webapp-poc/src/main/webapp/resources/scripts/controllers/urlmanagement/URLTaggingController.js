@@ -25,7 +25,7 @@ angular.module('fingerPrintApp').controller(
 					  showPopoverManual: function(x, y, chip) {
 						   if(chip.key != $scope.lastKey){
 							   $scope.lastKey = chip.key;
-							   keymanagementService.getAll(chip.key).then(function(data){
+							   keymanagementService.getAll(chip.key, '', '').then(function(data){
 								   if(data.data.status){
 									   $scope.valueChip.autoComplete.items = data.data.data[0].values;
 								   }
@@ -48,7 +48,7 @@ angular.module('fingerPrintApp').controller(
 							   if(chipID == currChipID) {
 								   if(item.key != $scope.lastKey){
 									   $scope.lastKey = item.key;
-									   keymanagementService.getAll(item.key).then(function(data){
+									   keymanagementService.getAll(item.key, '', '').then(function(data){
 										   if(data.data.status){
 											   $scope.valueChip.autoComplete.items = data.data.data[0].values;
 											   $scope.valueChip.options.autofocus = true;
@@ -170,7 +170,7 @@ angular.module('fingerPrintApp').controller(
 					}
 			};
 			
-			keymanagementService.getAll("").then(function(data){
+			keymanagementService.getAll("", "").then(function(data){
 		    	if(data.data.status){
 		    		$scope.keyChip.autoComplete.allKeys =  data.data.data;
 		    	}

@@ -1,13 +1,15 @@
 <form name="workerForm" layout-gt-sm="row">
-	<div>
+	<div flex-gt-sm="30">
 		<md-card>
 			  <md-toolbar class="md-primary">
 			     <div class="md-toolbar-tools j-fill-white">
 			      <h2 class="j-color-green">Personal Information</h2>
 			    </div>
 			  </md-toolbar>
-		     <md-card-content layout="column" layout-margin >
-		     	
+		    <md-card-content layout="column" layout-align="center center" >
+				<div class="md-media-lg card-media">
+					<img class="height-inherit" src="resources/img/profile-img.png" />
+				</div>
 		        <div >
 	     			<md-input-container class="md-block" >
 						<label>ID Number</label> <input ng-model="worker.id" required ng-pattern="/^\d+$/" name="id">
@@ -24,7 +26,7 @@
 		 </md-card>
 		 
 	</div>
-	<div>
+	<div flex-gt-sm="70">
 		<md-card>
 			  <md-toolbar class="md-primary">
 			     <div class="md-toolbar-tools j-fill-white">

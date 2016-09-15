@@ -4,19 +4,21 @@ import java.io.Serializable;
 
 import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixID;
+import helper.phoenix.annotation.entity.PhoenixSequence;
 import helper.phoenix.annotation.entity.PhoenixTable;
 import helper.phoenix.object.QueryHelperParam;
 
 @PhoenixTable(table="webEvent")
-public class WebEventModel extends QueryHelperParam implements Serializable {
+public class WebEventModel implements Serializable {
 	/**
 	 * 
 	 */
 	protected static final long serialVersionUID = 1L;
 
 	@PhoenixID
-	@PhoenixColumn(type="VARCHAR(100)")
-	protected String id;
+	@PhoenixSequence
+	@PhoenixColumn(type="BIGINT")
+	protected Long id;
 
 	@PhoenixColumn(type="VARCHAR(100)")
 	protected String anonymousVisitorID;
@@ -73,11 +75,11 @@ public class WebEventModel extends QueryHelperParam implements Serializable {
 		this.title = title;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

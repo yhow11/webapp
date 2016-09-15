@@ -9,7 +9,7 @@ import helper.phoenix.annotation.entity.PhoenixTable;
 import helper.phoenix.object.QueryHelperParam;
 
 @PhoenixTable(table="visitorLog")
-public class VisitorLogModel extends QueryHelperParam implements Serializable{
+public class VisitorLogModel  implements Serializable{
 	/**
 	 * 
 	 */

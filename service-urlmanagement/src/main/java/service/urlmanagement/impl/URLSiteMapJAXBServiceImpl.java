@@ -8,6 +8,7 @@ import helper.jaxb.generated.TUrl;
 import helper.jaxb.generated.Urlset;
 import service.urlmanagement.URLSiteMapService;
 import service.urlmanagement.model.URLImportModel;
+import service.urlmanagement.model.URLSiteMapModel;
 
 public class URLSiteMapJAXBServiceImpl implements URLSiteMapService  {
 
@@ -20,13 +21,13 @@ public class URLSiteMapJAXBServiceImpl implements URLSiteMapService  {
 
 
 	@Override
-	public List<URLImportModel> getAll(String url) throws Exception {
+	public List<URLSiteMapModel> getAll(String url) throws Exception {
 		// TODO Auto-generated method stub
-		List<URLImportModel> urlModels = new ArrayList<>();
+		List<URLSiteMapModel> urlModels = new ArrayList<>();
 		
 		Urlset urlset = JAXBDao.get(Urlset.class, url);
 		for(TUrl tUrl: urlset.getUrl()){
-			URLImportModel urlModel = new URLImportModel();
+			URLSiteMapModel urlModel = new URLSiteMapModel();
 			urlModel.setUrl(tUrl.getLoc());
 			urlModels.add(urlModel);
 		}

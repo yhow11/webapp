@@ -36,6 +36,7 @@
     <module>service-urlmanagement</module>
     <module>helper-jaxb</module>
     <module>service-membermanagement</module>
+    <module>service-metricmanagement</module>
   </modules>
   
 </project>

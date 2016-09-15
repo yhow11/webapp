@@ -57,9 +57,10 @@ public class KeyManagementPhoenixServiceImpl extends PhoenixDaoImpl implements K
 	}
 
 	@Override
-	public List<KeyModel> getAll(Long offset, Long limit) throws Exception {
+	public List<KeyModel> getAll(String value, Long offset, Long limit) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<KeyModel> param = new QueryParam<KeyModel>(KeyModel.class);
+		param.getModel().settKey(value);
 		param.setLimit(limit);
 		param.setOffset(offset);
 		return super.search(param);

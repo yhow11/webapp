@@ -6,6 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 
 import com.nurtureretargeting.admin.keymanagement.mapper.KeyMapper;
 import com.nurtureretargeting.admin.keymanagement.mapper.ValueMapper;
+import com.nurtureretargeting.admin.metricmanagement.mapper.MetricMapper;
 
 @Configuration
 @PropertySource("classpath:com/nurtureretargeting/properties/application.properties")
@@ -19,5 +20,11 @@ public class MapperContext {
 	@Bean
 	public ValueMapper valueMapper(){
 		return new ValueMapper();
+	}
+	
+
+	@Bean
+	public MetricMapper metricMapper(){
+		return new MetricMapper();
 	}
 }

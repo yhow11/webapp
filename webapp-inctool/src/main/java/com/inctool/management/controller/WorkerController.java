@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.inctool.common.form.ResponseForm;
 import com.inctool.management.form.WorkerForm;
-import com.inctool.management.service.WorkerService;
+import com.inctool.management.manager.WorkerManager;
 
 import common.query.form.FormParam;
 import common.query.form.FormResponse;
@@ -20,11 +20,11 @@ import common.query.form.FormResponse;
 public class WorkerController {
 
 	@Autowired
-	private WorkerService workerService;
+	private WorkerManager workerManager;
 	
 	@RequestMapping(value = "getAll", method = RequestMethod.POST)
     public @ResponseBody FormResponse<WorkerForm> getAll(@RequestBody FormParam<WorkerForm> param) throws Exception {
-        return workerService.getAll(param);
+        return workerManager.getAll(param);
     }
 	@RequestMapping(value = "remove", method = RequestMethod.POST)
     public @ResponseBody ResponseForm<WorkerForm> remove(@RequestParam("id") String id) {
@@ -44,7 +44,7 @@ public class WorkerController {
     public @ResponseBody FormResponse<WorkerForm> get(@RequestBody WorkerForm workerForm) throws Exception {
        
 		FormResponse<WorkerForm> response = new FormResponse<>();
-        response.getData().add(workerService.save(workerForm));
+        response.getData().add(workerManager.save(workerForm));
         response.setStatus(true);
         return response;
     }

@@ -33,7 +33,7 @@ public class WebEventPhoenixServiceImpl extends PhoenixDaoImpl implements WebEve
 	public WebEventModel get(String id) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<WebEventModel> param = new QueryParam<WebEventModel>(WebEventModel.class);
-		param.getModel().setId(id);
+		param.getModel().setId(Long.valueOf(id));
 		return super.searchOne(param);
 	}
 

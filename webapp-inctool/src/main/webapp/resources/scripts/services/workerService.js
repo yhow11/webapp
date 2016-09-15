@@ -53,8 +53,8 @@ angular.module('incToolApp')
        getTemplate: function(){
     	   return $http.post('api/worker/getTemplate').then(handleSuccess, handleError('Error getting member by id')); 
        },
-       save: function(member) {
-           return $http.post('api/worker/save', JSON.stringify(member)).then(handleSuccess, handleError('Error creating member'));
+       save: function(worker) {
+           return $http.post('api/worker/save', JSON.stringify(worker)).then(handleSuccess, handleError('Error creating member'));
        },
        remove: function(id) {
            return $http.post('api/worker/remove?id=' + id).then(handleRemoveSuccess, handleError('Error deleting member'));

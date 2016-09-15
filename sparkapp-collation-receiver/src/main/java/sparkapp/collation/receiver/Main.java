@@ -2,9 +2,11 @@ package sparkapp.collation.receiver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.phoenix.spark.SparkSqlContextFunctions;
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.sql.DataFrame;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
@@ -12,6 +14,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.client.RestTemplate;
 
+import scala.Option;
+import scala.collection.Seq;
 import sparkapp.collation.receiver.config.AppContext;
 import sparkapp.collation.receiver.config.DaoConfig;
 import sparkapp.collation.receiver.config.KafkaContext;
@@ -19,12 +23,11 @@ import sparkapp.collation.receiver.config.MapperConfig;
 import sparkapp.collation.receiver.config.PhoenixContext;
 import sparkapp.collation.receiver.config.ServiceConfig;
 import sparkapp.collation.receiver.config.StartUpContext;
+import sparkapp.collation.receiver.mapper.WebEventVisitorLogMapper;
 import sparkapp.collation.receiver.service.ReceiverService;
 import usertracker.base.UserParam;
 import usertracker.browser.mapper.impl.VisitorLogStringMapper;
 import usertracker.browser.model.AnonymousVisitorModel;
-import usertracker.browser.model.BrowserFPModel;
-import usertracker.browser.model.DeviceFPModel;
 import usertracker.browser.model.VisitorLogModel;
 import usertracker.browser.model.WebEventModel;
 
@@ -35,10 +38,20 @@ public class Main {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppContext.class, DaoConfig.class,
 				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, StartUpContext.class);
 		
+		SparkSqlContextFunctions sparkPhoenixSQL = (SparkSqlContextFunctions) ctx.getBean("sparkSqlContextFunctions");
 		RestTemplate rt = (RestTemplate) ctx.getBean("restTemplateService");
 		ReceiverService receiverService = (ReceiverService) ctx.getBean("receiverService");
 		VisitorLogStringMapper visitorLogStringMapper = (VisitorLogStringMapper) ctx.getBean("visitorLogStringMapper");
 
+		List<String> columnList = new ArrayList<String>();
+		columnList.add("TKEY");
+		columnList.add("TVALUES");
+		Seq<String> columnSeq = scala.collection.JavaConversions.asScalaBuffer(columnList);
+		Option<String> predicate = Option.apply("");
+		Option<String> zkURL = Option.apply("poc:2181");
+		
+		DataFrame df = sparkPhoenixSQL.phoenixTableAsDataFrame("keyTable", columnSeq, predicate, zkURL, new Configuration());
+		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
 
 		JavaPairInputDStream<String, String> messages = (JavaPairInputDStream<String, String>)  ctx.getBean("kafkaDStream");
@@ -63,18 +76,11 @@ public class Main {
 
 				AnonymousVisitorModel av = receiverService.getOrCreateAV(visitorLogModel.getSessionID(), visitorLogModel.getWebFP());
 				receiverService.getOrCreateSession(visitorLogModel.getSessionID(), av.getId());
-				BrowserFPModel browserFP = receiverService.getOrCreateBrowserFP(visitorLogModel.getWebFP(), av.getId());
-				DeviceFPModel deviceFP = receiverService.getOrCreateDeviceFP(visitorLogModel.getDeviceFP(), av.getId());
+				receiverService.getOrCreateBrowserFP(visitorLogModel.getWebFP(), av.getId());
+				receiverService.getOrCreateDeviceFP(visitorLogModel.getDeviceFP(), av.getId());
 
-				WebEventModel webEvent = new WebEventModel();
-				webEvent.setId(UUID.randomUUID().toString());
-				webEvent.setAnonymousVisitorID(av.getId());
-				webEvent.setBrowserFPID(browserFP.getId());
-				webEvent.setDeviceFPID(deviceFP.getId());
-				webEvent.setTimeStamp(visitorLogModel.getTimeStamp());
-				webEvent.setTitle(visitorLogModel.getTitle());
-				webEvent.setType(visitorLogModel.getType());
-				webEvent.setUrl(visitorLogModel.getUrl());
+				
+				WebEventModel webEvent = new WebEventVisitorLogMapper(av.getId()).marshall(visitorLogModel);
 				webEventModels.add(webEvent);
 				receiverService.save(webEvent);
 				System.out.println("Created New WebEvent " + webEvent.getId());

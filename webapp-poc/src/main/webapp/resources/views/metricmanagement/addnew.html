@@ -1,0 +1,61 @@
+<div layout="row" layout-align="center">
+
+		<md-card flex="100" flex-gt-sm="60">
+			<md-data-table-toolbar class="toolbar-with-fab"  layout="row" layout-margin>
+			    <span class="md-subhead" flex="70" flex-gt-sm="80"><md-icon>show_chart</md-icon> &nbsp  Metrics Manager</span>
+			    <span flex-gt-sm></span>
+			    <md-button class="md-primary" ui-sref="metricmanagement.view"  flex="25" flex-gt-sm="20">
+			      <md-icon >list</md-icon> <span hide show-gt-sm> View Metrics</span>
+			    </md-button>
+			</md-data-table-toolbar>
+			<form name="metricForm">
+	        <md-card-content layout="column" >
+	        	<input type="hidden" ng-model="metrics.data.id" />
+	            <md-input-container flex>
+					<label>Name</label> <input required  name="name" ng-model="metrics.data.name" ng-disabled="isOnEdit">
+					<div ng-messages="metricForm.name.$error">
+			            <div ng-message="required">Please enter key.</div>
+	                </div>
+				</md-input-container>
+				<md-autocomplete
+						required  
+						md-autofocus="false"
+						md-require-match="true"
+						md-min-length="0"
+			            md-selected-item="metrics.data.type"
+			            md-search-text="metrics.typefield.searchText"
+			            md-items="item in metrics.typefield.search(metrics.typefield.searchText)"
+			            md-floating-label="Type"
+			            md-item-text="item.type"
+			            placeholder="Please choose items..." flex>
+			          <md-item-template>
+			            <span >{{item.name}}</span>
+			          </md-item-template>
+		        </md-autocomplete>
+		        <md-autocomplete  
+		        		required
+						md-autofocus="false"
+						md-require-match="true"
+						md-min-length="0"
+			            md-selected-item="metrics.data.key"
+			            md-search-text="metrics.keyfield.searchText"
+			            md-items="item in metrics.keyfield.search(metrics.keyfield.searchText)"
+			            md-item-text="item.key"
+			            md-floating-label="Key"
+			            placeholder="Please choose items..." flex>
+			          <md-item-template>
+			            <span >{{item.key}}</span>
+			          </md-item-template>
+		        </md-autocomplete>
+	        </md-card-content>
+	        <div layout layout-align="center" style="padding-bottom:25px">
+	        	 <md-button aria-label="Save" ng-click="metrics.save(metricForm)" ng-disabled="showLoading" class="md-raised md-primary" flex="20" flex-gt-sm="10">
+			          <md-icon md-svg-icon="resources/img/icons/save.svg" ></md-icon> Submit
+			     </md-button>
+	        </div>
+	        </form>
+		</md-card>
+	
+</div>
+
+

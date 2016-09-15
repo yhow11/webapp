@@ -7,12 +7,17 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.phoenix.spark.PhoenixRDD;
+import org.apache.phoenix.spark.SparkContextFunctions;
+import org.apache.phoenix.spark.SparkSqlContextFunctions;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.sql.SQLContext;
 import org.apache.spark.streaming.Duration;
 import org.apache.spark.streaming.api.java.JavaPairInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.kafka.KafkaUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,12 +37,13 @@ public class KafkaContext {
 	@Value("${kafka.listener}")
 	private String metaDataBrokerList;
 	
-	@Value("${spark.appname}")
-	private String appName;
 	
 	@Value("${kafka.zookeepers}")
 	private String zookeepers;
 
+	@Autowired
+	private SparkContext sparkContext;
+	
 	
 	@Bean
 	public  Map<String, String> kafkaConfig(){
@@ -50,18 +56,9 @@ public class KafkaContext {
 	public JavaPairInputDStream<String, String> kafkaDStream(){
 		Set<String> topicsSet = new HashSet<>(Arrays.asList(topics.split(",")));
 		// Create direct kafka stream with brokers and topics
-		return KafkaUtils.createDirectStream(javaStreamingContext(), String.class, String.class,
+		return KafkaUtils.createDirectStream(sparkContext.javaStreamingContext(), String.class, String.class,
 				StringDecoder.class, StringDecoder.class, kafkaConfig(), topicsSet);
 
-	}
-	
-	@Bean
-	public JavaStreamingContext javaStreamingContext(){
-		SparkConf sparkConf = new SparkConf().setAppName(appName);
-
-		JavaSparkContext sc = new JavaSparkContext(sparkConf);
-
-		return new JavaStreamingContext(sc, new Duration(5000));
 	}
 	
 

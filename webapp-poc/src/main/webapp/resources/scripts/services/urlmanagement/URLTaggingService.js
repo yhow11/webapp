@@ -14,28 +14,10 @@ angular.module('fingerPrintApp')
         }
    return {
 	   getAllURLs: function(url, page, limit) {
-           return $http.get('urltagging/getAllURLs?url='+url+'&page='+page+"&limit="+limit).then(handleSuccess, handleError('Error getting all users'));
+           return $http.get('urltagging/getAll?url='+url+'&page='+page+"&limit="+limit).then(handleSuccess, handleError('Error getting all users'));
        },
-       getAllWebEvents: function(data, start) {
-           return $http.post('urltagging/getWebEvents?start='+start, data).then(handleSuccess, handleError('Error getting all users'));
-       },
-       getMySessions: function(data) {
-           return $http.post('urltagging/getSessions', data).then(handleSuccess, handleError('Error getting all users'));
-       },
-       getAnonymousUser: function(data) {
-           return $http.post('urltagging/getAnonymousUser', data).then(handleSuccess, handleError('Error getting all users'));
-       },
-     
        save: function(items) {
            return $http.post('urltagging/save', items).then(handleSuccess, handleError('Error creating user'));
-       },
-
-       update: function(user) {
-           return $http.put('/api/users/' + user.id, user).then(handleSuccess, handleError('Error updating user'));
-       },
-
-       remove: function(id) {
-           return $http.delete('/api/users/' + id).then(handleSuccess, handleError('Error deleting user'));
        }
        
    }

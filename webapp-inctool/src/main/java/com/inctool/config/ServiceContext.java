@@ -6,9 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import com.inctool.management.service.MemberService;
-import com.inctool.management.service.WorkerService;
 import com.inctool.management.service.impl.MemberServiceImpl;
-import com.inctool.management.service.impl.WorkerServiceImpl;
 
 import service.membermanagement.service.INCMemberService;
 import service.membermanagement.service.INCWorkerService;
@@ -28,11 +26,6 @@ public class ServiceContext {
 	@Bean
 	public MemberService memberService() throws Exception{
 		return new MemberServiceImpl(incMemberService(), mapperContext.memberMapper());
-	}
-	
-	@Bean
-	public WorkerService workerService() throws Exception{
-		return new WorkerServiceImpl(incWorkerService(), mapperContext.workerMapper());
 	}
 	
 	@Bean

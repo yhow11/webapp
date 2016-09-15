@@ -5,15 +5,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.nurtureretargeting.admin.urlmanagement.service.URLManagementService;
-import com.nurtureretargeting.event.service.EventService;
-import com.nurtureretargeting.event.service.impl.EventServiceImpl;
 import com.nurtureretargeting.management.service.JUserService;
 import com.nurtureretargeting.management.service.impl.UserDetailsServiceImpl;
 import com.nurtureretargeting.management.service.impl.UserServiceImpl;
 
 import service.keymanagement.KeyManagementService;
 import service.keymanagement.impl.KeyManagementPhoenixServiceImpl;
+import service.metricmanagement.MetricService;
+import service.metricmanagement.impl.MetricPhoenixServiceImpl;
 import service.urlmanagement.URLImportService;
 import service.urlmanagement.URLSiteMapService;
 import service.urlmanagement.URLTaggedService;
@@ -85,13 +84,6 @@ public class ServiceContext {
 		return new DeviceFPPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 
-	
-	@Bean
-	public EventService eventService() throws Exception {
-		return new EventServiceImpl(anonymousVisitorService(), webEventService(),
-				browserFPService(), deviceFPService(), sessionService());
-	}
-
 	@Bean
 	public KeyManagementService keyManagementService() throws Exception {
 		return new KeyManagementPhoenixServiceImpl(phoenixContext.sessionFactory());
@@ -113,12 +105,12 @@ public class ServiceContext {
 	}
 	
 	@Bean
-	public URLManagementService URLManagementService() throws Exception {
-		return new URLManagementService(URLImportService(), URLTaggedService(), URLSiteMapService());
+	public VisitorRawLogService visitorRawLogService() throws Exception {
+		return new VisitorRawLogKafkaServiceImpl(kafkaContext.kafkaHelper(), "events", true);
 	}
 	
 	@Bean
-	public VisitorRawLogService visitorRawLogService() throws Exception {
-		return new VisitorRawLogKafkaServiceImpl(kafkaContext.kafkaHelper(), "events", true);
+	public MetricService metricService() throws Exception {
+		return new MetricPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 }

@@ -76,20 +76,57 @@
 			<md-button ui-sref="profile" aria-label="Profile"> User
 			Profile Demo </md-button> </md-menu-item> </md-menu-content> </md-menu> <md-menu>
 			<button ng-click="$mdOpenMenu()">Admin</button>
-			<md-menu-content> <md-menu-item> <md-button
-				ui-sref="logs" aria-label="Logs"> Logs </md-button> </md-menu-item> <md-menu-divider></md-menu-divider>
-			<md-menu-item> <md-menu> <md-button
-				ng-click="$mdOpenMenu()"> Key Management </md-button> <md-menu-content>
-			<md-menu-item> <md-button
-				ui-sref="keymanagement.addnew" aria-label="Profile"> Add
-			New </md-button> </md-menu-item> <md-menu-divider></md-menu-divider> <md-menu-item>
-			<md-button ui-sref="keymanagement.view"> View </md-button> </md-menu-item> </md-menu-content> </md-menu> </md-menu-item> <md-menu-divider></md-menu-divider>
-			<md-menu-item> <md-menu> <md-button
-				ng-click="$mdOpenMenu()"> URL Management </md-button> <md-menu-content>
-			<md-menu-item> <md-button
-				ui-sref="urlmanagement.urltagging"> Tag </md-button> </md-menu-item> <md-menu-divider></md-menu-divider>
-			<md-menu-item> <md-button
-				ui-sref="urlmanagement.urlimport"> Import </md-button> </md-menu-item> </md-menu-content> </md-menu> </md-menu-item> </md-menu-content> </md-menu> </md-menu-bar>
+			<md-menu-content> 
+				<md-menu-item> 
+					<md-button ui-sref="logs" aria-label="Logs"> Logs </md-button> 
+				</md-menu-item> 
+				<md-menu-divider></md-menu-divider>
+				<md-menu-item> 
+					<md-menu> 
+						<md-button ng-click="$mdOpenMenu()"> Key Management </md-button> 
+						<md-menu-content>
+							<md-menu-item> 
+								<md-button ui-sref="keymanagement.addnew" aria-label="Profile"> Add New </md-button> 
+							</md-menu-item> 
+							<md-menu-divider></md-menu-divider> 
+							<md-menu-item>
+								<md-button ui-sref="keymanagement.view"> View </md-button> </md-menu-item> 
+						</md-menu-content> 
+					</md-menu> 
+				</md-menu-item> 
+				<md-menu-divider></md-menu-divider>
+				<md-menu-item> 
+					<md-menu> 
+						<md-button ng-click="$mdOpenMenu()"> URL Management </md-button> 
+						<md-menu-content>
+							<md-menu-item> 
+								<md-button ui-sref="urlmanagement.urltagging"> Tag </md-button> 
+							</md-menu-item> 
+							<md-menu-divider></md-menu-divider>
+							<md-menu-item> 
+								<md-button ui-sref="urlmanagement.urlimport"> Import </md-button> 
+							</md-menu-item> 
+						</md-menu-content> 
+					</md-menu> 
+				</md-menu-item>
+				<md-menu-divider></md-menu-divider>
+				<md-menu-item> 
+					<md-menu> 
+						<md-button ng-click="$mdOpenMenu()"> Metrics Management </md-button> 
+						<md-menu-content>
+							<md-menu-item> 
+								<md-button ui-sref="metricmanagement.addnew"> Add New </md-button> 
+							</md-menu-item> 
+							<md-menu-divider></md-menu-divider>
+							<md-menu-item> 
+								<md-button ui-sref="metricmanagement.view"> View </md-button> 
+							</md-menu-item> 
+						</md-menu-content> 
+					</md-menu> 
+				</md-menu-item>
+				</md-menu-content> 
+			</md-menu> 
+	</md-menu-bar>
 		</div>
 	</div>
 	</md-toolbar>

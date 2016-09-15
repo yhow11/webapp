@@ -13,8 +13,8 @@ angular.module('fingerPrintApp')
             };
         }
    return {
-	   getAll: function(start, end) {
-           return $http.get('keymanagement/getAll?start='+start+'&end='+end).then(handleSuccess, handleError('Error getting all users'));
+	   getAll: function(value, start, end) {
+           return $http.get('keymanagement/getAll?value='+value+'&start='+start+'&end='+end).then(handleSuccess, handleError('Error getting all users'));
        },
        getById: function(id) {
            return $http.get('keymanagement/getById/' + id).then(handleSuccess, handleError('Error getting user by id'));

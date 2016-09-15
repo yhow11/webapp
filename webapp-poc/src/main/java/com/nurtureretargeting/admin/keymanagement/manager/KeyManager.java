@@ -2,8 +2,9 @@ package com.nurtureretargeting.admin.keymanagement.manager;
 
 import com.nurtureretargeting.admin.keymanagement.mapper.KeyMapper;
 import com.nurtureretargeting.admin.keymanagement.object.KeyForm;
-import com.nurtureretargeting.object.ResponseForm;
 
+import common.form.ResponseForm;
+import joptsimple.internal.Strings;
 import service.keymanagement.KeyManagementService;
 
 public class KeyManager {
@@ -26,10 +27,13 @@ public class KeyManager {
 		return response;
 	}
 	
-	public ResponseForm<KeyForm> getAll(String offset, String limit) throws Exception{
+	public ResponseForm<KeyForm> getAll(String value, String offset, String limit) throws Exception{
+		Long offsetLong = !Strings.isNullOrEmpty(offset)? Long.valueOf(offset):null;
+		Long limitLong = !Strings.isNullOrEmpty(limit)? Long.valueOf(limit):null;
+		value = !Strings.isNullOrEmpty(value)? value:null;
 		ResponseForm<KeyForm> response =  new ResponseForm<KeyForm>();
 		response.setStatus(true);
-		response.getData().addAll(keyMapper.unmarshall(keyManagementService.getAll(Long.valueOf(offset), Long.valueOf(limit))));
+		response.getData().addAll(keyMapper.unmarshall(keyManagementService.getAll(value, offsetLong, limitLong)));
 		return response;
 	}
 	

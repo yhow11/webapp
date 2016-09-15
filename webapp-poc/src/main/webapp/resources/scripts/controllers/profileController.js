@@ -6,12 +6,12 @@
  */
 angular.module('fingerPrintApp').controller(
 		'ProfileController',
-		function($rootScope, $scope, eventService, sessionService, ProfileInfiniteScroll) {
+		function($rootScope, $scope, anonymousVisitorService, sessionService, ProfileInfiniteScroll) {
 			
 			$scope.profileInfiniteScroll = new ProfileInfiniteScroll();
 			$scope.init = function(){
 				var params = FingerPrint.getData();
-				eventService.getAnonymousUser(params).then(function(data){
+				anonymousVisitorService.getDetail(params).then(function(data){
 					if(data.data.status) {
 						$scope.fingerPrintData = data.data.data[0];
 					}
@@ -24,7 +24,7 @@ angular.module('fingerPrintApp').controller(
 				$rootScope.$on("notifyReceivers", function(event, data) {
 					var webEvent = data.data;
 					if(webEvent.type == "WebEventModel"){
-						eventService.getAnonymousUser(FingerPrint.getData()).then(function(data){
+						anonymousVisitorService.getDetail(FingerPrint.getData()).then(function(data){
 							if(data.data.status) {
 								$scope.fingerPrintData = data.data.data[0];
 								

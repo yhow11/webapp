@@ -6,9 +6,6 @@
  * 
  * Main module of the application.
  */
-var getUrl = window.location;
-var baseUrl = getUrl.protocol + "//" + getUrl.host + "/"
-		+ getUrl.pathname.split('/')[1];
 angular
 		.module(
 				'fingerPrintApp',
@@ -80,7 +77,7 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-																	'resources/scripts/services/eventService.js',
+																	'resources/scripts/services/anonymousVisitorService.js',
 																	'resources/scripts/services/sessionService.js',
 																	'resources/scripts/services/profileInfiniteScroll.js',
 																	'resources/scripts/controllers/profileController.js',
@@ -186,7 +183,7 @@ angular
 									'urlmanagement.urlimport',
 									{
 										url : 'urlmanagement/urlimport',
-										controller : 'ImportURLController',
+										controller : 'URLImportController',
 										templateUrl : 'resources/views/urlmanagement/import.html',
 										resolve : {
 											loadMyFiles : function(
@@ -195,8 +192,66 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-														         	'resources/scripts/services/urlmanagement/importURLService.js',
-															         'resources/scripts/controllers/urlmanagement/importURLController.js',
+														         	'resources/scripts/services/urlmanagement/URLImportService.js',
+															         'resources/scripts/controllers/urlmanagement/URLImportController.js',
+															]
+														})
+											}
+										}
+
+									})
+									.state(
+									'metricmanagement',
+									{
+										abstract: true,
+										template : '<ui-view  ></ui-view>',
+										url : '/metricmanagement'
+
+									})
+									.state(
+									'metricmanagement.addnew',
+									{
+										url : '/metricmanagement/addnew',
+										controller : 'AddNewController',
+										templateUrl : 'resources/views/metricmanagement/addnew.html',
+										params: {
+											param: null
+										},
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+														         	'resources/scripts/services/keymanagement/keymanagementService.js',
+														         	'resources/scripts/services/metricmanagement/metricService.js',
+														         	'resources/scripts/services/metricmanagement/metricTypeService.js',
+																	'resources/scripts/controllers/metricmanagement/addnewController.js'
+
+															]
+														})
+											}
+										}
+
+									})
+									.state(
+									'metricmanagement.view',
+									{
+										url : '/metricmanagement/view',
+										controller : 'ViewController',
+										templateUrl : 'resources/views/metricmanagement/view.html',
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+														         	'resources/scripts/services/metricmanagement/metricService.js',
+														         	'resources/scripts/services/metricmanagement/metricInfiniteScroll.js',
+																	'resources/scripts/controllers/metricmanagement/viewController.js'
+
 															]
 														})
 											}
