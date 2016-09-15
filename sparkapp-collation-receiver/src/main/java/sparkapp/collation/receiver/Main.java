@@ -1,12 +1,15 @@
 package sparkapp.collation.receiver;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.phoenix.spark.SparkSqlContextFunctions;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.SQLContext;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
@@ -38,7 +41,7 @@ public class Main {
 		
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppContext.class, DaoConfig.class,
 				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, SparkContext.class, StartUpContext.class);
-		
+		SQLContext sQLContext = (SQLContext) ctx.getBean("sQLContext");
 		SparkSqlContextFunctions sparkPhoenixSQL = (SparkSqlContextFunctions) ctx.getBean("sparkSqlContextFunctions");
 		RestTemplate rt = (RestTemplate) ctx.getBean("restTemplateService");
 		ReceiverService receiverService = (ReceiverService) ctx.getBean("receiverService");
@@ -52,6 +55,11 @@ public class Main {
 		Option<String> zkURL = Option.apply("poc:2181");
 		
 		DataFrame df = sparkPhoenixSQL.phoenixTableAsDataFrame("keyTable", columnSeq, predicate, zkURL, new Configuration());
+		df.show();
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("table", "keyTable");
+		param.put("zkUrl", "poc:2181");
+		df = sQLContext.load("org.apache.phoenix.spark", param);
 		df.show();
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
