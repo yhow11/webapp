@@ -1,5 +1,6 @@
 package helper.spark.sql;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +10,9 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SQLContext;
+import org.apache.spark.sql.SaveMode;
 
 import common.query.QueryParam;
-import helper.phoenix.util.PhoenixUtil;
 import helper.spark.sql.util.SparkSQLUtil;
 
 public abstract class SparkSQLTemplate {
@@ -38,5 +39,20 @@ public abstract class SparkSQLTemplate {
 		Dataset<T> dataset = df.as(encoder);
 		sqlContext.dropTempTable(SparkSQLUtil.getTableName(param));
 		return dataset.collectAsList();
+	}
+	public <T> T searchOne(QueryParam<T> param) throws Exception {
+		param.setLimit(1L);
+		List<T> results = search(param);
+		if(results.size() > 0){
+			return results.get(0);
+		}
+		return null;
+		
+	}
+
+	public <T> T insert(T value) throws Exception{
+		DataFrame pageCountDF = sqlContext.createDataFrame( Collections.singletonList(value), value.getClass());
+		pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Append).options(options).save();
+		return value;
 	}
 }

@@ -117,7 +117,12 @@ public class Main {
 //			param.put("table", "pageCountTable");
 //			pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(param).save();
 //		}
-		
+		MetricModel test = new MetricModel();
+		test.setID(1L);
+		test.setNAME("WOW");
+		test.setTKEY("asd");
+		test.setTYPE("PAGECOUNT");
+		metricService.save(test);
 		List<MetricModel> metrics = metricService.getAll("asd");
 		System.out.println(metrics.size());
 		

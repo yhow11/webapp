@@ -32,14 +32,12 @@ public class MetricSparkSQLServiceImpl extends SparkSQLTemplate implements Metri
 		// TODO Auto-generated method stub
 		QueryParam<MetricModel> param = new QueryParam<MetricModel>(MetricModel.class);
 		param.getModel().setID(Long.valueOf(id));
-//		return super.searchOne(param);
-		return null;
+		return super.searchOne(param);
 	}
 
 	public MetricModel save(MetricModel model) throws Exception {
 		// TODO Auto-generated method stub
-//		return super.upsert(model);
-		return null;
+		return super.insert(model);
 	}
 
 	public void remove(MetricModel model) throws Exception {
