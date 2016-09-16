@@ -26,6 +26,9 @@ public class PhoenixUtil {
 		Class<?> clazz = param.getParamClass();
 		return clazz.getAnnotation(PhoenixTable.class).table();
 	}
+	public static String getTableName(Class<?> clazz) throws Exception {
+		return clazz.getAnnotation(PhoenixTable.class).table();
+	}
 	protected static String getSequenceName(Class<?> clazz, Field field) throws Exception {
 		if(!Strings.isNullOrEmpty(field.getAnnotation(PhoenixSequence.class).name())) {
 			return field.getAnnotation(PhoenixSequence.class).name();
