@@ -112,7 +112,7 @@ public class Main {
 						col("URL"), 
 						col("TVALUES"), 
 						col("TCOUNT").plus(1)
-				).write().format("org.apache.phoenix.spark").mode(SaveMode.Append).saveAsTable("pageCountTable");
+				).write().format("org.apache.phoenix.spark").mode(SaveMode.Append).save();
 			} else {
 				pageCounts.add(pageCountModel);
 			}
@@ -120,8 +120,8 @@ public class Main {
 		
 		if(pageCounts.size() > 0) {
 			DataFrame pageCountDF = sQLContext.createDataFrame(pageCounts, PageCountModel.class);
-			pageCountDF.registerTempTable("pageCountTable");
-			pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Append).saveAsTable("pageCountTable");
+			param.put("table", "pageCountTable");
+			pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Append).options(param).save();
 		}
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
