@@ -26,14 +26,14 @@ public class PhoenixUtil {
 		Class<?> clazz = param.getParamClass();
 		return clazz.getAnnotation(PhoenixTable.class).table();
 	}
-	private static String getSequenceName(Class<?> clazz, Field field) throws Exception {
+	protected static String getSequenceName(Class<?> clazz, Field field) throws Exception {
 		if(!Strings.isNullOrEmpty(field.getAnnotation(PhoenixSequence.class).name())) {
 			return field.getAnnotation(PhoenixSequence.class).name();
 		} else {
 			return clazz.getAnnotation(PhoenixTable.class).table()+"_seq."+field.getName();
 		}
 	}
-	private static List<String> getColumnsValue(Object object) throws Exception {
+	protected static List<String> getColumnsValue(Object object) throws Exception {
 		Class<?> clazz = object.getClass();
 		List<Field> fields = findFields(clazz, PhoenixColumn.class);
 		List<String> valuesArr = new ArrayList<String>();
@@ -68,7 +68,7 @@ public class PhoenixUtil {
 		return map;
 	}
 
-	public static Map<String, Type> getColumnsWithType(Class<?> clazz, String... columns) throws Exception {
+	protected static Map<String, Type> getColumnsWithType(Class<?> clazz, String... columns) throws Exception {
 		Map<String, Type> map = new HashMap<String, Type>();
 		List<Field> fields = new ArrayList<>();
 		for(String column: columns){
@@ -84,7 +84,7 @@ public class PhoenixUtil {
 		return map;
 	}
 	
-	private static String getFieldAliasesString(Class<?> clazz) throws Exception {
+	protected static String getFieldAliasesString(Class<?> clazz) throws Exception {
 		List<String> valuesArr = new ArrayList<String>();
 		for (Field field : clazz.getDeclaredFields()) {
 			if (field.isAnnotationPresent(PhoenixColumn.class)) {
@@ -101,7 +101,7 @@ public class PhoenixUtil {
 	public static List<String> findFieldNames(Class<?> classs, Class<? extends Annotation> ann) {
 		return findFieldNames(classs, ann, null);
 	}
-	private static List<String> findFieldNames(Class<?> classs, Class<? extends Annotation> ann,
+	protected static List<String> findFieldNames(Class<?> classs, Class<? extends Annotation> ann,
 			Class<? extends Annotation>... exclude) {
 		List<String> fields = new ArrayList<>();
 		Class<?> c = classs;
@@ -123,7 +123,7 @@ public class PhoenixUtil {
 		}
 		return fields;
 	}
-	private static List<Field> findFields(Class<?> classs, Class<? extends Annotation> ann,
+	protected static List<Field> findFields(Class<?> classs, Class<? extends Annotation> ann,
 			Class<? extends Annotation>... exclude) {
 		List<Field> fields = new ArrayList<>();
 		Class<?> c = classs;
@@ -146,7 +146,7 @@ public class PhoenixUtil {
 		return fields;
 	}
 
-	private static List<String> getConditions(Object object, List<String> fieldNames) throws Exception {
+	protected static List<String> getConditions(Object object, List<String> fieldNames) throws Exception {
 
 		List<String> conditions = new ArrayList<>();
 		for (String name : fieldNames) {
@@ -167,7 +167,7 @@ public class PhoenixUtil {
 		return conditions;
 	}
 
-	private static String getPaginationConditions(Long limit, Long offset) throws Exception {
+	protected static String getPaginationConditions(Long limit, Long offset) throws Exception {
 		List<String> conditions = new ArrayList<>();
 		if (limit != null) {
 			conditions.add("limit " + limit);
@@ -182,10 +182,10 @@ public class PhoenixUtil {
 		}
 		
 	}
-	private static String getGroupByCondition(List<String> columns) throws Exception {
+	protected static String getGroupByCondition(List<String> columns) throws Exception {
 		return columns.size() > 0 ? (" GROUP BY "+ String.join(",", columns)):"";
 	}
-	private static String getOrderByCondition(QueryParam<?> param) throws Exception {
+	protected static String getOrderByCondition(QueryParam<?> param) throws Exception {
 		if(!Strings.isNullOrEmpty(param.getSortBy())) {
 			return " ORDER BY "+param.getSortBy()+ " "+param.getSort().getType();
 		} else {
@@ -194,7 +194,7 @@ public class PhoenixUtil {
 		
 	}
 	
-	private static String getFieldValue(Object object, Field field) throws Exception {
+	protected static String getFieldValue(Object object, Field field) throws Exception {
 		Object value = PropertyUtils.getProperty(object, field.getName());
 		if (field.getType().equals(String.class)) {
 			return "'" + (value != null ? String.valueOf(value) : "") + "'";
@@ -203,7 +203,7 @@ public class PhoenixUtil {
 		}
 	}
 
-	private static Field getField(Class<?> clazz, String fieldName) throws Exception {
+	protected static Field getField(Class<?> clazz, String fieldName) throws Exception {
 		Field[] fields = clazz.getDeclaredFields();
 		for(Field field: fields){
 			if(fieldName.equals(field.getName())){
@@ -213,7 +213,7 @@ public class PhoenixUtil {
 		
 		return null;
 	}
-	private static String getFieldValue(Object object, String fieldName) throws Exception {
+	protected static String getFieldValue(Object object, String fieldName) throws Exception {
 		Object value = PropertyUtils.getProperty(object, fieldName);
 		if (PropertyUtils.getPropertyType(object, fieldName).equals(String.class)) {
 			return "'" + (value != null ? String.valueOf(value) : "") + "'";
@@ -221,7 +221,7 @@ public class PhoenixUtil {
 			return value != null ? String.valueOf(value) : "";
 		}
 	}
-	private static List<String> getFieldValue(Object object, List<String> fieldNames) throws Exception {
+	protected static List<String> getFieldValue(Object object, List<String> fieldNames) throws Exception {
 		List<String> values = new ArrayList<>();
 		for(String fieldName: fieldNames){
 			values.add(getFieldValue(object, fieldName));
@@ -324,7 +324,7 @@ public class PhoenixUtil {
 		List<String> distinctFieldNames = findFieldNames(clazz, PhoenixDistinctColumn.class);
 		List<String> fieldNames = findFieldNames(clazz, PhoenixColumn.class);
 		List<String> params = new ArrayList<String>();
-		params.add(String.join(",", distinctFieldNames.size() > 0? distinctFieldNames: fieldNames));
+		params.add(String.join(",", distinctFieldNames.size() > 0? distinctFieldNames: fieldNames).toUpperCase());
 		params.add(clazz.getAnnotation(PhoenixTable.class).table());
 		List<String> conditions = getConditions(param.getModel(), fieldNames);
 		if(conditions.size() > 0) {

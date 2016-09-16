@@ -12,6 +12,7 @@ import org.apache.spark.sql.SQLContext;
 
 import common.query.QueryParam;
 import helper.phoenix.util.PhoenixUtil;
+import helper.spark.sql.util.SparkSQLUtil;
 
 public abstract class SparkSQLTemplate {
 
@@ -32,7 +33,7 @@ public abstract class SparkSQLTemplate {
 	
 	public <T> List<T> search(QueryParam<T> param) throws Exception {
 		sqlContext.read().format(FORMAT).options(options).load().registerTempTable(PhoenixUtil.getTableName(param));
-		DataFrame df = sqlContext.sql(PhoenixUtil.createGetSQL(param));
+		DataFrame df = sqlContext.sql(SparkSQLUtil.createGetSQL(param));
 		Encoder<T> encoder = Encoders.bean(param.getModelClass());
 		Dataset<T> dataset = df.as(encoder);
 		sqlContext.dropTempTable(PhoenixUtil.getTableName(param));
