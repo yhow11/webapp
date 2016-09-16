@@ -1,4 +1,4 @@
-package service.metricmanagement.metric.enums;
+package service.metricmanagement.enums;
 
 public enum MetricTypeEnum {
 

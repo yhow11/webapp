@@ -37,6 +37,7 @@
     <module>helper-jaxb</module>
     <module>service-membermanagement</module>
     <module>service-metricmanagement</module>
+    <module>service-pagecount</module>
   </modules>
   
 </project>

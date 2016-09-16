@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 
 import helper.phoenix.dao.impl.PhoenixDaoImpl;
+import service.pagecount.model.PageCountModel;
 
 @Configuration
 public class StartUpContext implements ApplicationListener<ApplicationEvent> {
@@ -24,6 +25,7 @@ public class StartUpContext implements ApplicationListener<ApplicationEvent> {
 		Logger.getLogger("org.apache.spark.streaming.scheduler.JobGenerator").setLevel(Level.INFO);
 		
 		try {
+			phoenixDaoImpl.createTable(PageCountModel.class);
 //			phoenixDaoImpl.createTable(VisitorLogModel.class);
 //			phoenixDaoImpl.createTable(AnonymousVisitorModel.class);
 //			phoenixDaoImpl.createTable(BrowserFPModel.class);

@@ -1,6 +1,7 @@
 package sparkapp.collation.receiver;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
 import org.apache.spark.sql.Encoders;
+import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.streaming.api.java.JavaDStream;
@@ -26,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import scala.Option;
 import scala.collection.Seq;
 import service.keymanagement.model.KeyModel;
+import service.pagecount.model.PageCountModel;
 import sparkapp.collation.receiver.config.AppContext;
 import sparkapp.collation.receiver.config.DaoConfig;
 import sparkapp.collation.receiver.config.KafkaContext;
@@ -75,21 +78,49 @@ public class Main {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("table", "urlTaggedTable");
 		param.put("zkUrl", "poc:2181");
-		sQLContext.read().format("org.apache.phoenix.spark").options(param).load().show();
-		sQLContext.sql("SELECT * FROM URLTAGGEDTABLE").show();
-//		DataFrame urlTaggedTable = sQLContext.load("org.apache.phoenix.spark", param);
-//		param = new HashMap<String, String>();
-//		param.put("table", "metricTable");
-//		param.put("zkUrl", "poc:2181");
-//		DataFrame metricTable = sQLContext.load("org.apache.phoenix.spark", param);
-//
-//		DataFrame joinTable = urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
-//		
+		DataFrame urlTaggedTable = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
+		param.put("table", "metricTable");
+		DataFrame metricTable = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
+
+		DataFrame joinTable = urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
 		
+		List<PageCountModel> pageCounts = new ArrayList<>();
+		for(Row row: joinTable.collectAsList()){
+			PageCountModel pageCountModel = new PageCountModel();
+			pageCountModel.setVISITORID("test");
+			pageCountModel.setTKEY(row.getAs("TKEY"));
+			pageCountModel.setMETRIC(row.getAs("NAME"));
+			pageCountModel.setURL(row.getAs("URL"));
+			pageCountModel.setTVALUES(row.getAs("TVALUES"));
+			pageCountModel.setTCOUNT(1L);
+			
+			param.put("table", "pageCountTable");
+			DataFrame pageCountDF = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
+			pageCountDF = pageCountDF.filter(
+					col("VISITORID").equalTo(pageCountModel.getVISITORID())
+					.and(col("TKEY").equalTo(pageCountModel.getTKEY()))
+					.and(col("METRIC").equalTo(pageCountModel.getMETRIC()))
+					.and(col("URL").equalTo(pageCountModel.getURL()))
+					.and(col("TVALUES").equalTo(pageCountModel.getTVALUES()))
+			);
+			Long count = pageCountDF.count();
+			if(count > 0){
+				pageCountDF.select(
+						col("VISITORID"), 
+						col("TKEY"), 
+						col("METRIC"), 
+						col("URL"), 
+						col("TVALUES"), 
+						col("TCOUNT").plus(1)
+				).write().format("org.apache.phoenix.spark").mode(SaveMode.Append).saveAsTable("pageCountTable");
+			} else {
+				pageCounts.add(pageCountModel);
+			}
+		}
 		
-//		joinTable.write().format("org.apache.phoenix.spark").mode(SaveMode.Append).saveAsTable("WIW");
-//		
-//		joinTable.show();
+		if(pageCounts.size() > 0) {
+			sQLContext.createDataFrame(pageCounts, PageCountModel.class).write().format("org.apache.phoenix.spark").mode(SaveMode.Append).saveAsTable("pageCountTable");
+		}
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
 
