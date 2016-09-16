@@ -32,12 +32,15 @@ import service.pagecount.model.PageCountModel;
 import sparkapp.collation.receiver.config.AppContext;
 import sparkapp.collation.receiver.config.DaoConfig;
 import sparkapp.collation.receiver.config.KafkaContext;
+import sparkapp.collation.receiver.config.ManagerConfig;
 import sparkapp.collation.receiver.config.MapperConfig;
 import sparkapp.collation.receiver.config.PhoenixContext;
 import sparkapp.collation.receiver.config.ServiceConfig;
 import sparkapp.collation.receiver.config.SparkContext;
 import sparkapp.collation.receiver.config.StartUpContext;
+import sparkapp.collation.receiver.manager.PartialPageCountManager;
 import sparkapp.collation.receiver.mapper.WebEventVisitorLogMapper;
+import sparkapp.collation.receiver.object.PartialPageCount;
 import sparkapp.collation.receiver.service.ReceiverService;
 import usertracker.base.UserParam;
 import usertracker.browser.mapper.impl.VisitorLogStringMapper;
@@ -50,10 +53,11 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppContext.class, DaoConfig.class,
-				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, SparkContext.class, StartUpContext.class);
+				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, SparkContext.class, ManagerConfig.class, StartUpContext.class);
 		SQLContext sQLContext = (SQLContext) ctx.getBean("sQLContext");
 		SparkSqlContextFunctions sparkPhoenixSQL = (SparkSqlContextFunctions) ctx.getBean("sparkSqlContextFunctions");
 		RestTemplate rt = (RestTemplate) ctx.getBean("restTemplateService");
+		PartialPageCountManager partialPageCountManager = (PartialPageCountManager) ctx.getBean("partialPageCountManager");
 		ReceiverService receiverService = (ReceiverService) ctx.getBean("receiverService");
 		VisitorLogStringMapper visitorLogStringMapper = (VisitorLogStringMapper) ctx.getBean("visitorLogStringMapper");
 
@@ -76,55 +80,52 @@ public class Main {
 //		}
 		
 		Map<String, String> param = new HashMap<String, String>();
-		param.put("table", "urlTaggedTable");
-		param.put("zkUrl", "poc:2181");
-		DataFrame urlTaggedTable = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
-		param.put("table", "metricTable");
-		DataFrame metricTable = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
-
-		DataFrame joinTable = urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
-		
-		List<PageCountModel> pageCounts = new ArrayList<>();
-		for(Row row: joinTable.collectAsList()){
-			PageCountModel pageCountModel = new PageCountModel();
-			pageCountModel.setVISITORID("test");
-			pageCountModel.setTKEY(row.getAs("TKEY"));
-			pageCountModel.setMETRIC(row.getAs("NAME"));
-			pageCountModel.setURL(row.getAs("URL"));
-			pageCountModel.setTVALUES(row.getAs("TVALUES"));
-			pageCountModel.setTCOUNT(1L);
-			
-			param.put("table", "pageCountTable");
-			DataFrame pageCountDF = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
-			pageCountDF = pageCountDF.filter(
-					col("VISITORID").equalTo(pageCountModel.getVISITORID())
-					.and(col("TKEY").equalTo(pageCountModel.getTKEY()))
-					.and(col("METRIC").equalTo(pageCountModel.getMETRIC()))
-					.and(col("URL").equalTo(pageCountModel.getURL()))
-					.and(col("TVALUES").equalTo(pageCountModel.getTVALUES()))
-			);
-			Long count = pageCountDF.count();
-			if(count > 0){
-				pageCountDF = pageCountDF.select(
-						col("VISITORID"), 
-						col("TKEY"), 
-						col("METRIC"), 
-						col("URL"), 
-						col("TVALUES"), 
-						col("TCOUNT").plus(1).alias("TCOUNT")
-				);
-				pageCountDF.show();
-				pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(param).save();
-			} else {
-				pageCounts.add(pageCountModel);
-			}
-		}
-		
-		if(pageCounts.size() > 0) {
-			DataFrame pageCountDF = sQLContext.createDataFrame(pageCounts, PageCountModel.class);
-			param.put("table", "pageCountTable");
-			pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(param).save();
-		}
+		param.put("zkURL", "poc:2181");
+		DataFrame pageCountDF = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
+		pageCountDF.registerTempTable("pageCountTemp");
+		sQLContext.sql("SELECT * FROM pageCountTemp").show();
+//		
+//		List<PageCountModel> pageCounts = new ArrayList<>();
+//		for(PartialPageCount partialPageCount: partialPageCountManager.getAll("")){
+//			PageCountModel pageCountModel = new PageCountModel();
+//			pageCountModel.setVISITORID("test");
+//			pageCountModel.setTKEY(partialPageCount.getTKEY());
+//			pageCountModel.setMETRIC(partialPageCount.getMETRIC());
+//			pageCountModel.setURL(partialPageCount.getURL());
+//			pageCountModel.setTVALUES(partialPageCount.getTVALUES());
+//			pageCountModel.setTCOUNT(1L);
+//			
+//			param.put("table", "pageCountTable");
+//			DataFrame pageCountDF = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
+//			pageCountDF = pageCountDF.filter(
+//					col("VISITORID").equalTo(pageCountModel.getVISITORID())
+//					.and(col("TKEY").equalTo(pageCountModel.getTKEY()))
+//					.and(col("METRIC").equalTo(pageCountModel.getMETRIC()))
+//					.and(col("URL").equalTo(pageCountModel.getURL()))
+//					.and(col("TVALUES").equalTo(pageCountModel.getTVALUES()))
+//			);
+//			Long count = pageCountDF.count();
+//			if(count > 0){
+//				pageCountDF = pageCountDF.select(
+//						col("VISITORID"), 
+//						col("TKEY"), 
+//						col("METRIC"), 
+//						col("URL"), 
+//						col("TVALUES"), 
+//						col("TCOUNT").plus(1).alias("TCOUNT")
+//				);
+//				pageCountDF.show();
+//				pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(param).save();
+//			} else {
+//				pageCounts.add(pageCountModel);
+//			}
+//		}
+//		
+//		if(pageCounts.size() > 0) {
+//			DataFrame pageCountDF = sQLContext.createDataFrame(pageCounts, PageCountModel.class);
+//			param.put("table", "pageCountTable");
+//			pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(param).save();
+//		}
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
 
