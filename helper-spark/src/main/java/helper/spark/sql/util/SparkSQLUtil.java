@@ -12,7 +12,7 @@ import helper.phoenix.util.PhoenixUtil;
 public class SparkSQLUtil extends PhoenixUtil {
 
 	public static <E, T> String createGetSQL(QueryParam<T> param) throws Exception {
-		String format = "SELECT row_number() over (order by count) as pagenumber, %s FROM %s %s %s %s %s";
+		String format = "SELECT row_number() over (order by ID) as pagenumber, %s FROM %s %s %s %s %s";
 		Class<?> clazz = param.getParamClass();
 
 		List<String> distinctFieldNames = findFieldNames(clazz, PhoenixDistinctColumn.class);
