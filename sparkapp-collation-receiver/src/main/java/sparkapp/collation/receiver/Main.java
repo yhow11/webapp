@@ -111,7 +111,7 @@ public class Main {
 						col("METRIC"), 
 						col("URL"), 
 						col("TVALUES"), 
-						col("TCOUNT").plus(1)
+						col("TCOUNT").plus(1).alias("TCOUNT")
 				);
 				pageCountDF.show();
 				pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(param).save();
