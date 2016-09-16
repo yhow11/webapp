@@ -1,23 +1,14 @@
 package sparkapp.collation.receiver;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.spark.sql.functions.col;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.phoenix.spark.SparkSqlContextFunctions;
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.sql.Column;
 import org.apache.spark.sql.DataFrame;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Encoder;
-import org.apache.spark.sql.Encoders;
-import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
-import org.apache.spark.sql.SaveMode;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
@@ -25,10 +16,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.client.RestTemplate;
 
-import scala.Option;
-import scala.collection.Seq;
-import service.keymanagement.model.KeyModel;
-import service.pagecount.model.PageCountModel;
+import service.metricmanagement.MetricService;
+import service.metricmanagement.model.MetricModel;
 import sparkapp.collation.receiver.config.AppContext;
 import sparkapp.collation.receiver.config.DaoConfig;
 import sparkapp.collation.receiver.config.KafkaContext;
@@ -40,7 +29,6 @@ import sparkapp.collation.receiver.config.SparkContext;
 import sparkapp.collation.receiver.config.StartUpContext;
 import sparkapp.collation.receiver.manager.PartialPageCountManager;
 import sparkapp.collation.receiver.mapper.WebEventVisitorLogMapper;
-import sparkapp.collation.receiver.object.PartialPageCount;
 import sparkapp.collation.receiver.service.ReceiverService;
 import usertracker.base.UserParam;
 import usertracker.browser.mapper.impl.VisitorLogStringMapper;
@@ -54,6 +42,7 @@ public class Main {
 		
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppContext.class, DaoConfig.class,
 				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, SparkContext.class, ManagerConfig.class, StartUpContext.class);
+		MetricService metricService = (MetricService) ctx.getBean("metricService");
 		SQLContext sQLContext = (SQLContext) ctx.getBean("sQLContext");
 		SparkSqlContextFunctions sparkPhoenixSQL = (SparkSqlContextFunctions) ctx.getBean("sparkSqlContextFunctions");
 		RestTemplate rt = (RestTemplate) ctx.getBean("restTemplateService");
@@ -79,12 +68,13 @@ public class Main {
 //			System.out.println(key.gettValues());
 //		}
 		
-		Map<String, String> param = new HashMap<String, String>();
-		param.put("zkURL", "poc:2181");
-		param.put("table", "pageCountTable");
-		DataFrame pageCountDF = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
-		pageCountDF.registerTempTable("pageCountTemp");
-		sQLContext.sql("SELECT * FROM pageCountTemp").show();
+//		Map<String, String> param = new HashMap<String, String>();
+//		param.put("zkURL", "poc:2181");
+//		param.put("table", "pageCountTable");
+//		DataFrame pageCountDF = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
+//		pageCountDF.registerTempTable("pageCountTable");
+//		sQLContext.sql("SELECT * FROM pageCountTemp").show();
+//		sQLContext.dropTempTable("pageCountTable");
 //		
 //		List<PageCountModel> pageCounts = new ArrayList<>();
 //		for(PartialPageCount partialPageCount: partialPageCountManager.getAll("")){
@@ -127,6 +117,9 @@ public class Main {
 //			param.put("table", "pageCountTable");
 //			pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(param).save();
 //		}
+		
+		List<MetricModel> metrics = metricService.getAll("asd");
+		System.out.println(metrics.size());
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
 

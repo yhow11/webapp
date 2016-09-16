@@ -30,6 +30,9 @@
         <dependent-module archiveName="service-metricmanagement-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/service-metricmanagement/service-metricmanagement">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="helper-spark-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/helper-spark/helper-spark">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="service-usertracker-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/service-usertracker/service-usertracker">
             <dependency-type>uses</dependency-type>
         </dependent-module>

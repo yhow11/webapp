@@ -8,8 +8,8 @@
 		<artifactId>webapp</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>service-metricmanagement</artifactId>
-	<name>service-metricmanagement</name>
+	<artifactId>helper-spark</artifactId>
+	<name>helper-spark</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,18 +22,35 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.jofel</groupId>
-			<artifactId>helper-phoenix</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-core_2.10</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming_2.10</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-sql_2.10</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming-kafka_2.10</artifactId>
+			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jofel</groupId>
-			<artifactId>helper-spark</artifactId>
+			<artifactId>helper-phoenix</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>service-metricmanagement</finalName>
+		<finalName>helper-spark</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -38,6 +38,7 @@
     <module>service-membermanagement</module>
     <module>service-metricmanagement</module>
     <module>service-pagecount</module>
+    <module></module>  <module>helper-spark</module>
   </modules>
   
 </project>

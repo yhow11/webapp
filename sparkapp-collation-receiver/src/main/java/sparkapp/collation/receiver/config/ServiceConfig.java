@@ -9,6 +9,8 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import service.metricmanagement.MetricService;
+import service.metricmanagement.impl.MetricSparkSQLServiceImpl;
 import sparkapp.collation.receiver.service.ReceiverService;
 import sparkapp.collation.receiver.service.impl.ReceiverServiceImpl;
 import usertracker.browser.service.AnonymousVisitorService;
@@ -32,11 +34,18 @@ public class ServiceConfig {
 	private String topics;
 	
 	@Value("${kafka.zookeepers}")
-	private String metaDataBrokerList;
+	private String zookeepers;
 	
 	@Autowired
 	private PhoenixContext phoenixContext;
 	
+	@Autowired
+	private SparkContext sparkContext;
+	
+	@Bean
+	public MetricService metricService() throws Exception{
+		return new MetricSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers, "metricTable");
+	}
 	
 	@Bean
 	public VisitorLogService visitorLogService() throws Exception{

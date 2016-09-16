@@ -22,7 +22,10 @@ import helper.phoenix.annotation.entity.PhoenixTable;
 import helper.phoenix.annotation.query.PhoenixDistinctColumn;
 
 public class PhoenixUtil {
-
+	public static String getTableName(QueryParam<?> param) throws Exception {
+		Class<?> clazz = param.getParamClass();
+		return clazz.getAnnotation(PhoenixTable.class).table();
+	}
 	private static String getSequenceName(Class<?> clazz, Field field) throws Exception {
 		if(!Strings.isNullOrEmpty(field.getAnnotation(PhoenixSequence.class).name())) {
 			return field.getAnnotation(PhoenixSequence.class).name();
@@ -312,7 +315,8 @@ public class PhoenixUtil {
 		}
 		return sqls;
 	}
-
+	
+	
 	public static <E, T> String createGetSQL(QueryParam<T> param) throws Exception {
 		String format = "SELECT %s FROM %s %s %s %s %s %s";
 		Class<?> clazz = param.getParamClass();
