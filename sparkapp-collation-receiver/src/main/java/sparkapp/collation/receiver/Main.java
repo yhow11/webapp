@@ -81,6 +81,7 @@ public class Main {
 		
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("zkURL", "poc:2181");
+		param.put("table", "pageCountTable");
 		DataFrame pageCountDF = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
 		pageCountDF.registerTempTable("pageCountTemp");
 		sQLContext.sql("SELECT * FROM pageCountTemp").show();
