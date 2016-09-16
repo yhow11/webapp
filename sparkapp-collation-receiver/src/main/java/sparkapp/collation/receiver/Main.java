@@ -119,7 +119,9 @@ public class Main {
 		}
 		
 		if(pageCounts.size() > 0) {
-			sQLContext.createDataFrame(pageCounts, PageCountModel.class).write().format("org.apache.phoenix.spark").mode(SaveMode.Append).saveAsTable("pageCountTable");
+			DataFrame pageCountDF = sQLContext.createDataFrame(pageCounts, PageCountModel.class);
+			pageCountDF.registerTempTable("pageCountTable");
+			pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Append).saveAsTable("pageCountTable");
 		}
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
