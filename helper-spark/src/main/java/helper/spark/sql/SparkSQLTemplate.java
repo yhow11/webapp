@@ -4,13 +4,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import static org.apache.spark.sql.functions.col;
 import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.SaveMode;
+import org.apache.spark.sql.catalyst.expressions.MonotonicallyIncreasingID;
 
 import common.query.QueryParam;
 import helper.spark.sql.util.SparkSQLUtil;
@@ -35,6 +36,12 @@ public abstract class SparkSQLTemplate {
 	public <T> List<T> search(QueryParam<T> param) throws Exception {
 		sqlContext.read().format(FORMAT).options(options).load().registerTempTable(SparkSQLUtil.getTableName(param));
 		DataFrame df = sqlContext.sql(SparkSQLUtil.createGetSQL(param));
+		if(param.getOffset() != null) {
+			df = df.filter(col("pagenumber").geq(param.getOffset()));
+		}
+		if(param.getLimit() != null) {
+			df = df.filter(col("pagenumber").leq(param.getOffset()+param.getLimit()));
+		}
 		Encoder<T> encoder = Encoders.bean(param.getModelClass());
 		Dataset<T> dataset = df.as(encoder);
 		sqlContext.dropTempTable(SparkSQLUtil.getTableName(param));
@@ -50,6 +57,12 @@ public abstract class SparkSQLTemplate {
 		
 	}
 
+	public <T> List<T> insert(List<T> values) throws Exception{
+		DataFrame pageCountDF = sqlContext.createDataFrame( values, values.get(0).getClass());
+		pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(options).save();
+		return values;
+	}
+	
 	public <T> T insert(T value) throws Exception{
 		DataFrame pageCountDF = sqlContext.createDataFrame( Collections.singletonList(value), value.getClass());
 		pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(options).save();

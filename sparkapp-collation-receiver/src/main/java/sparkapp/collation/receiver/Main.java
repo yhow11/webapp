@@ -118,12 +118,13 @@ public class Main {
 //			pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(param).save();
 //		}
 		MetricModel test = new MetricModel();
-		test.setID(1L);
+		test.setID(2L);
 		test.setNAME("WOW");
 		test.setTKEY("asd");
 		test.setTYPE("PAGECOUNT");
 		metricService.save(test);
-		List<MetricModel> metrics = metricService.getAll("asd");
+		
+		List<MetricModel> metrics = metricService.getAll(0L, 2L);
 		System.out.println(metrics.size());
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
