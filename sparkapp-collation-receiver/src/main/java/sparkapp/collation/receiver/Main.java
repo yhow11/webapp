@@ -105,14 +105,16 @@ public class Main {
 			);
 			Long count = pageCountDF.count();
 			if(count > 0){
-				pageCountDF.select(
+				pageCountDF = pageCountDF.select(
 						col("VISITORID"), 
 						col("TKEY"), 
 						col("METRIC"), 
 						col("URL"), 
 						col("TVALUES"), 
 						col("TCOUNT").plus(1)
-				).write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).save();
+				);
+				pageCountDF.show();
+				pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).save();
 			} else {
 				pageCounts.add(pageCountModel);
 			}
