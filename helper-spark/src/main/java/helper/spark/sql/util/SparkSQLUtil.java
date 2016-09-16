@@ -12,7 +12,7 @@ import helper.phoenix.util.PhoenixUtil;
 public class SparkSQLUtil extends PhoenixUtil {
 
 	public static <E, T> String createGetSQL(QueryParam<T> param) throws Exception {
-		String format = "SELECT row_number() over (order by ID) as pagenumber, %s FROM %s %s %s %s %s";
+		String format = "SELECT %s FROM %s %s %s %s %s %s";
 		Class<?> clazz = param.getParamClass();
 
 		List<String> distinctFieldNames = findFieldNames(clazz, PhoenixDistinctColumn.class);
@@ -29,7 +29,7 @@ public class SparkSQLUtil extends PhoenixUtil {
 		params.add(String.join(" AND ", conditions));
 		params.add(getGroupByCondition(distinctFieldNames));
 		params.add(getOrderByCondition(param));
-//		params.add(getPaginationConditions(param.getLimit(), param.getOffset()));
+		params.add(getPaginationConditions(param.getLimit(), param.getOffset()));
 		String sql = String.format(format, params.toArray(new Object[params.size()]));
 
 		return sql;
