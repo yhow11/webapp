@@ -29,7 +29,7 @@ public class MetricPhoenixServiceImpl extends PhoenixDaoImpl implements MetricSe
 	public MetricModel get(String id) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<MetricModel> param = new QueryParam<MetricModel>(MetricModel.class);
-		param.getModel().setId(Long.valueOf(id));
+		param.getModel().setID(Long.valueOf(id));
 		return super.searchOne(param);
 	}
 
@@ -54,7 +54,7 @@ public class MetricPhoenixServiceImpl extends PhoenixDaoImpl implements MetricSe
 	public List<MetricModel> getAll(String key) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<MetricModel> param = new QueryParam<MetricModel>(MetricModel.class);
-		param.getModel().settKey(key);
+		param.getModel().setTKEY(key);
 		return super.search(param);
 	}
 

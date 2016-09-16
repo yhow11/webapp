@@ -27,21 +27,21 @@ public class MetricMapper implements ListMapper<MetricModel, MetricForm> {
 	public MetricModel marshall(MetricForm e, MetricModel target) throws Exception {
 		// TODO Auto-generated method stub
 		if(!Strings.isNullOrEmpty(e.getId())){
-			target.setId(Long.valueOf(e.getId()));
+			target.setID(Long.valueOf(e.getId()));
 		}
-		target.settKey(e.getKey());
-		target.setName(e.getName());
-		target.setType(e.getType());
+		target.setTKEY(e.getKey());
+		target.setNAME(e.getName());
+		target.setTYPE(e.getType());
 		return target;
 	}
 
 	@Override
 	public MetricForm unmarshall(MetricModel t, MetricForm target) throws Exception {
 		// TODO Auto-generated method stub
-		target.setId(String.valueOf(t.getId()));
-		target.setKey(t.gettKey());
-		target.setName(t.getName());
-		target.setType(t.getType());
+		target.setId(String.valueOf(t.getID()));
+		target.setKey(t.getTKEY());
+		target.setName(t.getNAME());
+		target.setType(t.getTYPE());
 		return target;
 	}
 

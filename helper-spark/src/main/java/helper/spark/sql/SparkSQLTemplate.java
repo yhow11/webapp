@@ -32,11 +32,11 @@ public abstract class SparkSQLTemplate {
 	}
 	
 	public <T> List<T> search(QueryParam<T> param) throws Exception {
-		sqlContext.read().format(FORMAT).options(options).load().registerTempTable(PhoenixUtil.getTableName(param));
+		sqlContext.read().format(FORMAT).options(options).load().registerTempTable(SparkSQLUtil.getTableName(param));
 		DataFrame df = sqlContext.sql(SparkSQLUtil.createGetSQL(param));
 		Encoder<T> encoder = Encoders.bean(param.getModelClass());
 		Dataset<T> dataset = df.as(encoder);
-		sqlContext.dropTempTable(PhoenixUtil.getTableName(param));
+		sqlContext.dropTempTable(SparkSQLUtil.getTableName(param));
 		return dataset.collectAsList();
 	}
 }

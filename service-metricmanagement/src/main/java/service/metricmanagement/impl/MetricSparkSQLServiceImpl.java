@@ -31,7 +31,7 @@ public class MetricSparkSQLServiceImpl extends SparkSQLTemplate implements Metri
 	public MetricModel get(String id) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<MetricModel> param = new QueryParam<MetricModel>(MetricModel.class);
-		param.getModel().setId(Long.valueOf(id));
+		param.getModel().setID(Long.valueOf(id));
 //		return super.searchOne(param);
 		return null;
 	}
@@ -59,7 +59,7 @@ public class MetricSparkSQLServiceImpl extends SparkSQLTemplate implements Metri
 	public List<MetricModel> getAll(String key) throws Exception {
 		// TODO Auto-generated method stub
 		QueryParam<MetricModel> param = new QueryParam<MetricModel>(MetricModel.class);
-		param.getModel().settKey(key);
+		param.getModel().setTKEY(key);
 		return super.search(param);
 	}
 

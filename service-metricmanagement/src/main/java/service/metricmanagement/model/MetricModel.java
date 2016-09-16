@@ -11,37 +11,36 @@ public class MetricModel {
 	@PhoenixID
 	@PhoenixSequence
 	@PhoenixColumn(type="BIGINT")
-	private Long id;
+	private Long ID;
 	@PhoenixColumn(type="VARCHAR(100)")
-	private String name;
+	private String NAME;
 	@PhoenixColumn(type="VARCHAR(100)")
-	private String type;
+	private String TYPE;
 	@PhoenixColumn(type="VARCHAR(100)")
-	private String tKey;
-	
-	public String getName() {
-		return name;
+	private String TKEY;
+	public Long getID() {
+		return ID;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setID(Long iD) {
+		ID = iD;
 	}
-	public String getType() {
-		return type;
+	public String getNAME() {
+		return NAME;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setNAME(String nAME) {
+		NAME = nAME;
 	}
-	public String gettKey() {
-		return tKey;
+	public String getTYPE() {
+		return TYPE;
 	}
-	public void settKey(String tKey) {
-		this.tKey = tKey;
+	public void setTYPE(String tYPE) {
+		TYPE = tYPE;
 	}
-	public Long getId() {
-		return id;
+	public String getTKEY() {
+		return TKEY;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setTKEY(String tKEY) {
+		TKEY = tKEY;
 	}
 	
 }
