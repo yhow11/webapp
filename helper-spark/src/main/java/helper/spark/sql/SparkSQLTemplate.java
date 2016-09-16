@@ -37,7 +37,7 @@ public abstract class SparkSQLTemplate {
 		Encoder<T> encoder = Encoders.bean(param.getModelClass());
 		Dataset<T> dataset = df.as(encoder);
 		List<T> result =  dataset.collectAsList();
-		sqlContext.dropTempTable(SparkSQLUtil.getTableName(param));
+//		sqlContext.dropTempTable(SparkSQLUtil.getTableName(param));
 		return result;
 	}
 }
