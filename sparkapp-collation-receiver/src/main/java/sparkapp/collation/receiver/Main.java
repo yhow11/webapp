@@ -114,7 +114,7 @@ public class Main {
 						col("TCOUNT").plus(1)
 				);
 				pageCountDF.show();
-				pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).save();
+				pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(param).save();
 			} else {
 				pageCounts.add(pageCountModel);
 			}
