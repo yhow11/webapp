@@ -52,7 +52,7 @@ public abstract class SparkSQLTemplate {
 
 	public <T> T insert(T value) throws Exception{
 		DataFrame pageCountDF = sqlContext.createDataFrame( Collections.singletonList(value), value.getClass());
-		pageCountDF.write().format("org.apache.phoenix.spark").options(options).insertInto(SparkSQLUtil.getTableName(value.getClass()));
+		pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(options).save();
 		return value;
 	}
 }
