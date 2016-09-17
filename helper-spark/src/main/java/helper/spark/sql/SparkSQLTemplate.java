@@ -45,7 +45,6 @@ public abstract class SparkSQLTemplate {
 		List<Column> columns = SparkSQLUtil.getColumns(param.getModelClass());
 		columns.add(functions.monotonically_increasing_id().as("PAGINATIONNUMBER"));
 		df = df.select(SparkSQLUtil.convert(columns));
-		df.show();
 		if(param.getOffset() != null) {
 			df = df.filter(col("PAGINATIONNUMBER").geq(param.getOffset()));
 		}

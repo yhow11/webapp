@@ -31,13 +31,13 @@ public class StartUpContext implements ApplicationListener<ApplicationEvent> {
 		Logger.getLogger("org.apache.spark.streaming.scheduler.JobGenerator").setLevel(Level.INFO);
 		
 		try {
-			phoenixDaoImpl.createTable(PageCountModel.class);
-			phoenixDaoImpl.createTable(VisitorLogModel.class);
-			phoenixDaoImpl.createTable(AnonymousVisitorModel.class);
-			phoenixDaoImpl.createTable(BrowserFPModel.class);
-			phoenixDaoImpl.createTable(DeviceFPModel.class);
-			phoenixDaoImpl.createTable(SessionModel.class);
-			phoenixDaoImpl.createTable(WebEventModel.class);
+//			phoenixDaoImpl.createTable(PageCountModel.class);
+//			phoenixDaoImpl.createTable(VisitorLogModel.class);
+//			phoenixDaoImpl.createTable(AnonymousVisitorModel.class);
+//			phoenixDaoImpl.createTable(BrowserFPModel.class);
+//			phoenixDaoImpl.createTable(DeviceFPModel.class);
+//			phoenixDaoImpl.createTable(SessionModel.class);
+//			phoenixDaoImpl.createTable(WebEventModel.class);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
