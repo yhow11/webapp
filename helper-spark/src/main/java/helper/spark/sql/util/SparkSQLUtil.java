@@ -16,7 +16,7 @@ public class SparkSQLUtil extends PhoenixUtil {
 
 	public static List<Column> getColumns(Class<?> clazz) throws Exception{
 		List<Column> columnList = new ArrayList<>();
-		List<String> columnNames = findFieldNames(PhoenixColumn.class, null);
+		List<String> columnNames = findFieldNames(clazz, PhoenixColumn.class);
 		for(String columnName: columnNames){
 			Column column = new Column(columnName);
 			columnList.add(column);
