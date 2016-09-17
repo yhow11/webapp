@@ -1,4 +1,4 @@
-package sparkapp.collation.receiver.manager;
+package sparkapp.collation.receiver.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,11 +13,12 @@ import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SQLContext;
 
 import helper.phoenix.annotation.entity.PhoenixTable;
+import service.metricmanagement.enums.MetricTypeEnum;
 import service.metricmanagement.model.MetricModel;
 import service.urlmanagement.model.URLTaggedModel;
 import sparkapp.collation.receiver.object.PartialPageCount;
 
-public class PartialPageCountManager {
+public class PartialPageCountService {
 
 	private static final String TABLE_PROP_KEY = "table";
 	private static final String ZOOKEEPER_PROP_KEY = "zkUrl";
@@ -26,7 +27,7 @@ public class PartialPageCountManager {
 	private SQLContext sqlContext;
 	private Map<String, String> param;
 	
-	public PartialPageCountManager(SQLContext sqlContext, String zookepers) {
+	public PartialPageCountService(SQLContext sqlContext, String zookepers) {
 		// TODO Auto-generated constructor stub
 		this.sqlContext = sqlContext;
 		param = new HashMap<String, String>();
@@ -40,6 +41,7 @@ public class PartialPageCountManager {
 			param.put(TABLE_PROP_KEY, MetricModel.class.getAnnotation(PhoenixTable.class).table());
 			DataFrame metricTable = sqlContext.read().format(FORMAT).options(param).load();
 			DataFrame joinTable = urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
+			joinTable.filter(col("NAME").equalTo(MetricTypeEnum.PAGE_COUNT.name()));
 			Encoder<PartialPageCount> encoder = Encoders.bean(PartialPageCount.class);
 			Dataset<PartialPageCount> dataset = joinTable.as(encoder);
 			return dataset.collectAsList();

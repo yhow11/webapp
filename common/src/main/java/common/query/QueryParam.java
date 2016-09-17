@@ -25,6 +25,12 @@ public class QueryParam<T> {
 		model =  paramClass.newInstance();
 	}
 	
+	public QueryParam(Class<T> paramClass, Long offset, Long limit) throws InstantiationException, IllegalAccessException {
+		this(paramClass);
+		this.offset = offset;
+		this.limit = limit;
+	}
+	
 	public Long getLimit() {
 		return limit;
 	}

@@ -42,7 +42,7 @@ public class KafkaContext {
 	private String zookeepers;
 
 	@Autowired
-	private SparkContext sparkContext;
+	private SparkConfig sparkContext;
 	
 	
 	@Bean

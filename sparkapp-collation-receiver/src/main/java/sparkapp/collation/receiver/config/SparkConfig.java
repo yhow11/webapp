@@ -13,7 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource({"classpath:spark.properties"})
-public class SparkContext {
+public class SparkConfig {
   
 	@Value("${spark.appname}")
 	private String appName;

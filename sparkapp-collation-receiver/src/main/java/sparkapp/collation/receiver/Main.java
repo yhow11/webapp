@@ -1,14 +1,9 @@
 package sparkapp.collation.receiver;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.phoenix.spark.SparkSqlContextFunctions;
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.sql.DataFrame;
-import org.apache.spark.sql.SQLContext;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
@@ -16,19 +11,18 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.client.RestTemplate;
 
-import service.metricmanagement.MetricService;
-import service.metricmanagement.model.MetricModel;
 import sparkapp.collation.receiver.config.AppContext;
 import sparkapp.collation.receiver.config.DaoConfig;
 import sparkapp.collation.receiver.config.KafkaContext;
 import sparkapp.collation.receiver.config.ManagerConfig;
 import sparkapp.collation.receiver.config.MapperConfig;
 import sparkapp.collation.receiver.config.PhoenixContext;
+import sparkapp.collation.receiver.config.ProcessorConfig;
 import sparkapp.collation.receiver.config.ServiceConfig;
-import sparkapp.collation.receiver.config.SparkContext;
+import sparkapp.collation.receiver.config.SparkConfig;
 import sparkapp.collation.receiver.config.StartUpContext;
-import sparkapp.collation.receiver.manager.PartialPageCountManager;
 import sparkapp.collation.receiver.mapper.WebEventVisitorLogMapper;
+import sparkapp.collation.receiver.processor.PageCountProcessor;
 import sparkapp.collation.receiver.service.ReceiverService;
 import usertracker.base.UserParam;
 import usertracker.browser.mapper.impl.VisitorLogStringMapper;
@@ -41,14 +35,11 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppContext.class, DaoConfig.class,
-				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, SparkContext.class, ManagerConfig.class, StartUpContext.class);
-		MetricService metricService = (MetricService) ctx.getBean("metricService");
-		SQLContext sQLContext = (SQLContext) ctx.getBean("sQLContext");
-		SparkSqlContextFunctions sparkPhoenixSQL = (SparkSqlContextFunctions) ctx.getBean("sparkSqlContextFunctions");
-		RestTemplate rt = (RestTemplate) ctx.getBean("restTemplateService");
-		PartialPageCountManager partialPageCountManager = (PartialPageCountManager) ctx.getBean("partialPageCountManager");
-		ReceiverService receiverService = (ReceiverService) ctx.getBean("receiverService");
-		VisitorLogStringMapper visitorLogStringMapper = (VisitorLogStringMapper) ctx.getBean("visitorLogStringMapper");
+				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, SparkConfig.class, ManagerConfig.class, ProcessorConfig.class, StartUpContext.class);
+		PageCountProcessor pageCountProcessor = ctx.getBean(PageCountProcessor.class);
+		RestTemplate rt = ctx.getBean(RestTemplate.class);
+		ReceiverService receiverService = ctx.getBean(ReceiverService.class);
+		VisitorLogStringMapper visitorLogStringMapper = ctx.getBean(VisitorLogStringMapper.class);
 
 //		List<String> columnList = new ArrayList<String>();
 //		columnList.add("tKey");
@@ -75,57 +66,9 @@ public class Main {
 //		pageCountDF.registerTempTable("pageCountTable");
 //		sQLContext.sql("SELECT * FROM pageCountTemp").show();
 //		sQLContext.dropTempTable("pageCountTable");
-//		
-//		List<PageCountModel> pageCounts = new ArrayList<>();
-//		for(PartialPageCount partialPageCount: partialPageCountManager.getAll("")){
-//			PageCountModel pageCountModel = new PageCountModel();
-//			pageCountModel.setVISITORID("test");
-//			pageCountModel.setTKEY(partialPageCount.getTKEY());
-//			pageCountModel.setMETRIC(partialPageCount.getMETRIC());
-//			pageCountModel.setURL(partialPageCount.getURL());
-//			pageCountModel.setTVALUES(partialPageCount.getTVALUES());
-//			pageCountModel.setTCOUNT(1L);
-//			
-//			param.put("table", "pageCountTable");
-//			DataFrame pageCountDF = sQLContext.read().format("org.apache.phoenix.spark").options(param).load();
-//			pageCountDF = pageCountDF.filter(
-//					col("VISITORID").equalTo(pageCountModel.getVISITORID())
-//					.and(col("TKEY").equalTo(pageCountModel.getTKEY()))
-//					.and(col("METRIC").equalTo(pageCountModel.getMETRIC()))
-//					.and(col("URL").equalTo(pageCountModel.getURL()))
-//					.and(col("TVALUES").equalTo(pageCountModel.getTVALUES()))
-//			);
-//			Long count = pageCountDF.count();
-//			if(count > 0){
-//				pageCountDF = pageCountDF.select(
-//						col("VISITORID"), 
-//						col("TKEY"), 
-//						col("METRIC"), 
-//						col("URL"), 
-//						col("TVALUES"), 
-//						col("TCOUNT").plus(1).alias("TCOUNT")
-//				);
-//				pageCountDF.show();
-//				pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(param).save();
-//			} else {
-//				pageCounts.add(pageCountModel);
-//			}
-//		}
-//		
-//		if(pageCounts.size() > 0) {
-//			DataFrame pageCountDF = sQLContext.createDataFrame(pageCounts, PageCountModel.class);
-//			param.put("table", "pageCountTable");
-//			pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(param).save();
-//		}
-		MetricModel test = new MetricModel();
-		test.setID(2L);
-		test.setNAME("WOW");
-		test.setTKEY("asd");
-		test.setTYPE("PAGECOUNT");
-		metricService.save(test);
 		
-		List<MetricModel> metrics = metricService.getAll(0L, 2L);
-		System.out.println(metrics.size());
+		
+		
 		
 		JavaStreamingContext jssc = (JavaStreamingContext)  ctx.getBean("javaStreamingContext");
 
@@ -149,17 +92,17 @@ public class Main {
 				System.out.println("Saving..");
 				receiverService.save(visitorLogModel);
 
-				AnonymousVisitorModel av = receiverService.getOrCreateAV(visitorLogModel.getSessionID(), visitorLogModel.getWebFP());
-				receiverService.getOrCreateSession(visitorLogModel.getSessionID(), av.getId());
-				receiverService.getOrCreateBrowserFP(visitorLogModel.getWebFP(), av.getId());
-				receiverService.getOrCreateDeviceFP(visitorLogModel.getDeviceFP(), av.getId());
+				AnonymousVisitorModel visitor = receiverService.getOrCreateAV(visitorLogModel.getSessionID(), visitorLogModel.getWebFP());
+				receiverService.getOrCreateSession(visitorLogModel.getSessionID(), visitor.getId());
+				receiverService.getOrCreateBrowserFP(visitorLogModel.getWebFP(), visitor.getId());
+				receiverService.getOrCreateDeviceFP(visitorLogModel.getDeviceFP(), visitor.getId());
 
 				
-				WebEventModel webEvent = new WebEventVisitorLogMapper(av.getId()).marshall(visitorLogModel);
+				WebEventModel webEvent = new WebEventVisitorLogMapper(visitor.getId()).marshall(visitorLogModel);
 				webEventModels.add(webEvent);
 				receiverService.save(webEvent);
 				
-				
+				pageCountProcessor.process(webEvent.getUrl(), visitor.getId());
 				System.out.println("Created New WebEvent " + webEvent.getId());
 
 			}

@@ -9,9 +9,15 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import helper.spark.sql.util.SparkSQLUtil;
 import service.metricmanagement.MetricService;
 import service.metricmanagement.impl.MetricSparkSQLServiceImpl;
+import service.metricmanagement.model.MetricModel;
+import service.pagecount.PageCountService;
+import service.pagecount.impl.PageCountSparkSQLServiceImpl;
+import service.pagecount.model.PageCountModel;
 import sparkapp.collation.receiver.service.ReceiverService;
+import sparkapp.collation.receiver.service.impl.PartialPageCountService;
 import sparkapp.collation.receiver.service.impl.ReceiverServiceImpl;
 import usertracker.browser.service.AnonymousVisitorService;
 import usertracker.browser.service.BrowserFPService;
@@ -40,11 +46,21 @@ public class ServiceConfig {
 	private PhoenixContext phoenixContext;
 	
 	@Autowired
-	private SparkContext sparkContext;
+	private SparkConfig sparkContext;
+	
+	@Bean
+	public PartialPageCountService partialPageCountService() throws Exception{
+		return new PartialPageCountService(sparkContext.sQLContext(), zookeepers);
+	}
+	
+	@Bean
+	public PageCountService pageCountService() throws Exception{
+		return new PageCountSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers, PageCountModel.class);
+	}
 	
 	@Bean
 	public MetricService metricService() throws Exception{
-		return new MetricSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers, "metricTable");
+		return new MetricSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers, MetricModel.class);
 	}
 	
 	@Bean

@@ -2,11 +2,8 @@ package sparkapp.collation.receiver.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-
-import sparkapp.collation.receiver.manager.PartialPageCountManager;
 
 @Configuration
 @PropertySource({"classpath:kafka.properties"})
@@ -16,11 +13,7 @@ public class ManagerConfig {
 	private String zookeepers;
 	
 	@Autowired
-	private SparkContext sparkContext;
+	private SparkConfig sparkContext;
 	
 	
-	@Bean
-	public PartialPageCountManager partialPageCountManager() throws Exception{
-		return new PartialPageCountManager(sparkContext.sQLContext(), zookeepers);
-	}
 }

@@ -2,18 +2,20 @@ package service.metricmanagement.impl;
 
 import java.util.List;
 
+import org.apache.pig.backend.executionengine.ExecException;
 import org.apache.spark.sql.SQLContext;
 
 import common.query.QueryParam;
 import helper.spark.sql.SparkSQLTemplate;
+import helper.spark.sql.util.SparkSQLUtil;
 import service.metricmanagement.MetricService;
 import service.metricmanagement.model.MetricModel;
 
 public class MetricSparkSQLServiceImpl extends SparkSQLTemplate implements MetricService {
 
 
-	public MetricSparkSQLServiceImpl(SQLContext sqlContext, String zookepers, String table) {
-		super(sqlContext, zookepers, table);
+	public MetricSparkSQLServiceImpl(SQLContext sqlContext, String zookepers, Class<?> modelClass) throws Exception {
+		super(sqlContext, zookepers, SparkSQLUtil.getTableName(modelClass));
 		// TODO Auto-generated constructor stub
 	}
 
@@ -42,8 +44,7 @@ public class MetricSparkSQLServiceImpl extends SparkSQLTemplate implements Metri
 
 	public void remove(MetricModel model) throws Exception {
 		// TODO Auto-generated method stub
-//		super.delete(model);
-//		return null;
+		throw new Exception("Delete record not supported.");
 	}
 
 	public List<MetricModel> getAll(Long offset, Long limit) throws Exception {

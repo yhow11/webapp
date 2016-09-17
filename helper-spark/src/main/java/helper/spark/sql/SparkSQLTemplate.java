@@ -15,8 +15,10 @@ import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.catalyst.expressions.MonotonicallyIncreasingID;
+import org.hibernate.SQLQuery;
 
 import common.query.QueryParam;
+import helper.phoenix.util.PhoenixUtil;
 import helper.spark.sql.util.SparkSQLUtil;
 
 public abstract class SparkSQLTemplate {
@@ -27,6 +29,7 @@ public abstract class SparkSQLTemplate {
 	
 	protected SQLContext sqlContext;
 	protected Map<String, String> options;
+	protected String table;
 	
 	public SparkSQLTemplate(SQLContext sqlContext, String zookepers, String table) {
 		// TODO Auto-generated constructor stub
@@ -34,9 +37,9 @@ public abstract class SparkSQLTemplate {
 		options = new HashMap<String, String>();
 		options.put(ZOOKEEPER_PROP_KEY, zookepers);
 		options.put(TABLE_PROP_KEY, table);
+		this.table = table;
 	}
-	
-	public <T> List<T> search(QueryParam<T> param) throws Exception {
+	private <T> DataFrame getDataFrame(QueryParam<T> param) throws Exception {
 		sqlContext.read().format(FORMAT).options(options).load().registerTempTable(SparkSQLUtil.getTableName(param));
 		DataFrame df = sqlContext.sql(SparkSQLUtil.createGetSQL(param));
 		List<Column> columns = SparkSQLUtil.getColumns(param.getModelClass());
@@ -49,6 +52,10 @@ public abstract class SparkSQLTemplate {
 		if(param.getLimit() != null) {
 			df = df.filter(col("PAGINATIONNUMBER").leq(param.getOffset()+param.getLimit()));
 		}
+		return df;
+	}
+	public <T> List<T> search(QueryParam<T> param) throws Exception {
+		DataFrame df = getDataFrame(param);
 		Encoder<T> encoder = Encoders.bean(param.getModelClass());
 		Dataset<T> dataset = df.as(encoder);
 		sqlContext.dropTempTable(SparkSQLUtil.getTableName(param));
@@ -64,15 +71,20 @@ public abstract class SparkSQLTemplate {
 		
 	}
 
-	public <T> List<T> insert(List<T> values) throws Exception{
-		DataFrame pageCountDF = sqlContext.createDataFrame( values, values.get(0).getClass());
+	public <T> List<T> insert(List<T> models) throws Exception{
+		DataFrame pageCountDF = sqlContext.createDataFrame( models, models.get(0).getClass());
 		pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(options).save();
-		return values;
+		return models;
 	}
 	
-	public <T> T insert(T value) throws Exception{
-		DataFrame pageCountDF = sqlContext.createDataFrame( Collections.singletonList(value), value.getClass());
+	public <T> T insert(T model) throws Exception{
+		DataFrame pageCountDF = sqlContext.createDataFrame( Collections.singletonList(model), model.getClass());
 		pageCountDF.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(options).save();
-		return value;
+		return model;
+	}
+	
+	public Long count(QueryParam<?> param) throws Exception {
+		DataFrame df = getDataFrame(param);
+		return df.count();
 	}
 }
