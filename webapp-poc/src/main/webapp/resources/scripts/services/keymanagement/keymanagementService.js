@@ -20,7 +20,7 @@ angular.module('fingerPrintApp')
            return $http.get('keymanagement/getById/' + id).then(handleSuccess, handleError('Error getting user by id'));
        },
        checkExists: function(key) {
-           return $http.get('keymanagement/search?key='+key).then(handleSuccess, handleError('Error getting user by id'));
+           return $http.get('keymanagement/checkExists?key='+key).then(handleSuccess, handleError('Error getting user by id'));
        },
 
        save: function(key) {

@@ -1,5 +1,8 @@
 package com.nurtureretargeting.admin.keymanagement.controller;
 
+import java.util.Collections;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,8 +34,8 @@ public class KeyManagementController {
 		return keyManager.getAll(value, start, end);
 	}
 	@RequestMapping(value = "keymanagement/checkExists", method = RequestMethod.GET)
-	public boolean checkExists(@RequestParam(name="key") String key) throws Exception {
-		return keyManager.checkExists(key);
+	public @ResponseBody Map<String, Boolean> checkExists(@RequestParam(name="key") String key) throws Exception {
+		return Collections.singletonMap("data", keyManager.checkExists(key));
 	}
 	
 	@RequestMapping(value = "keymanagement/delete", method = RequestMethod.DELETE)
