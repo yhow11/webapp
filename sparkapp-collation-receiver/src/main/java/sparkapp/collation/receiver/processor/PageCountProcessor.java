@@ -34,6 +34,7 @@ public class PageCountProcessor {
 				param.getModel().setTCOUNT(1L);
 				pageCountService.save(param.getModel());
 			}
+			PageCountModel highest= pageCountService.getHighest(visitorID, param.getModel().getMETRIC());
 		}
 	}
 }

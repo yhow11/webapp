@@ -39,7 +39,7 @@ public abstract class SparkSQLTemplate {
 		options.put(TABLE_PROP_KEY, table);
 		this.table = table;
 	}
-	private <T> DataFrame getDataFrame(QueryParam<T> param) throws Exception {
+	protected <T> DataFrame getDataFrame(QueryParam<T> param) throws Exception {
 		sqlContext.read().format(FORMAT).options(options).load().registerTempTable(SparkSQLUtil.getTableName(param));
 		DataFrame df = sqlContext.sql(SparkSQLUtil.createGetSQL(param));
 		List<Column> columns = SparkSQLUtil.getColumns(param.getModelClass());
