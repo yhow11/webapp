@@ -40,7 +40,7 @@ public abstract class SparkSQLTemplate {
 		sqlContext.read().format(FORMAT).options(options).load().registerTempTable(SparkSQLUtil.getTableName(param));
 		DataFrame df = sqlContext.sql(SparkSQLUtil.createGetSQL(param));
 		df.withColumn("PAGINATIONNUMBER", functions.monotonically_increasing_id());
-		df.show();
+		df.select(functions.monotonically_increasing_id().alias("PAGINATIONNUMBER")).show();
 		if(param.getOffset() != null) {
 			df = df.filter(col("PAGINATIONNUMBER").geq(param.getOffset()));
 		}
