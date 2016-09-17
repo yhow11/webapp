@@ -3,14 +3,30 @@ package helper.spark.sql.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.spark.sql.Column;
+
 import common.query.QueryParam;
 import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixTable;
 import helper.phoenix.annotation.query.PhoenixDistinctColumn;
 import helper.phoenix.util.PhoenixUtil;
+import scala.collection.Seq;
 
 public class SparkSQLUtil extends PhoenixUtil {
 
+	public static List<Column> getColumns(Class<?> clazz) throws Exception{
+		List<Column> columnList = new ArrayList<>();
+		List<String> columnNames = findFieldNames(PhoenixColumn.class, null);
+		for(String columnName: columnNames){
+			Column column = new Column(columnName);
+			columnList.add(column);
+		}
+		return columnList;
+		
+	}
+	public static Seq<Column> convert(List<Column> columnList){
+		return scala.collection.JavaConversions.asScalaBuffer(columnList);
+	}
 	public static <E, T> String createGetSQL(QueryParam<T> param) throws Exception {
 		String format = "SELECT %s FROM %s %s %s %s %s";
 		Class<?> clazz = param.getParamClass();
