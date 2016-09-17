@@ -42,6 +42,7 @@ public class PartialPageCountService {
 			DataFrame metricTable = sqlContext.read().format(FORMAT).options(param).load();
 			DataFrame joinTable = urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
 			joinTable.filter(col("NAME").equalTo(MetricTypeEnum.PAGE_COUNT.name()));
+			joinTable.show();
 			Encoder<PartialPageCount> encoder = Encoders.bean(PartialPageCount.class);
 			Dataset<PartialPageCount> dataset = joinTable.as(encoder);
 			return dataset.collectAsList();
