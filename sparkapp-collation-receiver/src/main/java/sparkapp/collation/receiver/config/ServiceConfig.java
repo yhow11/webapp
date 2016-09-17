@@ -11,7 +11,9 @@ import org.springframework.web.client.RestTemplate;
 
 import helper.spark.sql.util.SparkSQLUtil;
 import service.metricmanagement.MetricService;
+import service.metricmanagement.MetricSummaryService;
 import service.metricmanagement.impl.MetricSparkSQLServiceImpl;
+import service.metricmanagement.impl.MetricSummaryPhoenixServiceImpl;
 import service.metricmanagement.model.MetricModel;
 import service.pagecount.PageCountService;
 import service.pagecount.impl.PageCountSparkSQLServiceImpl;
@@ -56,6 +58,11 @@ public class ServiceConfig {
 	@Bean
 	public PageCountService pageCountService() throws Exception{
 		return new PageCountSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers, PageCountModel.class);
+	}
+	
+	@Bean
+	public MetricSummaryService metricSummaryService() throws Exception{
+		return new MetricSummaryPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 	
 	@Bean

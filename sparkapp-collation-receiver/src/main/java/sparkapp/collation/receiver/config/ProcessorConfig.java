@@ -16,6 +16,6 @@ public class ProcessorConfig {
 	
 	@Bean
 	public PageCountProcessor pageCountProcessor() throws Exception{
-		return new PageCountProcessor(serviceConfig.partialPageCountService(), serviceConfig.pageCountService());
+		return new PageCountProcessor(serviceConfig.partialPageCountService(), serviceConfig.pageCountService(), serviceConfig.metricSummaryService());
 	}
 }
