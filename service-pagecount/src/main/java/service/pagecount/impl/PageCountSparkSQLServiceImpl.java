@@ -65,7 +65,7 @@ public class PageCountSparkSQLServiceImpl extends SparkSQLTemplate implements Pa
 		QueryParam<PageCountModel> param = new QueryParam<>(PageCountModel.class);
 		param.getModel().setVISITORID(visitorID);
 		param.getModel().setMETRIC(metric);
-		DataFrame df = super.getDataFrame(param).orderBy(col("TCOUNT").asc()).limit(1);
+		DataFrame df = super.getDataFrame(param).orderBy(col("TCOUNT").desc()).limit(1);
 		df.show();
 		Encoder<PageCountModel> encoder = Encoders.bean(PageCountModel.class);
 		Dataset<PageCountModel> dataset = df.as(encoder);
