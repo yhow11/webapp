@@ -39,12 +39,13 @@ public abstract class SparkSQLTemplate {
 	public <T> List<T> search(QueryParam<T> param) throws Exception {
 		sqlContext.read().format(FORMAT).options(options).load().registerTempTable(SparkSQLUtil.getTableName(param));
 		DataFrame df = sqlContext.sql(SparkSQLUtil.createGetSQL(param));
-		df.withColumn("rownumber", functions.monotonically_increasing_id());
+		df.withColumn("PAGINATIONNUMBER", functions.monotonically_increasing_id());
+		df.show();
 		if(param.getOffset() != null) {
-			df = df.filter(col("rownumber").geq(param.getOffset()));
+			df = df.filter(col("PAGINATIONNUMBER").geq(param.getOffset()));
 		}
 		if(param.getLimit() != null) {
-			df = df.filter(col("rownumber").leq(param.getOffset()+param.getLimit()));
+			df = df.filter(col("PAGINATIONNUMBER").leq(param.getOffset()+param.getLimit()));
 		}
 		Encoder<T> encoder = Encoders.bean(param.getModelClass());
 		Dataset<T> dataset = df.as(encoder);
