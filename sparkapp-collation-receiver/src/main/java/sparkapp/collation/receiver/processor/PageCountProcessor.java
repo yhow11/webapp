@@ -43,7 +43,7 @@ public class PageCountProcessor {
 			metricSummaryModel.setVISITORID(visitorID);
 			metricSummaryModel.setMETRICNAME(param.getModel().getMETRIC());
 			metricSummaryModel.setMETRICTYPE(MetricTypeEnum.PAGE_COUNT.getType());
-			metricSummaryModel.setVALUE(highest.getTVALUES());
+			metricSummaryModel.setTVALUES(highest.getTVALUES());
 			metricSummaryService.save(metricSummaryModel);
 		}
 	}

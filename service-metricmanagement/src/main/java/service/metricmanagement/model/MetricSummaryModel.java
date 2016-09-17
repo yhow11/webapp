@@ -18,7 +18,7 @@ public class MetricSummaryModel {
 	@PhoenixColumn(type="VARCHAR(100)")
 	private String METRICTYPE;
 	@PhoenixColumn(type="VARCHAR(100)")
-	private String VALUE;
+	private String TVALUES;
 	
 	public String getVISITORID() {
 		return VISITORID;
@@ -38,11 +38,11 @@ public class MetricSummaryModel {
 	public void setMETRICTYPE(String mETRICTYPE) {
 		METRICTYPE = mETRICTYPE;
 	}
-	public String getVALUE() {
-		return VALUE;
+	public String getTVALUES() {
+		return TVALUES;
 	}
-	public void setVALUE(String vALUE) {
-		VALUE = vALUE;
+	public void setTVALUES(String tVALUES) {
+		TVALUES = tVALUES;
 	}
 
 }
