@@ -50,6 +50,7 @@ public abstract class SparkSQLTemplate {
 			df = df.filter(col("PAGINATIONNUMBER").geq(param.getOffset()));
 		}
 		if(param.getLimit() != null) {
+			param.setOffset(param.getOffset() != null? param.getOffset():0L);
 			df = df.filter(col("PAGINATIONNUMBER").leq(param.getOffset()+param.getLimit()));
 		}
 		return df;
