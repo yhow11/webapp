@@ -14,7 +14,7 @@ angular.module('fingerPrintApp')
         		ngModel.$asyncValidators.validkey = function(modelValue) {  
                	 var defer = $q.defer();
                	keymanagementService.checkExists(modelValue).then(function(data){
-               		if(data.data){
+               		if(data.data.data){
                			defer.resolve();
                		} else {
                			defer.reject();
