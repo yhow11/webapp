@@ -42,7 +42,7 @@ public class PartialPageCountService {
 			DataFrame metricTable = sqlContext.read().format(FORMAT).options(param).load();
 			DataFrame joinTable = urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
 			joinTable.show();
-			joinTable = joinTable.filter(col("NAME").equalTo(MetricTypeEnum.PAGE_COUNT.getType()))
+			joinTable = joinTable.filter(metricTable.col("NAME").equalTo(MetricTypeEnum.PAGE_COUNT.getType()))
 			.select(urlTaggedTable.col("URL"), urlTaggedTable.col("TKEY"), urlTaggedTable.col("TVALUES"), metricTable.col("NAME").as("METRIC"));
 			joinTable.show();
 			Encoder<PartialPageCount> encoder = Encoders.bean(PartialPageCount.class);
