@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import helper.phoenix.dao.impl.PhoenixDaoImpl;
 import service.metricmanagement.model.MetricSummaryModel;
 import service.pagecount.model.PageCountModel;
+import service.timeonpage.model.TimeOnPageModel;
 import usertracker.browser.model.AnonymousVisitorModel;
 import usertracker.browser.model.BrowserFPModel;
 import usertracker.browser.model.DeviceFPModel;
@@ -32,6 +33,7 @@ public class StartUpContext implements ApplicationListener<ApplicationEvent> {
 		Logger.getLogger("org.apache.spark.streaming.scheduler.JobGenerator").setLevel(Level.INFO);
 		
 		try {
+			phoenixDaoImpl.createTable(TimeOnPageModel.class);
 //			phoenixDaoImpl.createTable(MetricSummaryModel.class);
 //			phoenixDaoImpl.createTable(PageCountModel.class);
 //			phoenixDaoImpl.createTable(VisitorLogModel.class);
