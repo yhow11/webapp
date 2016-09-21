@@ -7,6 +7,6 @@ public class URLUtil {
 
 	public static String getRealURL(String url) throws MalformedURLException {
 		URL urlObject = new URL(url);
-		return urlObject.getHost()+urlObject.getPath();
+		return urlObject.getProtocol()+"://"+urlObject.getHost()+urlObject.getPath();
 	}
 }
