@@ -1,5 +1,6 @@
 package service.timeonpage.processor;
 
+import common.URLUtil;
 import common.query.QueryParam;
 import service.metricmanagement.MetricSummaryService;
 import service.metricmanagement.enums.MetricTypeEnum;
@@ -26,7 +27,7 @@ public class TimeOnPageProcessor {
 	
 	public void process(String visitorID, WebEventModel webEvent) throws Exception{
 		if(WebEventTypeEnum.LEAVED.getType().equals(webEvent.getType())){
-			for(URLMetricModel urlMetricModel: urlMetricService.getAll(webEvent.getUrl(), MetricTypeEnum.TIME_ON_PAGE)){
+			for(URLMetricModel urlMetricModel: urlMetricService.getAll(URLUtil.getRealURL(webEvent.getUrl()), MetricTypeEnum.TIME_ON_PAGE)){
 				
 				QueryParam<TimeOnPageModel> param = new QueryParam<>(TimeOnPageModel.class);
 				param.getModel().setVISITORID(visitorID);
