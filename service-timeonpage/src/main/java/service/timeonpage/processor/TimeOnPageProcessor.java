@@ -25,7 +25,7 @@ public class TimeOnPageProcessor {
 	}
 	
 	public void process(String visitorID, WebEventModel webEvent) throws Exception{
-		if(WebEventTypeEnum.VISITED.getType().equals(webEvent.getType())){
+		if(WebEventTypeEnum.LEAVED.getType().equals(webEvent.getType())){
 			for(URLMetricModel urlMetricModel: urlMetricService.getAll(webEvent.getUrl(), MetricTypeEnum.TIME_ON_PAGE)){
 				
 				QueryParam<TimeOnPageModel> param = new QueryParam<>(TimeOnPageModel.class);
