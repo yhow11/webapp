@@ -59,7 +59,7 @@ public class ServiceConfig {
 	
 	@Bean
 	public TimeOnPageService timeOnPageService() throws Exception{
-		return new TimeOnPageSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers, PageCountModel.class);
+		return new TimeOnPageSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers, TimeOnPageModel.class);
 	}
 	
 	@Bean
