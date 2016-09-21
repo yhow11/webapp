@@ -45,6 +45,7 @@ public class URLMetricSparkSQLServiceImpl implements URLMetricService {
 			DataFrame joinTable = urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
 			joinTable = joinTable.filter(metricTable.col("TYPE").equalTo(metricType.getType()))
 			.select(urlTaggedTable.col("URL"), urlTaggedTable.col("TKEY"), urlTaggedTable.col("TVALUES"), metricTable.col("NAME").as("METRIC"));
+			joinTable.show();
 			Encoder<URLMetricModel> encoder = Encoders.bean(URLMetricModel.class);
 			Dataset<URLMetricModel> dataset = joinTable.as(encoder);
 			return dataset.collectAsList();
