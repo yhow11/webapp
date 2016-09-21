@@ -6,7 +6,12 @@ import java.net.URL;
 public class URLUtil {
 
 	public static String getRealURL(String url) throws MalformedURLException {
-		URL urlObject = new URL(url);
-		return urlObject.getProtocol()+"://"+urlObject.getHost()+urlObject.getPath();
+		try{
+			URL urlObject = new URL(url);
+			return urlObject.getProtocol()+"://"+urlObject.getHost()+urlObject.getPath();
+		} catch(Exception e ){
+			return "";
+		}
+		
 	}
 }
