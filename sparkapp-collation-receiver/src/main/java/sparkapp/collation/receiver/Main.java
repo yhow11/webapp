@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.client.RestTemplate;
 
+import common.URLUtil;
 import service.pagecount.processor.PageCountProcessor;
 import service.timeonpage.processor.TimeOnPageProcessor;
 import sparkapp.collation.receiver.config.AppContext;
@@ -103,7 +104,7 @@ public class Main {
 				WebEventModel webEvent = new WebEventVisitorLogMapper(visitor.getId()).marshall(visitorLogModel);
 				webEventModels.add(webEvent);
 				receiverService.save(webEvent);
-				
+				System.out.println(URLUtil.getRealURL(webEvent.getUrl()));
 				pageCountProcessor.process(visitor.getId(), webEvent);
 				timeOnPageProcessor.process(visitor.getId(), webEvent);
 				System.out.println("Created New WebEvent " + webEvent.getId());
