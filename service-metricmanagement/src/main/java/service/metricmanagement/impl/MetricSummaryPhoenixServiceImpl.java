@@ -59,4 +59,14 @@ public class MetricSummaryPhoenixServiceImpl extends PhoenixDaoImpl implements M
 		return super.search(param);
 	}
 
+	@Override
+	public List<MetricSummaryModel> getAll(String type, Long offset, Long limit) throws Exception {
+		// TODO Auto-generated method stub
+		QueryParam<MetricSummaryModel> param = new QueryParam<MetricSummaryModel>(MetricSummaryModel.class);
+		param.setLimit(limit);
+		param.setOffset(offset);
+		param.getModel().setMETRICTYPE(type);
+		return super.search(param);
+	}
+
 }

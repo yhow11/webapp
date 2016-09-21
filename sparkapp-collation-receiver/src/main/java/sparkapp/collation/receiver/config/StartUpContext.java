@@ -32,7 +32,7 @@ public class StartUpContext implements ApplicationListener<ApplicationEvent> {
 		Logger.getLogger("org.apache.spark.streaming.scheduler.JobGenerator").setLevel(Level.INFO);
 		
 		try {
-			phoenixDaoImpl.createTable(MetricSummaryModel.class);
+//			phoenixDaoImpl.createTable(MetricSummaryModel.class);
 //			phoenixDaoImpl.createTable(PageCountModel.class);
 //			phoenixDaoImpl.createTable(VisitorLogModel.class);
 //			phoenixDaoImpl.createTable(AnonymousVisitorModel.class);

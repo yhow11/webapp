@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import sparkapp.collation.receiver.processor.PageCountProcessor;
+import service.pagecount.processor.PageCountProcessor;
+import service.timeonpage.processor.TimeOnPageProcessor;
 
 @Configuration
 public class ProcessorConfig {
@@ -16,6 +17,11 @@ public class ProcessorConfig {
 	
 	@Bean
 	public PageCountProcessor pageCountProcessor() throws Exception{
-		return new PageCountProcessor(serviceConfig.partialPageCountService(), serviceConfig.pageCountService(), serviceConfig.metricSummaryService());
+		return new PageCountProcessor(serviceConfig.URLMetricService(), serviceConfig.pageCountService(), serviceConfig.metricSummaryService());
+	}
+	
+	@Bean
+	public TimeOnPageProcessor timeOnPageProcessor() throws Exception{
+		return new TimeOnPageProcessor(serviceConfig.URLMetricService(), serviceConfig.timeOnPageService(), serviceConfig.metricSummaryService());
 	}
 }

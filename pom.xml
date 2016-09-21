@@ -39,6 +39,7 @@
     <module>service-metricmanagement</module>
     <module>service-pagecount</module>
     <module>helper-spark</module>
+    <module>service-timeonpage</module>
   </modules>
   
 </project>

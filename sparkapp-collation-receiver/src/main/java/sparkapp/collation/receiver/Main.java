@@ -11,6 +11,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.client.RestTemplate;
 
+import service.pagecount.processor.PageCountProcessor;
+import service.timeonpage.processor.TimeOnPageProcessor;
 import sparkapp.collation.receiver.config.AppContext;
 import sparkapp.collation.receiver.config.DaoConfig;
 import sparkapp.collation.receiver.config.KafkaContext;
@@ -22,7 +24,6 @@ import sparkapp.collation.receiver.config.ServiceConfig;
 import sparkapp.collation.receiver.config.SparkConfig;
 import sparkapp.collation.receiver.config.StartUpContext;
 import sparkapp.collation.receiver.mapper.WebEventVisitorLogMapper;
-import sparkapp.collation.receiver.processor.PageCountProcessor;
 import sparkapp.collation.receiver.service.ReceiverService;
 import usertracker.base.UserParam;
 import usertracker.browser.mapper.impl.VisitorLogStringMapper;
@@ -37,6 +38,7 @@ public class Main {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppContext.class, DaoConfig.class,
 				ServiceConfig.class, MapperConfig.class, PhoenixContext.class, KafkaContext.class, SparkConfig.class, ManagerConfig.class, ProcessorConfig.class, StartUpContext.class);
 		PageCountProcessor pageCountProcessor = ctx.getBean(PageCountProcessor.class);
+		TimeOnPageProcessor timeOnPageProcessor = ctx.getBean(TimeOnPageProcessor.class);
 		RestTemplate rt = ctx.getBean(RestTemplate.class);
 		ReceiverService receiverService = ctx.getBean(ReceiverService.class);
 		VisitorLogStringMapper visitorLogStringMapper = ctx.getBean(VisitorLogStringMapper.class);
@@ -102,7 +104,8 @@ public class Main {
 				webEventModels.add(webEvent);
 				receiverService.save(webEvent);
 				
-				pageCountProcessor.process(webEvent.getUrl(), visitor.getId());
+				pageCountProcessor.process(visitor.getId(), webEvent);
+				timeOnPageProcessor.process(visitor.getId(), webEvent);
 				System.out.println("Created New WebEvent " + webEvent.getId());
 
 			}

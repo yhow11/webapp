@@ -121,6 +121,9 @@
 							<md-menu-item> 
 								<md-button ui-sref="metricmanagement.view"> View </md-button> 
 							</md-menu-item> 
+							<md-menu-item> 
+								<md-button ui-sref="metricmanagement.summary"> Summary </md-button> 
+							</md-menu-item> 
 						</md-menu-content> 
 					</md-menu> 
 				</md-menu-item>
@@ -174,7 +177,7 @@
 			document.getElementsByTagName("head")[0].appendChild(script);
 		}
 	
-		var baseURL = 'http://poc:8191/webapp-poc/';
+		var baseURL = 'http://localhost:8080/webapp-poc/';
 		var fingerprintDir = baseURL+'resources/vendors/fingerprint/';
 		var cryptoDir = baseURL+'resources/vendors/crypto/';
 		var websocketDir = baseURL+'resources/vendors/websocket/';

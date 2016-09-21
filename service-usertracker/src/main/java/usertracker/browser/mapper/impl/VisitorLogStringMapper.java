@@ -31,6 +31,7 @@ public class VisitorLogStringMapper implements VisitorLogMapper<String, VisitorL
 //	    	event.setTimeStampStr(raw[3]);
 	    	event.setTitle(raw[6]);
 	    	event.setSessionID(raw[7]);
+	    	event.setElapsedTime(raw[8]);
 		}
 		
     	return event;

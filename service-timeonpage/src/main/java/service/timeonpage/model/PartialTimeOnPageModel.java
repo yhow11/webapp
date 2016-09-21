@@ -1,6 +1,6 @@
-package sparkapp.collation.receiver.object;
+package service.timeonpage.model;
 
-public class PartialPageCount {
+public class PartialTimeOnPageModel {
 	private String TKEY;
 	private String URL;
 	private String TVALUES;

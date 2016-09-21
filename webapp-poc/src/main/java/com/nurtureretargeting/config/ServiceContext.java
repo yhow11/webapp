@@ -12,7 +12,9 @@ import com.nurtureretargeting.management.service.impl.UserServiceImpl;
 import service.keymanagement.KeyManagementService;
 import service.keymanagement.impl.KeyManagementPhoenixServiceImpl;
 import service.metricmanagement.MetricService;
+import service.metricmanagement.MetricSummaryService;
 import service.metricmanagement.impl.MetricPhoenixServiceImpl;
+import service.metricmanagement.impl.MetricSummaryPhoenixServiceImpl;
 import service.urlmanagement.URLImportService;
 import service.urlmanagement.URLSiteMapService;
 import service.urlmanagement.URLTaggedService;
@@ -112,5 +114,10 @@ public class ServiceContext {
 	@Bean
 	public MetricService metricService() throws Exception {
 		return new MetricPhoenixServiceImpl(phoenixContext.sessionFactory());
+	}
+	
+	@Bean
+	public MetricSummaryService metricSummaryService() throws Exception {
+		return new MetricSummaryPhoenixServiceImpl(phoenixContext.sessionFactory());
 	}
 }

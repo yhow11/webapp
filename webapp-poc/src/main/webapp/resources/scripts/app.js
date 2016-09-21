@@ -259,6 +259,28 @@ angular
 
 									})
 									.state(
+									'metricmanagement.summary',
+									{
+										url : '/metricmanagement/summary',
+										controller : 'SummaryController',
+										templateUrl : 'resources/views/metricmanagement/summary.html',
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+														         	'resources/scripts/services/metricmanagement/metricSummaryService.js',
+																	'resources/scripts/controllers/metricmanagement/summaryController.js'
+
+															]
+														})
+											}
+										}
+
+									})
+									.state(
 											'logs',
 											{
 												url : '/logs',

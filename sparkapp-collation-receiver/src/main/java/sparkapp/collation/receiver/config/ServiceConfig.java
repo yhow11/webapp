@@ -9,7 +9,6 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import helper.spark.sql.util.SparkSQLUtil;
 import service.metricmanagement.MetricService;
 import service.metricmanagement.MetricSummaryService;
 import service.metricmanagement.impl.MetricSparkSQLServiceImpl;
@@ -18,8 +17,11 @@ import service.metricmanagement.model.MetricModel;
 import service.pagecount.PageCountService;
 import service.pagecount.impl.PageCountSparkSQLServiceImpl;
 import service.pagecount.model.PageCountModel;
+import service.timeonpage.TimeOnPageService;
+import service.timeonpage.impl.TimeOnPageSparkSQLServiceImpl;
+import service.urlmanagement.URLMetricService;
+import service.urlmanagement.impl.URLMetricSparkSQLServiceImpl;
 import sparkapp.collation.receiver.service.ReceiverService;
-import sparkapp.collation.receiver.service.impl.PartialPageCountService;
 import sparkapp.collation.receiver.service.impl.ReceiverServiceImpl;
 import usertracker.browser.service.AnonymousVisitorService;
 import usertracker.browser.service.BrowserFPService;
@@ -51,8 +53,13 @@ public class ServiceConfig {
 	private SparkConfig sparkContext;
 	
 	@Bean
-	public PartialPageCountService partialPageCountService() throws Exception{
-		return new PartialPageCountService(sparkContext.sQLContext(), zookeepers);
+	public URLMetricService URLMetricService() throws Exception{
+		return new URLMetricSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers);
+	}
+	
+	@Bean
+	public TimeOnPageService timeOnPageService() throws Exception{
+		return new TimeOnPageSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers, PageCountModel.class);
 	}
 	
 	@Bean

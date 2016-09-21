@@ -41,6 +41,8 @@ public class WebEventModel implements Serializable {
 	@PhoenixColumn(type="VARCHAR(100)")
 	protected String title;
 
+	@PhoenixColumn(type="VARCHAR(100)")
+	protected String elapsedTime;
 	
 	
 	public Long getTimeStamp() {
@@ -105,6 +107,14 @@ public class WebEventModel implements Serializable {
 
 	public void setDeviceFPID(String deviceFPID) {
 		this.deviceFPID = deviceFPID;
+	}
+
+	public String getElapsedTime() {
+		return elapsedTime;
+	}
+
+	public void setElapsedTime(String elapsedTime) {
+		this.elapsedTime = elapsedTime;
 	}
 
 }

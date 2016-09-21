@@ -35,7 +35,8 @@ public class VisitorLogModel  implements Serializable{
 	private String title;
 	@PhoenixColumn(type="VARCHAR(255)")
 	private String sessionID;
-	
+	@PhoenixColumn(type="VARCHAR(255)")
+	private String elapsedTime;
 	
 	public String getSessionID() {
 		return sessionID;
@@ -95,6 +96,12 @@ public class VisitorLogModel  implements Serializable{
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getElapsedTime() {
+		return elapsedTime;
+	}
+	public void setElapsedTime(String elapsedTime) {
+		this.elapsedTime = elapsedTime;
 	}
 	
 }

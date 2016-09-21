@@ -35,6 +35,7 @@ public class WebEventVisitorLogMapper implements Mapper<WebEventModel, VisitorLo
 		target.setTitle(e.getTitle());
 		target.setType(e.getType());
 		target.setUrl(e.getUrl());
+		target.setElapsedTime(e.getElapsedTime());
 		return target;
 	}
 

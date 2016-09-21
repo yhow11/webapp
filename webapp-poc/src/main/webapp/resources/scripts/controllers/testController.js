@@ -7,11 +7,16 @@
 angular.module('fingerPrintApp').controller('TestController',
 		function($rootScope, $scope, $timeout, eventService) {
 	$scope.init = function(){
-		var data = FingerPrint.getData();
-		$scope.data = data;
-		$timeout(function(){
-			$scope.$apply();
-		});
+		var fpData = FingerPrint.getData();
+		TIMERUTIL.getTime(baseURL).then(function(data){
+			fpData.timestamp = data;
+			$scope.data = fpData;
+			$timeout(function(){
+				$scope.$apply();
+			});
+		}); 
+		
+		
 		
 	};
 	

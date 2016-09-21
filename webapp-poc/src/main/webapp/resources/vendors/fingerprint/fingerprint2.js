@@ -6,9 +6,9 @@
  */
 (function(window){
     'use strict';
-    function define_fingerPrint(){
-        var FingerPrint = {};
-        FingerPrint.readCookie = function (name) {
+    function define_cookieutil(){
+    	var COOKIEUTIL  = {};
+    	COOKIEUTIL.read = function(name){
     		var cookiename = name + "=";
     		var ca = document.cookie.split(';');
     		for (var i = 0; i < ca.length; i++) {
@@ -19,26 +19,136 @@
     				return c.substring(cookiename.length, c.length);
     		}
     		return null;
-    	}
-        FingerPrint.sockets = [];
-        FingerPrint.setCookie = function(cname, cvalue, exdays) {
+    	};
+    	COOKIEUTIL.write = function(cname, cvalue) {
+    		var exdays = 40;
     		var d = new Date();
     		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     		var expires = "expires=" + d.toUTCString();
     		document.cookie = cname + "=" + cvalue + "; " + expires;
-    	}
-        FingerPrint.generateTimeStamp = function(){
-    		
-    		var fingerPrintData = typeof window.localStorage.fingerPrintData !== "undefined"? JSON.parse(window.localStorage.fingerPrintData):{};
-    		fingerPrintData.timeStamp = new Date().getTime();
-    		FingerPrint.setCookie('fingerprint_timestamp', fingerPrintData.timeStamp, 10);
-    		window.localStorage.fingerPrintData = JSON.stringify(fingerPrintData);
+    	};
+    	return COOKIEUTIL;
+    }
+    function define_wsclientutil(){
+    	
+    	var WSCLIENTUTIL  = {};
+    	WSCLIENTUTIL.init = function(socketURL){
+    		var socket = new SockJS(socketURL + 'send');
+    		var client = Stomp.over(socket);
+    		WSCLIENTUTIL.getSocket = socket;
+        	WSCLIENTUTIL.getClient = client;
+    	};
+    	WSCLIENTUTIL.send = function(fingerprintdata, type, title, url){
+        	if(WSCLIENTUTIL.getClient){
+        		var data = fingerprintdata;
+        		WSCLIENTUTIL.getClient
+        		.send(
+        				"/app/send",
+        				{},
+        				data.lead_id
+						+ "|"
+						+ data.browserFP
+						+ "|"
+						+ data.deviceFP
+						+ "|"
+						+ data.timestamp
+						+ "|"+type+"|"
+						+ url
+						+ "|"
+						+ title
+						+ "|"
+						+ data.sessionID
+						+ "|"
+						+ (data.elapsedtime || 0));
+        	} else {
+        		console.log("client is not yet connected.");
+        	}
+        	
         }
-        FingerPrint.generateFingerPrints = function(){
+    	return WSCLIENTUTIL;
+    }
+    function define_elementutil(){
+    	var ELEMENTUTIL  = {};
+    	ELEMENTUTIL.findParentByTagName = function (element, tagName) {
+            var parent = element;
 
-    		var client = new ClientJS(); 
-    		
-    		//Device Data Points
+            while (parent !== null && parent.tagName !== tagName.toUpperCase()) {
+                parent = parent.parentNode;
+            }
+
+            return parent;
+        };
+    	return ELEMENTUTIL;
+    }
+    function define_elementutil(){
+    	var ELEMENTUTIL  = {};
+    	ELEMENTUTIL.findParentByTagName = function (element, tagName) {
+            var parent = element;
+
+            while (parent !== null && parent.tagName !== tagName.toUpperCase()) {
+                parent = parent.parentNode;
+            }
+
+            return parent;
+        };
+    	return ELEMENTUTIL;
+    }
+    function define_uuid(){
+    	var UUID  = {};
+    	UUID.generate = function () {
+    		var d = new Date().getTime();
+        	if (window.performance && typeof window.performance.now === "function") {
+        		d += performance.now(); //use high-precision timer if available
+        	}
+        	var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
+        			function(c) {
+        				var r = (d + Math.random() * 16) % 16 | 0;
+        				d = Math.floor(d / 16);
+        				return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        			});
+            return uuid;
+        };
+    	return UUID;
+    }
+    function define_timerutil(COOKIEUTIL){
+    	var TIMERUTIL  = {};
+    	
+    	TIMERUTIL.getTime = function (baseURL) {
+    		 return new Promise(
+    			        function(resolve, reject) {
+    			        	var xhttp = new XMLHttpRequest();
+    			        	xhttp.onreadystatechange = function() {
+    			    			  if (this.readyState == 4 && this.status == 200) {
+    			    				  resolve(xhttp.responseText);
+    			    			  }
+    			    			};
+    						xhttp.open("GET", baseURL+'currentTime', true);
+    						xhttp.send();
+    			        }
+    			    );
+        };
+        TIMERUTIL.init = function(baseURL){
+        	
+    		setInterval(function(){ 
+    			if(TIMERUTIL.currentime){
+    				var starttime = TIMERUTIL.currentime;
+        			var date = new Date(Number(starttime));
+        			date.setSeconds(date.getSeconds() + 1);
+        			TIMERUTIL.currentime = date.getTime();
+    			}
+    			
+			}, 1000);
+    	};
+    	TIMERUTIL.getElapsedTime = function(endtime){
+    		var starttime = COOKIEUTIL.read("starttime");
+    		return endtime - starttime;
+    	};
+    	window.TIMERUTIL = TIMERUTIL;
+    	return TIMERUTIL;
+    }
+    function define_fingerPrint(COOKIEUTIL, WSCLIENTUTIL, ELEMENTUTIL, UUID, TIMERUTIL){
+        var FingerPrint = {};
+        FingerPrint.getDeviceFP = function(client){
     		var screenPrint = client.getScreenPrint();
     		var OS = client.getOS();
     		var CPU = client.getCPU();
@@ -49,18 +159,10 @@
     		
     		var deviceDataPoints = screenPrint + OS + CPU + device + timeZone + language + fonts;
     		
-    		FingerPrint.setCookie('device', device, 10);
-    		FingerPrint.setCookie('cpu', CPU, 10);
-    		FingerPrint.setCookie('screenPrint', screenPrint, 10);
-    		FingerPrint.setCookie('os', OS, 10);
-    		FingerPrint.setCookie('timeZone', timeZone, 10);
-    		FingerPrint.setCookie('language', language, 10);
-    		FingerPrint.setCookie('fonts', fonts, 10);
-    		
-    		
-    		//Browser Data Points
-
-    		var user_agent = client.getUserAgent();
+    		return CryptoJS.MD5(deviceDataPoints).toString(CryptoJS.enc.Base64);
+        };
+        FingerPrint.getBrowserFP = function(client){
+        	var user_agent = client.getUserAgent();
     		var browser_browser = client.getBrowser();
     		var browser_browser_version = client.getBrowserVersion();
     		var browser_engine = client.getEngine();
@@ -77,143 +179,97 @@
     		+ browser_session_storage + browser_plugins + browser_canvas_print + browser_mime_type
     		+ browser_is_mime_type + browser_system_language + user_agent;
     		
-    		FingerPrint.setCookie('user_agent', user_agent, 10);
-    		FingerPrint.setCookie('browser_browser', browser_browser, 10);
-    		FingerPrint.setCookie('browser_browser_version', browser_browser_version, 10);
-    		FingerPrint.setCookie('browser_engine', browser_engine, 10);
-    		FingerPrint.setCookie('browser_engine_version', browser_engine_version, 10);
-    		FingerPrint.setCookie('browser_localstorage', browser_localstorage, 10);
-    		FingerPrint.setCookie('browser_session_storage', browser_session_storage, 10);
-    		FingerPrint.setCookie('browser_plugins', browser_plugins, 10);
-    		FingerPrint.setCookie('browser_canvas_print', browser_canvas_print, 10);
-    		FingerPrint.setCookie('browser_mime_type', browser_mime_type, 10);
-    		FingerPrint.setCookie('browser_is_mime_type', browser_is_mime_type, 10);
-    		FingerPrint.setCookie('browser_system_language', browser_system_language, 10);
+    		return CryptoJS.MD5(browserDataPoints).toString(CryptoJS.enc.Base64);
+        };
+        FingerPrint.getSessionID = function(){
+        	var sessionID = COOKIEUTIL.read('sessionID');
+        	if (typeof sessionID === "undefined"
+        			|| sessionID == null
+        			|| sessionID == "null") {
+        		sessionID = UUID.generate();
+            	COOKIEUTIL.write('sessionID', sessionID);
+            	return sessionID;
+        	} 
+        	return sessionID;
+        };
+        FingerPrint.getData = function(){
+        	var data = typeof window.localStorage.fingerPrintData !== "undefined"? JSON.parse(window.localStorage.fingerPrintData):{};
+        	data.timestamp = TIMERUTIL.currentime;
+        	return data;
+        };
+        FingerPrint.setData = function(data){
+        	window.localStorage.fingerPrintData = JSON.stringify(data);
+        };
+        FingerPrint.generate = function(){
 
-    		var deviceFingerPrint = CryptoJS.MD5(deviceDataPoints).toString(CryptoJS.enc.Base64);
-    		var browserFingerPrint = CryptoJS.MD5(browserDataPoints).toString(CryptoJS.enc.Base64);
+    		var client = new ClientJS(); 
+    		
+    		var deviceFingerPrint = FingerPrint.getDeviceFP(client);
+    		var browserFingerPrint = FingerPrint.getBrowserFP(client);
 
-    		var fingerPrintData = typeof window.localStorage.fingerPrintData !== "undefined"? JSON.parse(window.localStorage.fingerPrintData):{};
+    		var fingerPrintData = FingerPrint.getData();
     		fingerPrintData.browserFP = browserFingerPrint;
     		fingerPrintData.deviceFP = deviceFingerPrint;
+    		fingerPrintData.sessionID = FingerPrint.getSessionID();
+    		FingerPrint.setData(fingerPrintData);
     		
-    		window.localStorage.fingerPrintData = JSON.stringify(fingerPrintData);
-    		FingerPrint.generateTimeStamp();
-        }
-        FingerPrint.generateSessionID = function(){
-        	var d = new Date().getTime();
-        	if (window.performance && typeof window.performance.now === "function") {
-        		d += performance.now(); //use high-precision timer if available
-        	}
-        	var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
-        			function(c) {
-        				var r = (d + Math.random() * 16) % 16 | 0;
-        				d = Math.floor(d / 16);
-        				return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-        			});
-        	FingerPrint.setCookie('guid', uuid, 1000);
-        	var fingerPrintData = typeof window.localStorage.fingerPrintData !== "undefined"? JSON.parse(window.localStorage.fingerPrintData):{};
-    		fingerPrintData.sessionID = uuid;
-    		
-    		window.localStorage.fingerPrintData = JSON.stringify(fingerPrintData);
-
-        }
-        FingerPrint.getData = function(){
-        	return JSON.parse(window.localStorage.fingerPrintData);
-        }
-        FingerPrint.init = function(socketURL){
-
-        	var timestamp_cookie = FingerPrint.readCookie('fingerprint_timestamp');
-
-        	if (timestamp_cookie != null) {
-        		FingerPrint.generateTimeStamp();
-        	} else if (timestamp_cookie == null) {
-        		FingerPrint.generateFingerPrints();
-        	}
-
-        	var guid = FingerPrint.readCookie('guid');
-        	if (typeof guid === "undefined"
-        			|| guid == null
-        			|| guid == "null") {
-        		FingerPrint.generateSessionID();
-        	} 
-        	var socket = new SockJS(socketURL + 'send');
-        	FingerPrint.sockets.push(socket);
-			var client = Stomp.over(socket);
-			client.connect({}, function(frame) {
-				FingerPrint.client = client;
+        };
+        FingerPrint.sendClickedEvent = function(e){
+        	var href = e.target.href;
+			var title = e.target.title != ''?  e.target.title:e.target.innerText;;
+			WSCLIENTUTIL.send(FingerPrint.getData(), "hover", title, href);
+        };
+        FingerPrint.sendHoverEvent = function(e){
+        	var href = e.target.href;
+			var title = e.target.title != ''?  e.target.title:e.target.innerText;;
+			WSCLIENTUTIL.send(FingerPrint.getData(), "hover", title, href);
+        };
+        FingerPrint.sendLeavedEvent = function(){
+        	var data = FingerPrint.getData();
+			data.elapsedtime = TIMERUTIL.getElapsedTime(data.timestamp);
+			WSCLIENTUTIL.send(data,"leaved", document.title, window.location.href);
+        };
+        FingerPrint.sendVisitedEvent = function(){
+        	TIMERUTIL.getTime(baseURL).then(function(data){
+    			TIMERUTIL.currentime = data.trim();
+    			COOKIEUTIL.write("starttime", data);
+    			WSCLIENTUTIL.send(FingerPrint.getData(),"visited", document.title, window.location.href);
+    		});
+        };
+        FingerPrint.init = function(baseURL){
+        	
+        	FingerPrint.generate();
+        	TIMERUTIL.init(baseURL);
+        	WSCLIENTUTIL.init(baseURL);
+        	
+			WSCLIENTUTIL.getClient.connect({}, function(frame) {
+				FingerPrint.sendVisitedEvent();
 				
-				var oldOnmouseover = window.onmouseover;
-				window.onmouseover = function (e) {
-					if (oldOnmouseover) oldOnmouseover(e);
+				window.addEventListener("mouseover", function (e) {
 					if (e.target.localName == 'a') {
-						var href = e.target.href;
-						var title = e.target.title != ''?  e.target.title:e.target.innerText;;
-						FingerPrint.send("hover", title, href);
+						FingerPrint.sendHoverEvent(e);
 					}
-				}
+				}, false); 
+				
 				document.documentElement.addEventListener("click", function handleAnchorClick(event) {
-				    event = event || window.event;
-				    var element = FingerPrint.findParentByTagName(event.target || event.srcElement, "A");
-				    if (element) {
-				        var href = element.href;
-						var title = element.title != ''?  element.title:element.innerText;
-						FingerPrint.send("clicked", title, href);
-				    }
+					FingerPrint.sendClickedEvent(event);
 				}, false);
 				
-				var oldOnload = window.onload;
-				window.onload = function (event) {
-					if (oldOnload) oldOnload(event);
-					FingerPrint.send("visited", document.title, window.location.href);
-				}
-				var oldOnbeforeunload = window.onbeforeunload;
-				window.onbeforeunload = function (event) {
-					if (oldOnbeforeunload) oldOnbeforeunload(event);
-			    	for(var index in FingerPrint.sockets){
-						FingerPrint.sockets[index].close();
-					}
-					FingerPrint.send("leaved", document.title, window.location.href);
-				}
+				window.addEventListener("hashchange", function (e) {
+					FingerPrint.sendLeavedEvent();
+					FingerPrint.sendVisitedEvent();
+					
+				}, false); 
+				window.addEventListener("beforeunload", function (e) {
+					FingerPrint.sendLeavedEvent();
+					WSCLIENTUTIL.getSocket.close();
+				}, false);
+
 	        	console.log("init completed.");
 			});
         };
         
-        FingerPrint.findParentByTagName = function (element, tagName) {
-            var parent = element;
 
-            while (parent !== null && parent.tagName !== tagName.toUpperCase()) {
-                parent = parent.parentNode;
-            }
-
-            return parent;
-        };
-
-        FingerPrint.send = function(type, title, url){
-        	if(FingerPrint.client){
-        		var data = FingerPrint.getData();
-        		FingerPrint.client
-        		.send(
-        				"/app/send",
-        				{},
-        				data.lead_id
-						+ "|"
-						+ data.browserFP
-						+ "|"
-						+ data.deviceFP
-						+ "|"
-						+ data.timeStamp
-						+ "|"+type+"|"
-						+ url
-						+ "|"
-						+ title
-						+ "|"
-						+ data.sessionID);
-        	} else {
-        		console.log("client is not yet connected.");
-        	}
-        	
-        }
         FingerPrint.show = function(){
         	console.log(FingerPrint.getData());
         }
@@ -221,11 +277,10 @@
     }
     //define globally if it doesn't already exist
     if(typeof(FingerPrint) === 'undefined'){
-        window.FingerPrint = define_fingerPrint();
-        window.FingerPrint.init();
+        window.FingerPrint = define_fingerPrint(define_cookieutil(), define_wsclientutil(), define_elementutil(), define_uuid(), define_timerutil(define_cookieutil()));
     }
     else{
         console.log("Fingerprint already defined.");
-        window.FingerPrint.init();
     }
+   
 })(window);
