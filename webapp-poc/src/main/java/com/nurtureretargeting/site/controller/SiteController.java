@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,6 +53,7 @@ public class SiteController {
 		return "commons/template";
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value = "/currentTime", method = RequestMethod.GET)
 	public @ResponseBody ResponseForm<String> currentTime() throws Exception {
 		ResponseForm<String> response = new ResponseForm<>();
