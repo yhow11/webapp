@@ -20,7 +20,7 @@ public class VisitorLogStringMapper implements VisitorLogMapper<String, VisitorL
 		// TODO Auto-generated method stub
 		VisitorLogModel event = new VisitorLogModel();
 		if(t != "") {
-			String[] raw = t.split("\\|", -1);
+			String[] raw = t.split("\\|\\|", -1);
 			event.setLeadID(raw[0]);
 //			event.setFp(raw[1]+"|"+raw[2]);
 	    	event.setDeviceFP(raw[2]);

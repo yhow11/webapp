@@ -46,19 +46,19 @@
         				"/app/send",
         				{},
         				data.lead_id
-						+ "|"
+						+ "||"
 						+ data.browserFP
-						+ "|"
+						+ "||"
 						+ data.deviceFP
-						+ "|"
+						+ "||"
 						+ data.timestamp
-						+ "|"+type+"|"
+						+ "||"+type+"||"
 						+ url
-						+ "|"
+						+ "||"
 						+ title
-						+ "|"
+						+ "||"
 						+ data.sessionID
-						+ "|"
+						+ "||"
 						+ (data.elapsedtime || 0));
         	} else {
         		console.log("client is not yet connected.");
