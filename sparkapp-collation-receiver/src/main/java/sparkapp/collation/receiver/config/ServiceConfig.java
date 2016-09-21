@@ -19,6 +19,7 @@ import service.pagecount.impl.PageCountSparkSQLServiceImpl;
 import service.pagecount.model.PageCountModel;
 import service.timeonpage.TimeOnPageService;
 import service.timeonpage.impl.TimeOnPageSparkSQLServiceImpl;
+import service.timeonpage.model.TimeOnPageModel;
 import service.urlmanagement.URLMetricService;
 import service.urlmanagement.impl.URLMetricSparkSQLServiceImpl;
 import sparkapp.collation.receiver.service.ReceiverService;
