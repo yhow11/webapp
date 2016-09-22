@@ -74,7 +74,7 @@ public class KeySumMetricSparkSQLServiceImpl extends SparkSQLTemplate implements
 		List<Row> result  = df.collectAsList();
 		sqlContext.dropTempTable(SparkSQLUtil.getTableName(param));
 		if(result.size() > 0) {
-			return Long.valueOf(String.valueOf(result.get(0).get(4)));
+			return Double.valueOf(String.valueOf(result.get(0).get(4))).longValue();
 		}
 		return 0L;
 	}
