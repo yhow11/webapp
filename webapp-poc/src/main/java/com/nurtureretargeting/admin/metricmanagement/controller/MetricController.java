@@ -27,6 +27,14 @@ public class MetricController {
 		return response;
 	}
 	
+	@RequestMapping(value = "metric/get", method = RequestMethod.GET)
+	public @ResponseBody  ResponseForm<MetricForm> get(@RequestParam("id") String id) throws Exception {
+		ResponseForm<MetricForm> response = new ResponseForm<MetricForm>();
+		response.setStatus(true); 
+		response.getData().add(metricManager.get(id));
+		return response;
+	}
+	
 	@RequestMapping(value = "metric/save", method = RequestMethod.POST)
 	public @ResponseBody  ResponseForm<MetricForm> save(@RequestBody MetricForm form) throws Exception {
 		ResponseForm<MetricForm> response = new ResponseForm<MetricForm>();

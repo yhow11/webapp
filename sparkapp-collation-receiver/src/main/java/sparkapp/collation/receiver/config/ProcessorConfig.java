@@ -5,8 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import service.pagecount.processor.PageCountProcessor;
-import service.timeonpage.processor.TimeOnPageProcessor;
+import service.metricmanagement.MetricProcessor;
+import service.metricmanagement.keysum.impl.KeySumMetricProcessorImpl;
+import service.metricmanagement.keysum.param.KeySumMetricParam;
+import service.metricmanagement.pagecount.impl.PageCountProcessorImpl;
+import service.metricmanagement.pagecount.param.PageCountMetricParam;
+import service.metricmanagement.timeonpage.impl.TimeOnPageProcessor;
+import service.metricmanagement.timeonpage.param.TimeOnPageMetricParam;
 
 @Configuration
 public class ProcessorConfig {
@@ -14,14 +19,18 @@ public class ProcessorConfig {
 	@Autowired
 	private ServiceConfig serviceConfig;
 	
-	
 	@Bean
-	public PageCountProcessor pageCountProcessor() throws Exception{
-		return new PageCountProcessor(serviceConfig.URLMetricService(), serviceConfig.pageCountService(), serviceConfig.metricSummaryService());
+	public MetricProcessor<KeySumMetricParam> keySumProcessor() throws Exception{
+		return new KeySumMetricProcessorImpl(serviceConfig.metricURLService(), serviceConfig.keySumMetricService(), serviceConfig.metricSummaryService());
 	}
 	
 	@Bean
-	public TimeOnPageProcessor timeOnPageProcessor() throws Exception{
-		return new TimeOnPageProcessor(serviceConfig.URLMetricService(), serviceConfig.timeOnPageService(), serviceConfig.metricSummaryService());
+	public MetricProcessor<PageCountMetricParam> pageCountProcessor() throws Exception{
+		return new PageCountProcessorImpl(serviceConfig.metricURLService(), serviceConfig.pageCountService(), serviceConfig.metricSummaryService());
+	}
+	
+	@Bean
+	public MetricProcessor<TimeOnPageMetricParam> timeOnPageProcessor() throws Exception{
+		return new TimeOnPageProcessor(serviceConfig.metricURLService(), serviceConfig.timeOnPageService(), serviceConfig.metricSummaryService());
 	}
 }

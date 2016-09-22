@@ -17,39 +17,48 @@
 			            <div ng-message="required">Please enter key.</div>
 	                </div>
 				</md-input-container>
-				<md-autocomplete
-						required  
+				<md-chips ng-model="metrics.data.types" md-max-chips="1" md-on-add="metrics.keyfield.onAddChip($chip, metrics.data.types)">
+		    		<md-autocomplete
+		    			ng-hide="metrics.data.types.length > 0"
 						md-autofocus="false"
-						md-require-match="true"
 						md-min-length="0"
-			            md-selected-item="metrics.data.type"
 			            md-search-text="metrics.typefield.searchText"
 			            md-items="item in metrics.typefield.search(metrics.typefield.searchText)"
-			            md-floating-label="Type"
-			            md-item-text="item.type"
-			            placeholder="Please choose items..." flex>
+			            placeholder="Please choose type.." flex>
 			          <md-item-template>
 			            <span >{{item.name}}</span>
 			          </md-item-template>
-		        </md-autocomplete>
-		        <md-autocomplete  
-		        		required
+		        	</md-autocomplete>
+		         	<md-chip-template>
+					        <span >
+					          <strong>{{$chip.name}}</strong>
+					        </span>
+			      	</md-chip-template>
+		    	</md-chips>
+				<md-chips ng-model="metrics.data.keys" md-max-chips="1" md-on-add="metrics.keyfield.onAddChip($chip, metrics.data.types)">
+					<md-autocomplete  
+						ng-hide="metrics.data.keys.length > 0"
 						md-autofocus="false"
 						md-require-match="true"
 						md-min-length="0"
-			            md-selected-item="metrics.data.key"
 			            md-search-text="metrics.keyfield.searchText"
 			            md-items="item in metrics.keyfield.search(metrics.keyfield.searchText)"
-			            md-item-text="item.key"
-			            md-floating-label="Key"
-			            placeholder="Please choose items..." flex>
+			            placeholder="Please choose key.." flex>
 			          <md-item-template>
 			            <span >{{item.key}}</span>
 			          </md-item-template>
-		        </md-autocomplete>
+		       	 	</md-autocomplete>
+	       	 		<md-chip-template>
+					        <span >
+					          <strong>{{$chip.key}}</strong>
+					          <em>({{metrics.keyfield.getValueStr($chip)}})</em>
+					        </span>
+			      	</md-chip-template>
+				</md-chips>
+		        <span class="j-color-red" ng-show="!metrics.keyfield.isValid"> Non-numeric values with Key Sum is not allowed.</span>
 	        </md-card-content>
 	        <div layout layout-align="center" style="padding-bottom:25px">
-	        	 <md-button aria-label="Save" ng-click="metrics.save(metricForm)" ng-disabled="showLoading" class="md-raised md-primary" flex="20" flex-gt-sm="10">
+	        	 <md-button aria-label="Save" ng-click="metrics.save(metricForm)" ng-disabled="showLoading || !metricForm.name.$valid || !metrics.keyfield.isValid" class="md-raised md-primary" flex="20" flex-gt-sm="10">
 			          <md-icon md-svg-icon="resources/img/icons/save.svg" ></md-icon> Submit
 			     </md-button>
 	        </div>

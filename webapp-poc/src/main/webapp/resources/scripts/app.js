@@ -211,11 +211,12 @@ angular
 									.state(
 									'metricmanagement.addnew',
 									{
-										url : '/metricmanagement/addnew',
+										url : '/metricmanagement/addnew/:id',
 										controller : 'AddNewController',
 										templateUrl : 'resources/views/metricmanagement/addnew.html',
 										params: {
-											param: null
+											param: null,
+											id: null
 										},
 										resolve : {
 											loadMyFiles : function(

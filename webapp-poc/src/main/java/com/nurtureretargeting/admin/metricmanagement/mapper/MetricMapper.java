@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Strings;
+import com.nurtureretargeting.admin.keymanagement.object.KeyForm;
 import com.nurtureretargeting.admin.metricmanagement.object.MetricForm;
+import com.nurtureretargeting.admin.metricmanagement.object.MetricTypeForm;
 
 import common.mapper.ListMapper;
+import service.metricmanagement.enums.MetricTypeEnum;
 import service.metricmanagement.model.MetricModel;
 
 public class MetricMapper implements ListMapper<MetricModel, MetricForm> {
@@ -29,9 +32,14 @@ public class MetricMapper implements ListMapper<MetricModel, MetricForm> {
 		if(!Strings.isNullOrEmpty(e.getId())){
 			target.setID(Long.valueOf(e.getId()));
 		}
-		target.setTKEY(e.getKey());
 		target.setNAME(e.getName());
-		target.setTYPE(e.getType());
+		
+		if(e.getKeys().size() > 0) {
+			target.setTKEY(e.getKeys().get(0).getKey());
+		}
+		if(e.getTypes().size() > 0) {
+			target.setTYPE(e.getTypes().get(0).getType());
+		}
 		return target;
 	}
 
@@ -39,9 +47,19 @@ public class MetricMapper implements ListMapper<MetricModel, MetricForm> {
 	public MetricForm unmarshall(MetricModel t, MetricForm target) throws Exception {
 		// TODO Auto-generated method stub
 		target.setId(String.valueOf(t.getID()));
-		target.setKey(t.getTKEY());
 		target.setName(t.getNAME());
-		target.setType(t.getTYPE());
+		
+		if(!Strings.isNullOrEmpty(t.getTKEY())){
+			KeyForm keyForm = new KeyForm();
+			keyForm.setKey(t.getTKEY());
+			target.getKeys().add(keyForm);
+		}
+		if(!Strings.isNullOrEmpty(t.getTYPE())){
+			MetricTypeForm metricTypeForm = new MetricTypeForm();
+			metricTypeForm.setType(t.getTYPE());
+			metricTypeForm.setName(MetricTypeEnum.getByType(t.getTYPE()).getName());
+			target.getTypes().add(metricTypeForm);
+		}
 		return target;
 	}
 

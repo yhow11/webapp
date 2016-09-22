@@ -16,6 +16,9 @@ angular.module('fingerPrintApp')
 	   getAll: function(offset, limit) {
 		   return $http.get('metric/getAll?offset='+offset+'&limit='+limit).then(handleSuccess, handleError('Error getting all users'));
 	  },
+	  get: function(id) {
+		   return $http.get('metric/get?id='+id).then(handleSuccess, handleError('Error getting all users'));
+	  },
 	  save: function(item) {
 		   return $http.post('metric/save', item).then(handleSuccess, handleError('Error getting all users'));
 	  },

@@ -11,17 +11,17 @@ import org.springframework.web.client.RestTemplate;
 
 import service.metricmanagement.MetricService;
 import service.metricmanagement.MetricSummaryService;
+import service.metricmanagement.MetricURLService;
 import service.metricmanagement.impl.MetricSparkSQLServiceImpl;
 import service.metricmanagement.impl.MetricSummaryPhoenixServiceImpl;
+import service.metricmanagement.impl.MetricURLSparkSQLServiceImpl;
+import service.metricmanagement.keysum.KeySumMetricService;
+import service.metricmanagement.keysum.impl.KeySumMetricSparkSQLServiceImpl;
 import service.metricmanagement.model.MetricModel;
-import service.pagecount.PageCountService;
-import service.pagecount.impl.PageCountSparkSQLServiceImpl;
-import service.pagecount.model.PageCountModel;
-import service.timeonpage.TimeOnPageService;
-import service.timeonpage.impl.TimeOnPageSparkSQLServiceImpl;
-import service.timeonpage.model.TimeOnPageModel;
-import service.urlmanagement.URLMetricService;
-import service.urlmanagement.impl.URLMetricSparkSQLServiceImpl;
+import service.metricmanagement.pagecount.PageCountService;
+import service.metricmanagement.pagecount.impl.PageCountSparkSQLServiceImpl;
+import service.metricmanagement.timeonpage.TimeOnPageMetricService;
+import service.metricmanagement.timeonpage.impl.TimeOnPageSparkSQLServiceImpl;
 import sparkapp.collation.receiver.service.ReceiverService;
 import sparkapp.collation.receiver.service.impl.ReceiverServiceImpl;
 import usertracker.browser.service.AnonymousVisitorService;
@@ -46,7 +46,7 @@ public class ServiceConfig {
 	
 	@Value("${kafka.zookeepers}")
 	private String zookeepers;
-	
+		
 	@Autowired
 	private PhoenixContext phoenixContext;
 	
@@ -54,18 +54,23 @@ public class ServiceConfig {
 	private SparkConfig sparkContext;
 	
 	@Bean
-	public URLMetricService URLMetricService() throws Exception{
-		return new URLMetricSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers);
+	public MetricURLService metricURLService() throws Exception{
+		return new MetricURLSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers);
 	}
 	
 	@Bean
-	public TimeOnPageService timeOnPageService() throws Exception{
-		return new TimeOnPageSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers, TimeOnPageModel.class);
+	public KeySumMetricService keySumMetricService() throws Exception{
+		return new KeySumMetricSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers);
+	}
+	
+	@Bean
+	public TimeOnPageMetricService timeOnPageService() throws Exception{
+		return new TimeOnPageSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers);
 	}
 	
 	@Bean
 	public PageCountService pageCountService() throws Exception{
-		return new PageCountSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers, PageCountModel.class);
+		return new PageCountSparkSQLServiceImpl(sparkContext.sQLContext(), zookeepers);
 	}
 	
 	@Bean

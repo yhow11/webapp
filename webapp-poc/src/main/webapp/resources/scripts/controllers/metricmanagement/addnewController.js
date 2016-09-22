@@ -13,10 +13,11 @@ angular.module('fingerPrintApp').controller(
 			$scope.metrics = {
 					data: {
 						name: "",
+						types: [],
+						keys: []
 					},
 					typefield: {
 						searchText: null,
-						items: [],
 						search: function(query) {
 							var deferred = $q.defer();
 							metricTypeService.getAll().then(function(data){
@@ -25,11 +26,15 @@ angular.module('fingerPrintApp').controller(
 								}
 							});
 							return deferred.promise;
-			            }
+			            },
+						onAddChip: function($chip, keys){
+							if(keys.length > 0) {
+								$scope.metrics.keyfield.validateKey(keys[0], $chip);
+							}
+						}
 					},
 					keyfield: {
 						searchText: null,
-						items: [],
 						search: function(query) {
 							var deferred = $q.defer();
 							keymanagementService.getAll("%25"+query+"%25","","").then(function(data){
@@ -38,20 +43,45 @@ angular.module('fingerPrintApp').controller(
 								}
 							});
 							return deferred.promise;
-			            }
+			            },
+			            getValueStr: function(chip){
+							var values = [];
+							for(var index in chip.values){
+								values.push(chip.values[index].value);
+							}
+							return values.join();
+						},
+						isNumeric: function (n) {
+							  return !isNaN(parseFloat(n)) && isFinite(n);
+						},
+						isValid: true,
+						validateKey: function(key, type){
+							if(type != null && type.type == 'KEYSUM'){
+								for(var index in key.values){
+									if(!this.isNumeric(key.values[index].value)){
+										this.isValid = false;
+									}
+								}
+			            	} else {
+			            		this.isValid = true;
+			            	}
+						},
+						onAddChip: function(chip, types){
+							if(types.length > 0) {
+								$scope.metrics.keyfield.validateKey(chip, types[0]);
+							}
+						}
+						
 					},
 					init: function(){
-						$scope.metrics.data = {};
+						$scope.metrics.data = {
+							types: [],
+							keys: []
+						};
 						$scope.metrics.typefield.searchText = null;
 						$scope.metrics.keyfield.searchText = null;
 					},
 					save: function(form){
-						if($scope.metrics.data.type){
-							$scope.metrics.data.type = $scope.metrics.data.type.type;
-						}
-						if($scope.metrics.data.key){
-							$scope.metrics.data.key = $scope.metrics.data.key.key;
-						}
 						metricService.save($scope.metrics.data).then(function(data){
 							if(data.data){
 								$scope.metrics.init();
@@ -64,15 +94,13 @@ angular.module('fingerPrintApp').controller(
 						});
 					}
 			};
-			
 			$scope.isOnEdit = false;
-			if($stateParams.param != null){
-				$scope.metrics.data = {
-						id: $stateParams.param.id,
-						name: $stateParams.param.name,
-						type: { type: $stateParams.param.type },
-						key: { key: $stateParams.param.key }
-				};
+			if($stateParams.id != null){
+				metricService.get($stateParams.id).then(function(data){
+					if(data.data){
+						$scope.metrics.data = data.data.data[0];
+					}
+				});
 				$scope.isOnEdit = true;
-			}
+			};
 		});

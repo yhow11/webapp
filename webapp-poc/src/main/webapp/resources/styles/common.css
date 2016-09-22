@@ -184,7 +184,7 @@ md-tooltip ._md-content {
 	font-weight: 500;
 	font-size: 14px;
 }
-.pop-availability md-chips.md-tooltiptheme-theme .md-chips, md-chips .md-chips {
+.pop-availability md-chips.md-tooltiptheme-theme .md-chips{
     box-shadow: 0 2px white;
 }
 .position-fix-left-bottom {

@@ -1,11 +1,16 @@
 package com.nurtureretargeting.admin.metricmanagement.object;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.nurtureretargeting.admin.keymanagement.object.KeyForm;
+
 public class MetricForm {
 
 	private String id;
 	private String name;
-	private String type;
-	private String key;
+	private List<MetricTypeForm> types = new ArrayList<>();
+	private List<KeyForm> keys = new ArrayList<>();
 	
 	
 	public String getId() {
@@ -24,21 +29,21 @@ public class MetricForm {
 		this.name = name;
 	}
 
-	public String getType() {
-		return type;
+	public List<MetricTypeForm> getTypes() {
+		return types;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setTypes(List<MetricTypeForm> types) {
+		this.types = types;
 	}
 
-	public String getKey() {
-		return key;
+	public List<KeyForm> getKeys() {
+		return keys;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setKeys(List<KeyForm> keys) {
+		this.keys = keys;
 	}
-	
+
 	
 }

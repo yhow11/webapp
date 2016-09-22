@@ -31,4 +31,7 @@ public class MetricManager {
 		Long limitLong = !Strings.isNotEmpty(limit)? Long.valueOf(limit): null;
 		return metricMapper.unmarshall(metricService.getAll(offsetLong, limitLong));
 	}
+	public MetricForm get(String id) throws Exception{
+		return metricMapper.unmarshall(metricService.get(id));
+	}
 }
