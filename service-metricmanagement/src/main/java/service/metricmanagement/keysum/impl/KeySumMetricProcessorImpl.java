@@ -39,7 +39,7 @@ public class KeySumMetricProcessorImpl implements MetricProcessor<KeySumMetricPa
 			
 				Long sum = keySumMetricService.getSum(param.getVisitorID(), queryParam.getModel().getMETRIC());
 				MetricSummaryModel metricSummaryModel = new MetricSummaryModel();
-				metricSummaryModel.setVISITORID(param.getUrl());
+				metricSummaryModel.setVISITORID(param.getVisitorID());
 				metricSummaryModel.setMETRICNAME(queryParam.getModel().getMETRIC());
 				metricSummaryModel.setMETRICTYPE(MetricTypeEnum.KEY_SUM.getType());
 				metricSummaryModel.setTVALUES(String.valueOf(sum));
