@@ -8,19 +8,19 @@ import helper.phoenix.annotation.entity.PhoenixTable;
 public class PageCountModel {
 
 	@PhoenixID
-	@PhoenixColumn(type="VARCHAR(200)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String VISITORID;
 	@PhoenixID
-	@PhoenixColumn(type="VARCHAR(200)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String URL;
 	@PhoenixID
-	@PhoenixColumn(type="VARCHAR(200)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String METRIC;
 	@PhoenixID
-	@PhoenixColumn(type="VARCHAR(200)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String TKEY;
 	@PhoenixID
-	@PhoenixColumn(type="VARCHAR(200)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String TVALUES;
 	@PhoenixColumn(type="BIGINT")
 	private Long TCOUNT;

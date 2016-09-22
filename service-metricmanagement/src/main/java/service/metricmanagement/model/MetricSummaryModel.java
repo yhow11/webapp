@@ -9,15 +9,15 @@ import helper.phoenix.annotation.entity.PhoenixTable;
 public class MetricSummaryModel {
 
 	@PhoenixID
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String VISITORID;
 	@PhoenixID
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String METRICNAME;
 	@PhoenixID
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String METRICTYPE;
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String TVALUES;
 	
 	public String getVISITORID() {

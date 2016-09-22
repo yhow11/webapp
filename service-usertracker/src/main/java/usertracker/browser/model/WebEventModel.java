@@ -20,28 +20,28 @@ public class WebEventModel implements Serializable {
 	@PhoenixColumn(type="BIGINT")
 	protected Long id;
 
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	protected String anonymousVisitorID;
 
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	protected String browserFPID;
 
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	protected String deviceFPID;
 
 	@PhoenixColumn(type="BIGINT")
 	protected Long timeStamp;
 	
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	protected String type;
 	
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	protected String url;
 	
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	protected String title;
 
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	protected String elapsedTime;
 	
 	

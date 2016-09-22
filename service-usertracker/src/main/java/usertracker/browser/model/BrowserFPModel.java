@@ -14,10 +14,10 @@ public class BrowserFPModel  implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@PhoenixID
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String id;
 	
-	@PhoenixColumn(type="VARCHAR(100)")
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String anonymousVisitorID;
 
 	public String getId() {
