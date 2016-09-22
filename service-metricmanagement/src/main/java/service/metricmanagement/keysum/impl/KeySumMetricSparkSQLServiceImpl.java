@@ -8,6 +8,7 @@ import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
 import org.apache.spark.sql.Encoders;
+import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
 
 import common.query.QueryParam;
@@ -70,9 +71,10 @@ public class KeySumMetricSparkSQLServiceImpl extends SparkSQLTemplate implements
 		DataFrame df = super.getDataFrame(param).groupBy(
 			col("VISITORID"), col("URL"), col("METRIC"), col("TKEY")
 		).agg(org.apache.spark.sql.functions.sum(col("TVALUES").alias("TOTAL")));
+		List<Row> result  = df.collectAsList();
 		sqlContext.dropTempTable(SparkSQLUtil.getTableName(param));
-		if(df.collectAsList().size() > 0) {
-			return Long.valueOf(String.valueOf(df.collectAsList().get(0).get(5)));
+		if(result.size() > 0) {
+			return Long.valueOf(String.valueOf(result.get(0).get(4)));
 		}
 		return 0L;
 	}
