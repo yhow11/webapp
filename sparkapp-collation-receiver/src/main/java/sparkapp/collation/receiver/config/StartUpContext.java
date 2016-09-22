@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 
 import helper.phoenix.dao.impl.PhoenixDaoImpl;
+import service.metricmanagement.keysum.model.KeySumMetricModel;
 import service.metricmanagement.model.MetricSummaryModel;
 import service.metricmanagement.pagecount.model.PageCountModel;
 import service.metricmanagement.timeonpage.model.TimeOnPageMetricModel;
@@ -33,6 +34,7 @@ public class StartUpContext implements ApplicationListener<ApplicationEvent> {
 		Logger.getLogger("org.apache.spark.streaming.scheduler.JobGenerator").setLevel(Level.INFO);
 		
 		try {
+			phoenixDaoImpl.createTable(KeySumMetricModel.class);
 			phoenixDaoImpl.createTable(TimeOnPageMetricModel.class);
 			phoenixDaoImpl.createTable(MetricSummaryModel.class);
 			phoenixDaoImpl.createTable(PageCountModel.class);
