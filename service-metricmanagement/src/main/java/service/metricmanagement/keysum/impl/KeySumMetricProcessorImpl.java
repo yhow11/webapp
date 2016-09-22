@@ -26,7 +26,7 @@ public class KeySumMetricProcessorImpl implements MetricProcessor<KeySumMetricPa
 	
 	public void process(KeySumMetricParam param) throws Exception{
 		if("VISITED".equalsIgnoreCase(param.getType())){
-			for(URLMetricModel urlMetricModel: metricURLService.getAll(param.getUrl(), MetricTypeEnum.PAGE_COUNT)){
+			for(URLMetricModel urlMetricModel: metricURLService.getAll(param.getUrl(), MetricTypeEnum.KEY_SUM)){
 				
 				QueryParam<KeySumMetricModel> queryParam = new QueryParam<>(KeySumMetricModel.class);
 				queryParam.getModel().setVISITORID(param.getVisitorID());
