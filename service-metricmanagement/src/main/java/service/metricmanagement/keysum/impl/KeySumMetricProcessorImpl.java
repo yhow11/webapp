@@ -1,5 +1,6 @@
 package service.metricmanagement.keysum.impl;
 
+import common.URLUtil;
 import common.query.QueryParam;
 import service.metricmanagement.MetricProcessor;
 import service.metricmanagement.MetricSummaryService;
@@ -26,7 +27,7 @@ public class KeySumMetricProcessorImpl implements MetricProcessor<KeySumMetricPa
 	
 	public void process(KeySumMetricParam param) throws Exception{
 		if("VISITED".equalsIgnoreCase(param.getType())){
-			for(URLMetricModel urlMetricModel: metricURLService.getAll(param.getUrl(), MetricTypeEnum.KEY_SUM)){
+			for(URLMetricModel urlMetricModel: metricURLService.getAll(URLUtil.getRealURL(param.getUrl()), MetricTypeEnum.KEY_SUM)){
 				
 				QueryParam<KeySumMetricModel> queryParam = new QueryParam<>(KeySumMetricModel.class);
 				queryParam.getModel().setVISITORID(param.getVisitorID());
