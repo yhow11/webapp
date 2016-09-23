@@ -25,9 +25,6 @@ public class DeviceFPPhoenixServiceImpl extends PhoenixDaoImpl implements Device
 			deviceFP.setAnonymousVisitorID(av);
 			deviceFP.setId(id);
 			save(deviceFP);
-			System.out.println("Created Device FP " + deviceFP.getId());
-		} else {
-			System.out.println("Device FP Found. " + deviceFP.getId());
 		}
 		return deviceFP;
 	}

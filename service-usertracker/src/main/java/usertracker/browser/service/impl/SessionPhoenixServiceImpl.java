@@ -27,9 +27,6 @@ public class SessionPhoenixServiceImpl extends PhoenixDaoImpl implements Session
 			sessionModel.setId(sessionID);
 			sessionModel.setAnonymousVisitorID(av);
 			save(sessionModel);
-			System.out.println("Created New Session " + sessionModel.getId());
-		} else {
-			System.out.println("Session Found. " + sessionModel.getId());
 		}
 		return sessionModel;
 	}

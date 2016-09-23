@@ -24,10 +24,7 @@ public class BrowserFPPhoenixServiceImpl extends PhoenixDaoImpl implements Brows
 			browserFP.setAnonymousVisitorID(av);
 			browserFP.setId(id);
 			save(browserFP);
-			System.out.println("Created Browser FP " + browserFP.getId());
-		} else {
-			System.out.println("Browser FP Found. " + browserFP.getId());
-		}
+		} 
 		return browserFP;
 	}
 	@Override

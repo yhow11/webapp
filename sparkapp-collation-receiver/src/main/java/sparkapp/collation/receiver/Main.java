@@ -99,7 +99,6 @@ public class Main {
 			List<WebEventModel> webEventModels = new ArrayList<>();
 			for (VisitorLogModel visitorLogModel : visitorLogModels) {
 				
-				System.out.println("Saving..");
 				receiverService.save(visitorLogModel);
 
 				AnonymousVisitorModel visitor = receiverService.getOrCreateAV(visitorLogModel.getSessionID(), visitorLogModel.getWebFP());
@@ -115,7 +114,7 @@ public class Main {
 				pageCountProcessor.process(new PageCountMetricParam(webEvent.getType(), webEvent.getUrl(), visitor.getId()));
 				timeOnPageProcessor.process(new TimeOnPageMetricParam(webEvent.getType(), webEvent.getUrl(), visitor.getId(), webEvent.getElapsedTime()));
 				keysumProcessor.process(new KeySumMetricParam(visitor.getId(), webEvent.getType(), webEvent.getUrl()));
-				System.out.println("Created New WebEvent " + webEvent.getId());
+
 
 			}
 

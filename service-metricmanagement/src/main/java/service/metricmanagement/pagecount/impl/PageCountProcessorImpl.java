@@ -1,5 +1,6 @@
 package service.metricmanagement.pagecount.impl;
 
+import common.URLUtil;
 import common.query.QueryParam;
 import service.metricmanagement.MetricProcessor;
 import service.metricmanagement.MetricSummaryService;
@@ -26,7 +27,7 @@ public class PageCountProcessorImpl implements MetricProcessor<PageCountMetricPa
 	
 	public void process(PageCountMetricParam param) throws Exception{
 		if("VISITED".equals(param.getType())){
-			for(URLMetricModel urlMetricModel: metricURLService.getAll(param.getUrl(), MetricTypeEnum.PAGE_COUNT)){
+			for(URLMetricModel urlMetricModel: metricURLService.getAll(URLUtil.getRealURL(param.getUrl()), MetricTypeEnum.PAGE_COUNT)){
 				
 				QueryParam<PageCountModel> queryParam = new QueryParam<>(PageCountModel.class);
 				queryParam.getModel().setVISITORID(param.getVisitorID());
