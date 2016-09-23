@@ -43,7 +43,7 @@ public class TimeOnPageProcessor implements MetricProcessor<TimeOnPageMetricPara
 					queryParam.getModel().setTIMEONPAGE(Long.valueOf(param.getElapsedTime()));
 					timeOnPageService.save(queryParam.getModel());
 				}
-				TimeOnPageMetricModel highest= timeOnPageService.getHighest(param.getElapsedTime(), queryParam.getModel().getMETRIC());
+				TimeOnPageMetricModel highest= timeOnPageService.getHighest(param.getVisitorID(), queryParam.getModel().getMETRIC());
 				MetricSummaryModel metricSummaryModel = new MetricSummaryModel();
 				metricSummaryModel.setVISITORID(param.getVisitorID());
 				metricSummaryModel.setMETRICNAME(queryParam.getModel().getMETRIC());
