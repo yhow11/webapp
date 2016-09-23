@@ -39,6 +39,7 @@ public class MetricURLSparkSQLServiceImpl implements MetricURLService {
 	public List<URLMetricModel> getAll(String url, MetricTypeEnum metricType) throws Exception{
 		param.put(TABLE_PROP_KEY, URLTaggedModel.class.getAnnotation(PhoenixTable.class).table());
 		DataFrame urlTaggedTable = sqlContext.read().format(FORMAT).options(param).load().filter(col("URL").equalTo(url));
+		urlTaggedTable.show();
 		if(urlTaggedTable.count() > 0) {
 			param.put(TABLE_PROP_KEY, MetricModel.class.getAnnotation(PhoenixTable.class).table());
 			DataFrame metricTable = sqlContext.read().format(FORMAT).options(param).load();
