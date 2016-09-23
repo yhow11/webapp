@@ -112,7 +112,7 @@ public class Main {
 				receiverService.save(webEvent);
 				System.out.println(URLUtil.getRealURL(webEvent.getUrl()));
 				pageCountProcessor.process(new PageCountMetricParam(webEvent.getType(), webEvent.getUrl(), visitor.getId()));
-//				timeOnPageProcessor.process(new TimeOnPageMetricParam(webEvent.getType(), webEvent.getUrl(), visitor.getId(), webEvent.getElapsedTime()));
+				timeOnPageProcessor.process(new TimeOnPageMetricParam(webEvent.getType(), webEvent.getUrl(), visitor.getId(), webEvent.getElapsedTime()));
 				keysumProcessor.process(new KeySumMetricParam(webEvent.getType(), webEvent.getUrl(), visitor.getId()));
 
 
