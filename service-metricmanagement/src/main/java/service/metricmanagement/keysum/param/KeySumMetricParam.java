@@ -6,7 +6,7 @@ public class KeySumMetricParam {
 	protected String type;
 	protected String url;
 	
-	public KeySumMetricParam(String visitorID, String type, String url) {
+	public KeySumMetricParam(String type, String url , String visitorID) {
 		// TODO Auto-generated constructor stub
 		this.visitorID = visitorID;
 		this.type = type;

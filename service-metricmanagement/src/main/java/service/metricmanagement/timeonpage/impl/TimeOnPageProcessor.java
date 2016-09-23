@@ -26,7 +26,7 @@ public class TimeOnPageProcessor implements MetricProcessor<TimeOnPageMetricPara
 	}
 	
 	public void process(TimeOnPageMetricParam param) throws Exception{
-		if("LEAVED".equals(param.getType())){
+		if("LEAVED".equalsIgnoreCase(param.getType())){
 			for(URLMetricModel urlMetricModel: metricURLService.getAll(URLUtil.getRealURL(param.getUrl()), MetricTypeEnum.TIME_ON_PAGE)){
 				
 				QueryParam<TimeOnPageMetricModel> queryParam = new QueryParam<>(TimeOnPageMetricModel.class);

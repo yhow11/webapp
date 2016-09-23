@@ -26,7 +26,7 @@ public class PageCountProcessorImpl implements MetricProcessor<PageCountMetricPa
 	}
 	
 	public void process(PageCountMetricParam param) throws Exception{
-		if("VISITED".equals(param.getType())){
+		if("VISITED".equalsIgnoreCase(param.getType())){
 			for(URLMetricModel urlMetricModel: metricURLService.getAll(URLUtil.getRealURL(param.getUrl()), MetricTypeEnum.PAGE_COUNT)){
 				
 				QueryParam<PageCountModel> queryParam = new QueryParam<>(PageCountModel.class);
