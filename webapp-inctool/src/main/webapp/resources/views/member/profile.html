@@ -1,5 +1,5 @@
-<div layout-gt-sm="row">
-	<div>
+<form name="memberForm" layout-gt-sm="row">
+	<div flex-gt-sm="30">
 		<md-card>
 		  <md-toolbar class="md-primary">
 		     <div class="md-toolbar-tools j-fill-white">
@@ -9,19 +9,18 @@
 	     <md-card-content layout="column" layout-margin >
 	     	
 	        <div >
-     			<input type="hidden" ng-model="member.id">
+     			<input type="hidden" ng-model="memberProfile.data.id">
      			<md-autocomplete  required
      					md-autofocus="false"
-			            md-input-minlength="2"
-			            md-input-maxlength="18"
-			            md-no-cache="reference.noCache"
-			            md-selected-item="reference.selectedItem"
-			            md-search-text="reference.searchText"
-			            md-items="item in reference.querySearch(reference.searchText)"
-			            md-item-text="item"
+			            md-require-match="true"
+						md-min-length="0"
+			            md-selected-item="memberProfile.field.reference.value"
+			            md-search-text="memberProfile.field.reference.searchText"
+			            md-items="item in memberProfile.field.reference.search(memberProfile.field.reference.searchText)"
+			            md-item-text="item.id"
 			            md-floating-label="Reference">
 			          <md-item-template>
-			            <span md-highlight-text="reference.searchText">{{item}}</span>
+			            <span md-highlight-text="reference.searchText">{{item.id}}</span>
 			          </md-item-template>
 			          <md-not-found ng-click="reference.createNew(reference.searchText)">
 				          No states matching "{{reference.searchText}}" were found.
@@ -29,12 +28,12 @@
 				        </md-not-found>
 		        </md-autocomplete>
 				<md-input-container class="md-block" >
-					<label>Name</label> <input ng-model="member.name" >
+					<label>Name</label> <input ng-model="memberProfile.data.name" >
 				</md-input-container>
      		</div>
      		<div  layout="row">
 				<md-input-container class="md-block" flex>
-				<label>Dcode</label> <input name="dcode" ng-model="member.dcode"
+				<label>Dcode</label> <input name="dcode" ng-model="memberProfile.data.dcode"
 					ng-pattern="/^\d+$/">
 				<div ng-messages="registraionForm.dcode.$error">
 					<div ng-message="pattern">Please enter numeric values only.</div>
@@ -50,7 +49,7 @@
      		</div>
      		<div  layout="row">
      			<md-input-container class="md-block" flex>
-				<label>Area No</label> <input name="area" ng-model="member.area"
+				<label>Area No</label> <input name="area" ng-model="memberProfile.data.area"
 					ng-pattern="/^\d+$/">
 				<div ng-messages="registraionForm.area.$error">
 					<div ng-message="pattern">Please enter numeric values only.</div>
@@ -58,12 +57,82 @@
 				</md-input-container>
 				<md-input-container class="md-block" flex>
 				<label>Group No</label> <input name="group"
-					ng-model="member.group" ng-pattern="/^\d+$/">
+					ng-model="memberProfile.data.group" ng-pattern="/^\d+$/">
 				<div ng-messages="registraionForm.group.$error">
 					<div ng-message="pattern">Please enter numeric values only.</div>
 				</div>
 				</md-input-container>
      		</div>
+	     </md-card-content>
+	 </md-card>
+	 <md-card>
+	     <md-toolbar class="md-primary">
+		    <div class="md-toolbar-tools j-fill-white">
+		      <h2 class="j-color-green">R3-10 Monitoring</h2>
+		    </div>
+		  </md-toolbar>
+	     <md-card-content  layout="row" layout-wrap> 
+	     	<md-datepicker flex-gt-sm="25" ng-model="attendance.datepicker"
+					ng-repeat="attendance in memberProfile.data.dkAttendance" ng-change="attendance.date = attendance.datepicker.toLocaleString();" md-placeholder="{{attendance.id--1}} . Choose date..">
+				</md-datepicker>
+	     </md-card-content>
+	 </md-card>
+	</div>
+	<div flex-gt-sm="70">
+		<md-card>
+		 	<md-toolbar class="md-primary">
+			    <div class="md-toolbar-tools j-fill-white">
+			      <h2 class="j-color-green">R3-05 Monitoring</h2>
+			    </div>
+			  </md-toolbar>
+		     <md-card-content  layout="row" layout-wrap> 
+		     	<md-datepicker flex-gt-sm="25" ng-model="attendance.datepicker"
+								ng-repeat="attendance in memberProfile.data.skAttendance"  ng-change="attendance.date = attendance.datepicker.toLocaleString();" md-placeholder="{{attendance.id--1}} . Choose date..">
+							</md-datepicker>
+		     </md-card-content>
+		 </md-card>
+		 <md-card>
+		 	<md-toolbar class="md-primary">
+			    <div class="md-toolbar-tools j-fill-white">
+			      <h2 class="j-color-green">R3-09 Monitoring</h2>
+			    </div>
+			  </md-toolbar>
+		     <md-card-content  layout="row" layout-wrap> 
+		     	<md-datepicker flex-gt-sm="25" ng-model="attendance.datepicker" 
+								ng-repeat="attendance in memberProfile.data.wsAttendance" ng-change="attendance.date = attendance.datepicker.getTime();" md-placeholder="{{attendance.id--1}} . Choose date..">
+							</md-datepicker>
+		     </md-card-content>
+		 </md-card>
+	</div>
+</form>
+
+ 
+ 
+ <md-fab-speed-dial md-open="isSpeedDialOpen" md-direction="up"
+                     class="md-fling position-fix-left-bottom">
+    <md-fab-trigger>
+      <md-button aria-label="menu" class="md-fab md-warn">
+        <md-icon md-svg-src="resources/img/icons/menu.svg"></md-icon>
+      </md-button>
+    </md-fab-trigger>
+    <md-fab-actions>
+      <md-button aria-label="Save" class="md-fab md-raised md-mini" ng-click="memberProfile.save()">
+        <md-icon style="color: rgb(76, 175, 80);"
+            aria-label="save"
+            class="material-icons step">
+             done
+        </md-icon>
+      </md-button>
+      <md-button ui-sref="encoding" aria-label="Cancel" class="md-fab md-raised md-mini">
+         <md-icon style="color: rgb(76, 175, 80);"
+            aria-label="save"
+            class="material-icons step">
+             clear
+        </md-icon>
+      </md-button>
+    </md-fab-actions>
+  </md-fab-speed-dial>
+
 	     	<!-- <div flex-gt-sm="50" layout="column">
 	     		<div flex-gt-sm layout-gt-sm="row">
 	     			<md-autocomplete flex required
@@ -139,72 +208,3 @@
 				
 				<h6>Estimated Completion Date: {{ member.completionDate | date:'yyyy-MM-dd' }}</h6>
 	     	</div> -->
-	     </md-card-content>
-	 </md-card>
-	 <md-card>
-	     <md-toolbar class="md-primary">
-		    <div class="md-toolbar-tools j-fill-white">
-		      <h2 class="j-color-green">R3-10 Monitoring</h2>
-		    </div>
-		  </md-toolbar>
-	     <md-card-content  layout="row" layout-wrap> 
-	     	<md-datepicker flex-gt-sm="25" ng-model="r310.datepicker"
-					ng-repeat="r310 in member.r310" ng-change="r310.date = r310.datepicker.getTime();" md-placeholder="{{r310.id--1}} . Choose date..">
-				</md-datepicker>
-	     </md-card-content>
-	 </md-card>
-	</div>
-	<div>
-		<md-card>
-		 	<md-toolbar class="md-primary">
-			    <div class="md-toolbar-tools j-fill-white">
-			      <h2 class="j-color-green">R3-05 Monitoring</h2>
-			    </div>
-			  </md-toolbar>
-		     <md-card-content  layout="row" layout-wrap> 
-		     	<md-datepicker flex-gt-sm="25" ng-model="r305.datepicker"
-								ng-repeat="r305 in member.r305"  ng-change="r305.date = r305.datepicker.getTime();" md-placeholder="{{r305.id--1}} . Choose date..">
-							</md-datepicker>
-		     </md-card-content>
-		 </md-card>
-		 <md-card>
-		 	<md-toolbar class="md-primary">
-			    <div class="md-toolbar-tools j-fill-white">
-			      <h2 class="j-color-green">R3-09 Monitoring</h2>
-			    </div>
-			  </md-toolbar>
-		     <md-card-content  layout="row" layout-wrap> 
-		     	<md-datepicker flex-gt-sm="25" ng-model="r309.datepicker"
-								ng-repeat="r309 in member.r309" ng-change="r309.date = r309.datepicker.toISOString();" md-placeholder="{{r309.id--1}} . Choose date..">
-							</md-datepicker>
-		     </md-card-content>
-		 </md-card>
-	</div>
-</div>
-
- 
- 
- <md-fab-speed-dial md-open="isSpeedDialOpen" md-direction="up"
-                     class="md-fling position-fix-left-bottom">
-    <md-fab-trigger>
-      <md-button aria-label="menu" class="md-fab md-warn">
-        <md-icon md-svg-src="resources/img/icons/menu.svg"></md-icon>
-      </md-button>
-    </md-fab-trigger>
-    <md-fab-actions>
-      <md-button aria-label="Save" class="md-fab md-raised md-mini" ng-click="save()">
-        <md-icon style="color: rgb(76, 175, 80);"
-            aria-label="save"
-            class="material-icons step">
-             done
-        </md-icon>
-      </md-button>
-      <md-button ui-sref="encoding" aria-label="Cancel" class="md-fab md-raised md-mini">
-         <md-icon style="color: rgb(76, 175, 80);"
-            aria-label="save"
-            class="material-icons step">
-             clear
-        </md-icon>
-      </md-button>
-    </md-fab-actions>
-  </md-fab-speed-dial>

@@ -8,16 +8,17 @@ import java.util.List;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
-import com.inctool.common.enums.WorshipServiceEnum;
-import com.inctool.common.form.DateForm;
-import com.inctool.management.form.AttendanceForm;
 import com.inctool.management.service.AttendanceService;
 import com.inctool.management.util.AttendanceUtil;
+
+import inc.member.enums.WorshipServiceEnum;
+import inc.member.form.AttendanceForm;
+import inc.member.form.SummaryForm;
 
 public class R309AttendanceServiceImpl extends AttendanceService {
 
 	@Override
-	public List<DateForm> fillSchedule(List<DateForm> dates) throws Exception {
+	public List<AttendanceForm> fillSchedule(List<AttendanceForm> dates) throws Exception {
 		
 		dates = addDays(dates, 1);
 		
@@ -35,7 +36,7 @@ public class R309AttendanceServiceImpl extends AttendanceService {
 	    System.out.println(DateFormatUtils.format(c, SIMPLE_DATE_PATTERN));
 	    
 		for(Integer counter = 0 ; counter < dates.size(); counter ++){
-			DateForm date = dates.get(counter);
+			AttendanceForm date = dates.get(counter);
 
 			c.setTime(AttendanceUtil.nextCutOff(c.getTime()));
 			
@@ -84,13 +85,13 @@ public class R309AttendanceServiceImpl extends AttendanceService {
 	}
 
 	@Override
-	public AttendanceForm fillAttendance(AttendanceForm attendanceForm, List<DateForm> dates) throws Exception {
+	public SummaryForm fillAttendance(SummaryForm attendanceForm, List<AttendanceForm> dates) throws Exception {
 		// TODO Auto-generated method stub
 		Integer present = 0;
 		Integer absent = 0;
 		Integer na = 0;
 		
-		for(DateForm date: dates) {
+		for(AttendanceForm date: dates) {
 			if(date.getStatus().equals(WorshipServiceEnum.PRESENT.toString())) {
 				present++;
 			} else if(date.getStatus().equals(WorshipServiceEnum.ABSENT.toString())) {
@@ -108,8 +109,8 @@ public class R309AttendanceServiceImpl extends AttendanceService {
 		return attendanceForm;
 	}
 
-	private List<DateForm> addDays(List<DateForm> dates, Integer add) throws Exception {
-		for(DateForm form: dates){
+	private List<AttendanceForm> addDays(List<AttendanceForm> dates, Integer add) throws Exception {
+		for(AttendanceForm form: dates){
 			if(form.getDate() != null){
 				form.setDate(DateFormatUtils.format(DateUtils.addDays(DateUtils.parseDate(form.getDate(), SIMPLE_DATE_PATTERN), add), SIMPLE_DATE_PATTERN));	
 			}
@@ -117,18 +118,18 @@ public class R309AttendanceServiceImpl extends AttendanceService {
 		return dates;
 	}
 	
-	private List<DateForm> getDateOfAbsence(Integer position, List<DateForm> dates) throws Exception{
-		DateForm subjectDate = dates.get(position);
-		DateForm lastPresentDate = AttendanceUtil.getLastPresentDate(position, dates);
+	private List<AttendanceForm> getDateOfAbsence(Integer position, List<AttendanceForm> dates) throws Exception{
+		AttendanceForm subjectDate = dates.get(position);
+		AttendanceForm lastPresentDate = AttendanceUtil.getLastPresentDate(position, dates);
 		
-		List<DateForm> returns = new ArrayList<DateForm>();
+		List<AttendanceForm> returns = new ArrayList<AttendanceForm>();
 		
 		if(lastPresentDate != null) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(AttendanceUtil.getStartDate(DateUtils.parseDate(subjectDate.getDate(), SIMPLE_DATE_PATTERN)));
 			
 			while(!DateUtils.parseDate(lastPresentDate.getEndDate(), SIMPLE_DATE_PATTERN).equals(c.getTime())) {
-				DateForm form = AttendanceUtil.supplyCutOffDates(c.getTime(), new DateForm()) ;
+				AttendanceForm form = AttendanceUtil.supplyCutOffDates(c.getTime(), new AttendanceForm()) ;
 				form.setStatus(WorshipServiceEnum.ABSENT.toString());
 				c.setTime(AttendanceUtil.previousCutOff(c.getTime()));
 				returns.add(form);

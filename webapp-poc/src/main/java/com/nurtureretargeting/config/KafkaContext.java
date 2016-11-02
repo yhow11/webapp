@@ -12,7 +12,7 @@ import helper.kafka.service.impl.KafkaHelperImpl;
 
 
 @Configuration
-@PropertySource({"classpath:com/nurtureretargeting/properties/kafka.properties"})
+@PropertySource({"classpath:kafka.properties"})
 public class KafkaContext {
 
 	@Value("${kafka.topics}")

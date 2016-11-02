@@ -6,11 +6,11 @@
 			      <h2 class="j-color-green">Personal Information</h2>
 			    </div>
 			  </md-toolbar>
-		    <md-card-content layout="column" layout-align="center center" >
-				<div class="md-media-lg card-media">
+		    <md-card-content layout="column" >
+				<div class="md-media-lg card-media" flex layout="row" layout-align="center center">
 					<img class="height-inherit" src="resources/img/profile-img.png" />
 				</div>
-		        <div >
+		        <div flex>
 	     			<md-input-container class="md-block" >
 						<label>ID Number</label> <input ng-model="worker.id" required ng-pattern="/^\d+$/" name="id">
 						<div ng-messages="workerForm.id.$error">

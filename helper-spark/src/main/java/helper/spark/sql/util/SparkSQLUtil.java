@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.spark.sql.Column;
 
-import common.query.QueryParam;
+import common.orm.query.param.Param;
 import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixTable;
 import helper.phoenix.annotation.query.PhoenixDistinctColumn;
@@ -27,7 +27,7 @@ public class SparkSQLUtil extends PhoenixUtil {
 	public static Seq<Column> convert(List<Column> columnList){
 		return scala.collection.JavaConversions.asScalaBuffer(columnList);
 	}
-	public static <E, T> String createGetSQL(QueryParam<T> param) throws Exception {
+	public static <E, T> String createGetSQL(Param<T> param) throws Exception {
 		String format = "SELECT %s FROM %s %s %s %s %s";
 		Class<?> clazz = param.getParamClass();
 

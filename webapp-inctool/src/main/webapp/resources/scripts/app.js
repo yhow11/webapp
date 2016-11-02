@@ -20,11 +20,27 @@ angular
 						'$urlRouterProvider',
 						'$ocLazyLoadProvider',
 						'$httpProvider',
+						'$mdDateLocaleProvider',
 						'ChartJsProvider',
 						function($mdThemingProvider, $stateProvider,
 								$urlRouterProvider, $ocLazyLoadProvider,
-								$httpProvider, ChartJsProvider) {
-
+								$httpProvider, $mdDateLocaleProvider, ChartJsProvider) {
+							$mdDateLocaleProvider.parseDate = function(dateString) {
+							      var m = moment(dateString, 'L', true);
+							      console.log(dateString);
+							      return m.isValid() ? m.toDate() : new Date(NaN);
+						    };
+						    $mdDateLocaleProvider.formatDate = function(date) {
+						    	if(date) {
+							        return moment(date).format('YYYY-MM-DD');
+						    	} else {
+						    		return '';
+						    	}
+						        
+						     };
+//							$mdDateLocaleProvider.formatDate = function(date) {
+//							       return moment(date).format('YYYY-MM-DD');
+//							    };
 							 // Configure all charts
 						    ChartJsProvider.setOptions({
 						      colours: ['#97BBCD', '#DCDCDC', '#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
@@ -112,6 +128,59 @@ angular
 												}
 
 											})
+											.state(
+									'member',
+									{
+										abstract: true,
+										template : '<ui-view  ></ui-view>',
+										url : '/member'
+
+									})
+									.state(
+											'member.profile',
+											{
+												url : '/member/profile/:id',
+												controller : 'MemberProfileController',
+												templateUrl : 'resources/views/member/profile.html',
+												resolve : {
+													loadMyFiles : function(
+															$ocLazyLoad) {
+														return $ocLazyLoad
+																.load({
+																	name : 'incToolApp',
+																	files : [
+																			'resources/scripts/services/memberService.js',
+																			'resources/scripts/services/workerService.js',
+																			'resources/scripts/controllers/member/profileController.js',
+
+																	]
+																})
+													}
+												}
+
+									})
+									.state(
+											'member.view',
+											{
+												url : '/member/view',
+												controller : 'MemberViewController',
+												templateUrl : 'resources/views/member/view.html',
+												resolve : {
+													loadMyFiles : function(
+															$ocLazyLoad) {
+														return $ocLazyLoad
+																.load({
+																	name : 'incToolApp',
+																	files : [
+																			'resources/scripts/services/memberService.js',
+																			'resources/scripts/controllers/member/viewController.js',
+
+																	]
+																})
+													}
+												}
+
+									})
 									.state(
 									'worker',
 									{
@@ -143,11 +212,11 @@ angular
 
 											})
 									.state(
-											'worker.list',
+											'worker.view',
 											{
-												url : '/worker/list',
-												controller : 'WorkerListController',
-												templateUrl : 'resources/views/worker/list.html',
+												url : '/worker/view',
+												controller : 'WorkerViewController',
+												templateUrl : 'resources/views/worker/view.html',
 												resolve : {
 													loadMyFiles : function(
 															$ocLazyLoad) {
@@ -156,7 +225,7 @@ angular
 																	name : 'incToolApp',
 																	files : [
 																			'resources/scripts/services/workerService.js',
-																			'resources/scripts/controllers/worker/listController.js',
+																			'resources/scripts/controllers/worker/viewController.js',
 
 																	]
 																})
@@ -343,7 +412,7 @@ angular
 							// })
 						} ]).run(
 				function($rootScope, $state, $location, $localStorage, $http,
-						$mdSidenav, $log, $interval) {
+						$mdSidenav, $log, $interval, $mdToast) {
 					$mdSidenav("left").then(function(instance) {
 						$log.debug(instance);
 					});
@@ -383,27 +452,10 @@ angular
 							$rootScope.showLoading = false;
 						}
 					});
-					$rootScope.displayError = function(message) {
-						$mdToast.showSimple(message).textContent(message)
+					$rootScope.toast = function(message, color) {
+						var mdToast = $mdToast.simple()
+					      .textContent(message)
 								.position("top right").hideDelay(3000);
+						$mdToast.show(mdToast);
 					};
-					// keep user logged in after page refresh
-					// $rootScope.currentUser = $localStorage.currentUser ||
-					// null;
-					// $rootScope.orgs = $localStorage.orgs || null;
-					// if ($rootScope.currentUser) {
-					// $http.defaults.headers.common['Authorization'] = 'Basic '
-					// + $rootScope.currentUser.authdata; // jshint ignore:line
-					// }
-					// $rootScope.$on('$locationChangeStart', function (event,
-					// next, current) {
-					// // redirect to login page if not logged in and trying to
-					// access a restricted page
-					// var restrictedPage = $.inArray($location.path(),
-					// ['/login', '/register']) === -1;
-					// var loggedIn = $rootScope.currentUser;
-					// if (restrictedPage && !loggedIn) {
-					// $state.go('login');
-					// }
-					// });
 				});

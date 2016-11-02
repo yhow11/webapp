@@ -32,37 +32,36 @@
     function define_wsclientutil(){
     	
     	var WSCLIENTUTIL  = {};
-    	WSCLIENTUTIL.init = function(socketURL){
-    		var socket = new SockJS(socketURL + 'send');
-    		var client = Stomp.over(socket);
-    		WSCLIENTUTIL.getSocket = socket;
-        	WSCLIENTUTIL.getClient = client;
+    	WSCLIENTUTIL.init = function(){
     	};
     	WSCLIENTUTIL.send = function(fingerprintdata, type, title, url){
-        	if(WSCLIENTUTIL.getClient){
-        		var data = fingerprintdata;
-        		WSCLIENTUTIL.getClient
-        		.send(
-        				"/app/send",
-        				{},
-        				data.lead_id
-						+ "||"
-						+ data.browserFP
-						+ "||"
-						+ data.deviceFP
-						+ "||"
-						+ data.timestamp
-						+ "||"+type+"||"
-						+ url
-						+ "||"
-						+ title
-						+ "||"
-						+ data.sessionID
-						+ "||"
-						+ (data.elapsedtime || 0));
-        	} else {
-        		console.log("client is not yet connected.");
-        	}
+    		var data = fingerprintdata;
+    		var xhttp = new XMLHttpRequest();
+    		xhttp.open("POST", 'logs/send', true);
+    		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        	xhttp.onreadystatechange = function() {
+    			  if (this.readyState == 4 && this.status == 200) {
+    				  
+    			  }
+    			};
+			
+			xhttp.send("log="+data.lead_id
+					+ "||"
+					+ data.browserFP
+					+ "||"
+					+ data.deviceFP
+					+ "||"
+					+ data.timestamp
+					+ "||"+type+"||"
+					+ url
+					+ "||"
+					+ title
+					+ "||"
+					+ data.sessionID
+					+ "||"
+					+ (data.elapsedtime || 0)
+					+ "||"
+					+ (data.country || "unknown"));
         	
         }
     	return WSCLIENTUTIL;
@@ -239,34 +238,38 @@
         FingerPrint.init = function(baseURL){
         	
         	FingerPrint.generate();
+        	$.get("http://ipinfo.io", function (response) {
+        		var fingerPrintData = FingerPrint.getData();
+        		fingerPrintData.country = response.country
+        		FingerPrint.setData(fingerPrintData);
+        	}, "jsonp");
         	TIMERUTIL.init(baseURL);
-        	WSCLIENTUTIL.init(baseURL);
+        	WSCLIENTUTIL.init();
         	
-			WSCLIENTUTIL.getClient.connect({}, function(frame) {
+        	
+        	FingerPrint.sendVisitedEvent();
+
+			
+			window.addEventListener("mouseover", function (e) {
+				if (e.target.localName == 'a') {
+					FingerPrint.sendHoverEvent(e);
+				}
+			}, false); 
+			
+			document.documentElement.addEventListener("click", function handleAnchorClick(event) {
+				FingerPrint.sendClickedEvent(event);
+			}, false);
+			
+			window.addEventListener("hashchange", function (e) {
+				FingerPrint.sendLeavedEvent();
 				FingerPrint.sendVisitedEvent();
 				
-				window.addEventListener("mouseover", function (e) {
-					if (e.target.localName == 'a') {
-						FingerPrint.sendHoverEvent(e);
-					}
-				}, false); 
-				
-				document.documentElement.addEventListener("click", function handleAnchorClick(event) {
-					FingerPrint.sendClickedEvent(event);
-				}, false);
-				
-				window.addEventListener("hashchange", function (e) {
-					FingerPrint.sendLeavedEvent();
-					FingerPrint.sendVisitedEvent();
-					
-				}, false); 
-				window.addEventListener("beforeunload", function (e) {
-					FingerPrint.sendLeavedEvent();
-					WSCLIENTUTIL.getSocket.close();
-				}, false);
+			}, false); 
+			window.addEventListener("beforeunload", function (e) {
+				FingerPrint.sendLeavedEvent();
+			}, false);
 
-	        	console.log("init completed.");
-			});
+        	console.log("init completed.");
         };
         
 

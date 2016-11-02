@@ -1,13 +1,10 @@
 package service.keymanagement.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixID;
 import helper.phoenix.annotation.entity.PhoenixTable;
-import helper.phoenix.object.QueryHelperParam;
 
 @PhoenixTable(table="keyTable")
 public class KeyModel implements Serializable {

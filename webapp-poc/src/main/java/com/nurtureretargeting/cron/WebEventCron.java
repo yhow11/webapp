@@ -1,19 +1,13 @@
 package com.nurtureretargeting.cron;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import usertracker.browser.service.VisitorLogService;
-
 @Component
-@PropertySource("classpath:com/nurtureretargeting/properties/cron.properties")
+@PropertySource("classpath:cron.properties")
 public class WebEventCron {
 
-	@Autowired
-	private VisitorLogService visitorLogService;
-	
 	
 	@Scheduled(fixedRateString = "${cron.webeventview.update}")
 	public void updateWebEventView() {

@@ -1,0 +1,49 @@
+<div layout="row" layout-align="center">
+	<md-card flex="100" flex-gt-sm="90">
+		 <md-card-content layout="column" >
+				<md-data-table-toolbar class="toolbar-with-fab" ng-hide="search" layout="row">
+				    <span class="md-subhead" flex="85" flex-gt-sm="95">List Of Workers</span>
+				    <span flex-gt-sm></span>
+				    <md-button class="md-icon-button" ng-click="search = true" flex="15" flex-gt-sm="5">
+				      <md-icon>filter_list</md-icon>
+				    </md-button>
+				</md-data-table-toolbar>
+				<md-data-table-toolbar class="toolbar-with-fab" ng-show="search" layout="row" >
+				    <md-input-container class="md-block" flex>
+						<label>Search</label> <input 
+							ng-model="searchValue" >
+							<md-icon class="j-cursor-pointer" ng-click="search = false; searchValue='' ">close</md-icon>
+					</md-input-container>
+				</md-data-table-toolbar>
+				<md-table-container>
+					  <table data-md-table data-md-row-select="workerTable.options.rowSelection" multiple="{{workerTable.options.multiSelect}}" data-ng-model="workerTable.selected" >
+					    <thead md-head data-md-order="workerTable.query.order" md-on-reorder="workerTable.onReorder">
+					      <tr md-row>
+					        <th md-column ><span>ID</span></th>
+					        <th md-column ><span>NAME</span></th>
+					        <th md-column ><span>ACTION/S</span></th>
+					      </tr>
+					    </thead>
+					    <tbody md-body>
+					      <tr md-row md-select="item" md-select-id="id" data-md-on-select="workerTable.onSelect" md-on-deselect="workerTable.onDeselect"   data-ng-repeat="item in workerTable.items" >
+					        <td md-cell>
+					        	<span>{{item.id}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.name}}</span>
+				        	</td>
+				        	<td md-cell >
+							  <md-select ng-model="item.name" placeholder="Edit">
+							    <md-option ng-repeat="option in item.options" ng-click="workerTable.action(option, item)" >{{option.name}}</md-option>
+							  </md-select>
+							</td>
+					      </tr>
+					    </tbody>
+					  </table>
+				</md-table-container>
+
+				<data-md-table-pagination md-limit="workerTable.query.limit" md-limit-options="workerTable.limitOptions" md-page="workerTable.query.page" md-total="{{workerTable.totalCount}}" md-on-paginate="workerTable.onPaginate" md-page-select="workerTable.options.pageSelect" md-boundary-links="workerTable.options.boundaryLinks"></data-md-table-pagination>
+        </md-card-content>
+	</md-card>
+</div>
+

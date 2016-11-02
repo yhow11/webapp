@@ -282,6 +282,36 @@ angular
 
 									})
 									.state(
+									'visitormanagement',
+									{
+										abstract: true,
+										template : '<ui-view  ></ui-view>',
+										url : '/visitormanagement'
+
+									})
+									.state(
+									'visitormanagement.active',
+									{
+										url : '/visitormanagement/active',
+										controller : 'ActiveController',
+										templateUrl : 'resources/views/visitormanagement/active.html',
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+														         	'resources/scripts/services/visitormanagement/activeVisitorService.js',
+																	'resources/scripts/controllers/visitormanagement/activeController.js'
+
+															]
+														})
+											}
+										}
+
+									})
+									.state(
 											'logs',
 											{
 												url : '/logs',

@@ -14,7 +14,7 @@ import org.hibernate.type.Type;
 
 import com.google.common.base.Strings;
 
-import common.query.QueryParam;
+import common.orm.query.param.Param;
 import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixID;
 import helper.phoenix.annotation.entity.PhoenixSequence;
@@ -22,7 +22,7 @@ import helper.phoenix.annotation.entity.PhoenixTable;
 import helper.phoenix.annotation.query.PhoenixDistinctColumn;
 
 public class PhoenixUtil {
-	public static String getTableName(QueryParam<?> param) throws Exception {
+	public static String getTableName(Param<?> param) throws Exception {
 		Class<?> clazz = param.getParamClass();
 		return clazz.getAnnotation(PhoenixTable.class).table();
 	}
@@ -155,11 +155,13 @@ public class PhoenixUtil {
 		for (String name : fieldNames) {
 			Object value = PropertyUtils.getProperty(object, name);
 			if (value != null) {
-				if (PropertyUtils.getPropertyType(object, name).equals(String.class)) {
-					String orTemplate = "(%s OR %s)";
-					String likeClause = name + " like " + getFieldValue(object, name);
-					String equalsClause = name + " = " + getFieldValue(object, name);
-					conditions.add(String.format(orTemplate, likeClause, equalsClause));
+				if (value.getClass().equals(String.class)) {
+					if(value != ""){
+						String orTemplate = "(%s OR %s)";
+						String likeClause = name + " like " + getFieldValue(object, name);
+						String equalsClause = name + " = " + getFieldValue(object, name);
+						conditions.add(String.format(orTemplate, likeClause, equalsClause));
+					}
 				} else {
 					conditions.add(name + " = " + getFieldValue(object, name));
 				}
@@ -188,7 +190,7 @@ public class PhoenixUtil {
 	protected static String getGroupByCondition(List<String> columns) throws Exception {
 		return columns.size() > 0 ? (" GROUP BY "+ String.join(",", columns)):"";
 	}
-	protected static String getOrderByCondition(QueryParam<?> param) throws Exception {
+	protected static String getOrderByCondition(Param<?> param) throws Exception {
 		if(!Strings.isNullOrEmpty(param.getSortBy())) {
 			return " ORDER BY "+param.getSortBy()+ " "+param.getSort().getType();
 		} else {
@@ -320,7 +322,7 @@ public class PhoenixUtil {
 	}
 	
 	
-	public static <E, T> String createGetSQL(QueryParam<T> param) throws Exception {
+	public static <E, T> String createGetSQL(Param<T> param) throws Exception {
 		String format = "SELECT %s FROM %s %s %s %s %s %s";
 		Class<?> clazz = param.getParamClass();
 
@@ -330,6 +332,7 @@ public class PhoenixUtil {
 		params.add(String.join(",", distinctFieldNames.size() > 0? distinctFieldNames: fieldNames).toUpperCase());
 		params.add(clazz.getAnnotation(PhoenixTable.class).table());
 		List<String> conditions = getConditions(param.getModel(), fieldNames);
+		conditions.addAll(param.getConditions());
 		if(conditions.size() > 0) {
 			params.add("WHERE");
 		} else {
@@ -343,8 +346,8 @@ public class PhoenixUtil {
 
 		return sql;
 	}
-	public static String createCountSQL(QueryParam<?> param) throws Exception {
-		String format = "select COUNT(*) from (SELECT %s FROM %s WHERE %s  %s  %s)";
+	public static String createCountSQL(Param<?> param) throws Exception {
+		String format = "select COUNT(*) from (SELECT %s FROM %s %s %s  %s  %s)";
 		Class<?> clazz = param.getParamClass();
 
 		List<String> distinctFieldNames = findFieldNames(clazz, PhoenixDistinctColumn.class);
@@ -352,7 +355,13 @@ public class PhoenixUtil {
 		List<String> params = new ArrayList<String>();
 		params.add(String.join(",", distinctFieldNames.size() > 0? distinctFieldNames: allFieldNames));
 		params.add(clazz.getAnnotation(PhoenixTable.class).table());
-		params.add(String.join(" AND ", getConditions(param.getModel(), allFieldNames)));
+		List<String> conditions = getConditions(param.getModel(), allFieldNames);
+		if(conditions.size() > 0) {
+			params.add("WHERE");
+		} else {
+			params.add("");
+		}
+		params.add(String.join(" AND ", conditions));
 		params.add(getGroupByCondition(distinctFieldNames));
 		params.add(getPaginationConditions(param.getLimit(), param.getOffset()));
 		String sql = String.format(format, params.toArray(new Object[params.size()]));

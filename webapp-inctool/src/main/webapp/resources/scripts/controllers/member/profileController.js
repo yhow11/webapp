@@ -6,7 +6,51 @@
  */
 angular.module('incToolApp').controller(
 		'MemberProfileController',
-		function($rootScope, $scope, $stateParams, $q, $timeout,  memberService) {
+		function($rootScope, $scope, $stateParams, $q, $timeout, workerService,  memberService) {
+			
+			$scope.memberProfile = {
+					field: {
+						reference : {
+							value: null,
+							searchText: null,
+							search: function(query) {
+								var deferred = $q.defer();
+								workerService.getAll(query,"","").then(function(data){
+									if(data.data){
+										deferred.resolve( data.data.data );
+									}
+								});
+								return deferred.promise;
+				            }
+						}
+					},
+					data: null,
+					init: function(){
+						memberService.get($stateParams.id).then(function(data){
+							 if(data.status == 200) {
+								 if(data.data.status) {
+									 $scope.memberProfile.data = data.data.data[0];
+//									 $scope.datas = [Number(data.data.data[0].present), Number(data.data.data[0].absent), 48-(Number(data.data.data[0].present)+Number(data.data.data[0].absent))];
+								 }
+								 
+							 }
+							 
+						});
+					},
+					save: function(){
+						memberService.save($scope.memberProfile.data).then(function(data){
+							 if(data.status == 200) {
+								 if(data.data.status) {
+									 $rootScope.goTo("encoding");
+								 }
+								 
+							 }
+							 
+						});
+					}
+			}
+			$scope.memberProfile.init();
+			
 			var reference = {
 					simulateQuery: true,
 					items: ["Create New"],
@@ -45,28 +89,8 @@ angular.module('incToolApp').controller(
 			$scope.labels = ["Attended", "Absent/s", "Left"];
 			$scope.datas = [];
 			$scope.showLabel = true;  
-			memberService.get($stateParams.id).then(function(data){
-				 if(data.status == 200) {
-					 if(data.data.status) {
-						 $scope.member = data.data.data[0];
-						 $scope.datas = [Number(data.data.data[0].present), Number(data.data.data[0].absent), 48-(Number(data.data.data[0].present)+Number(data.data.data[0].absent))];
-					 }
-					 
-				 }
-				 
-			});
 			
-			$scope.save = function() {
-				memberService.save($scope.member).then(function(data){
-					 if(data.status == 200) {
-						 if(data.data.status) {
-							 $rootScope.goTo("encoding");
-						 }
-						 
-					 }
-					 
-				});
-			}
+			
 			$scope.change = function(date, index) {
 				$scope.member.r310[index] = date;
 				$scope.member;

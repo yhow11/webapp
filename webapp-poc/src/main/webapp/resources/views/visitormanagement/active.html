@@ -1,0 +1,53 @@
+<div layout="row" layout-align="center">
+	<md-card flex="100" flex-gt-sm="90">
+		<md-data-table-toolbar class="toolbar-with-fab" layout="row" layout-margin>
+		    <span class="md-subhead" flex="80" flex-gt-sm="95"><md-icon >local_offer</md-icon> &nbsp  Active Visitors</span> 
+		</md-data-table-toolbar>
+		 <md-card-content layout="column" >
+				<md-data-table-toolbar class="toolbar-with-fab"  layout="row" >
+					<md-input-container flex="20">
+         				<label>Filter</label>
+						<md-select ng-model="activeVisitorTable.filterType" class="md-no-underline" >
+				          <md-option ng-repeat="filterType in activeVisitorTable.filterTypes" value="{{filterType.type}}">{{filterType.name}}</md-option>
+				        </md-select>
+			        </md-input-container>
+			        <span flex="10"></span>
+				</md-data-table-toolbar>
+				<md-table-container>
+					  <table data-md-table data-md-row-select="activeVisitorTable.options.rowSelection" multiple="{{activeVisitorTable.options.multiSelect}}" data-ng-model="activeVisitorTable.selected" >
+					    <thead md-head data-md-order="activeVisitorTable.query.order" md-on-reorder="activeVisitorTable.onReorder">
+					      <tr md-row>
+					        <th md-column ><span>VISITOR ID</span></th>
+					        <th md-column ><span>LAST ACTIVE</span></th>
+					        <th md-column ><span>COUNTRY</span></th>
+					        <th md-column ><span>METRICS</span></th>
+					        <th md-column ><span>LAST 5 ACTIVITIES</span></th>
+					      </tr>
+					    </thead>
+					    <tbody md-body>
+					      <tr md-row md-select="item" md-select-id="id" data-md-on-select="activeVisitorTable.onSelect" md-on-deselect="activeVisitorTable.onDeselect"   data-ng-repeat="item in activeVisitorTable.items" >
+					        <td md-cell>
+					        	<span>{{item.id}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.timeago}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.country}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.metrics.join(',')}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.activities.join(',')}}</span>
+				        	</td>
+					      </tr>
+					    </tbody>
+					  </table>
+				</md-table-container>
+
+				<data-md-table-pagination md-limit="activeVisitorTable.query.limit" md-limit-options="activeVisitorTable.limitOptions" md-page="activeVisitorTable.query.page" md-total="{{totalCount}}" md-on-paginate="activeVisitorTable.onPaginate" md-page-select="activeVisitorTable.options.pageSelect" md-boundary-links="activeVisitorTable.options.boundaryLinks"></data-md-table-pagination>
+        </md-card-content>
+	</md-card>
+</div>
+

@@ -4,6 +4,7 @@ import org.apache.phoenix.spark.SparkSqlContextFunctions;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SQLContext;
+import org.apache.spark.sql.hive.HiveContext;
 import org.apache.spark.streaming.Duration;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +21,9 @@ public class SparkConfig {
 
 	@Bean
 	public SparkConf sparkConf(){
-		return new SparkConf().setAppName(appName);
+		SparkConf config = new SparkConf().setAppName(appName);
+		config.setMaster("local");
+		return config;
 	}
 	
 	@Bean
@@ -34,12 +37,13 @@ public class SparkConfig {
 	}
 	
 	@Bean
-	public SQLContext sQLContext(){
-		return new SQLContext(javaSparkContext());
+	public HiveContext hiveContext(){
+		System.setProperty("hadoop.home.dir", "c:\\winutils\\");
+		return new HiveContext(javaSparkContext());
 	}
 	
 	@Bean
 	public SparkSqlContextFunctions sparkSqlContextFunctions(){
-		return new SparkSqlContextFunctions(sQLContext());
+		return new SparkSqlContextFunctions(hiveContext());
 	}
 }

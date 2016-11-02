@@ -12,16 +12,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.Type;
 import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate4.HibernateTemplate;
-import org.springframework.transaction.annotation.Transactional;
 
-import common.query.QueryParam;
-import common.query.QueryResponse;
+import common.orm.query.param.Param;
 import helper.phoenix.annotation.entity.PhoenixID;
 import helper.phoenix.annotation.entity.PhoenixSequence;
 import helper.phoenix.util.PhoenixUtil;
 
-@Transactional
+
 public abstract class PhoenixDaoImpl {
 	
 	private SessionFactory sessionFactory;
@@ -80,7 +77,7 @@ public abstract class PhoenixDaoImpl {
 		}
 	}
 	
-	public <T> List<T> search(QueryParam<T> param) throws Exception {
+	public <T> List<T> search(Param<T> param) throws Exception {
 		Class<T> clazz = param.getModelClass();
 		SQLQuery query  = sessionFactory.getCurrentSession().createSQLQuery(PhoenixUtil.createGetSQL(param));
 		query.setResultTransformer( Transformers.aliasToBean(clazz));
@@ -92,8 +89,7 @@ public abstract class PhoenixDaoImpl {
 		return query.list();
 	}
 	
-	public <T> T searchOne(QueryParam<T> param) throws Exception {
-		param.setLimit(1L);
+	public <T> T searchOne(Param<T> param) throws Exception {
 		List<T> results = search(param);
 		if(results.size() > 0){
 			return results.get(0);
@@ -102,7 +98,7 @@ public abstract class PhoenixDaoImpl {
 		
 	}
 
-	public Long count(QueryParam<?> param) throws Exception {
+	public Long getCount(Param<?> param) throws Exception {
 		SQLQuery query  = sessionFactory.getCurrentSession().createSQLQuery(PhoenixUtil.createCountSQL(param));
 		return   ((Number) query.uniqueResult()).longValue();
 	}

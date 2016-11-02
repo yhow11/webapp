@@ -19,11 +19,19 @@
 			<groupId>com.jofel</groupId>
 			<artifactId>helper-phoenix</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.jofel</groupId>
 			<artifactId>helper-kafka</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.jofel</groupId>
+			<artifactId>helper-spark</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.spark</groupId>

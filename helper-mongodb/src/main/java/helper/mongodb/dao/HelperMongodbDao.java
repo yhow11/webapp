@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-import common.query.QueryParam;
-import common.query.QueryResponse;
+import common.ObjectUtil;
+import common.orm.query.param.Param;
 import common.util.JAnnotationUtils;
+
+@Transactional
 public abstract class HelperMongodbDao {
 
 	protected MongoTemplate template;
@@ -33,24 +35,24 @@ public abstract class HelperMongodbDao {
 		List<DBObject> conditions = new ArrayList<DBObject>();
 		for (Field field : fields) {
 			if (PropertyUtils.getProperty(object, field.getName()) != null) {
-				DBObject eq = new BasicDBObject("$eq", PropertyUtils.getProperty(object, field.getName()));
+				DBObject eq = new BasicDBObject("$regex", PropertyUtils.getProperty(object, field.getName()));
 				DBObject and = new BasicDBObject(field.getName(), eq);
 				conditions.add(and);
 			}
 		}
-		if (PropertyUtils.getProperty(object, primary.getName()) != null) {
-			DBObject eq = new BasicDBObject("$eq",
-					new ObjectId((String) PropertyUtils.getProperty(object, primary.getName())));
+		ObjectUtil.isPresent(PropertyUtils.getProperty(object, primary.getName()), value ->{
+			DBObject eq = new BasicDBObject("$regex",
+					value);
 			DBObject and = new BasicDBObject("_id", eq);
 			conditions.add(and);
-		}
+		});
 
 		DBObject and = new BasicDBObject("$and", conditions);
 		return new BasicDBObject("$match", and);
 
 	}
 
-	public <T> List<T> get(QueryParam<T> param) throws Exception {
+	public <T> List<T> get(Param<T> param) throws Exception {
 
 		Class<T> clazz = param.getModelClass();
 		Object object = param.getModel();
@@ -80,11 +82,9 @@ public abstract class HelperMongodbDao {
 		return results;
 	}
 
-	public Long count(QueryParam<?> param) throws Exception {
+	public Long getCount(Param<?> param) throws Exception {
 		List<DBObject> pipelines = new ArrayList<>();
-		if (param.getModel() != null) {
-			pipelines.add(generateMatchPipeline(param.getParamClass(), param.getModel()));
-		}
+		ObjectUtil.isPresent(param.getModel(), value -> pipelines.add(generateMatchPipeline(param.getParamClass(), param.getModel())));
 
 		DBObject group = new BasicDBObject("_id", null);
 		group.put("count", new BasicDBObject("$sum", 1));

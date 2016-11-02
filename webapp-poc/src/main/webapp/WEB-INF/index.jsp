@@ -127,6 +127,17 @@
 						</md-menu-content> 
 					</md-menu> 
 				</md-menu-item>
+				<md-menu-divider></md-menu-divider>
+				<md-menu-item> 
+					<md-menu> 
+						<md-button ng-click="$mdOpenMenu()"> Visitor Management </md-button> 
+						<md-menu-content>
+							<md-menu-item> 
+								<md-button ui-sref="visitormanagement.active"> Active Visitor </md-button> 
+							</md-menu-item> 
+						</md-menu-content> 
+					</md-menu> 
+				</md-menu-item>
 				</md-menu-content> 
 			</md-menu> 
 	</md-menu-bar>

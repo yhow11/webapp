@@ -1,6 +1,7 @@
 package com.nurtureretargeting.admin.metricmanagement.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,45 +9,40 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nurtureretargeting.admin.metricmanagement.manager.MetricManager;
-import com.nurtureretargeting.admin.metricmanagement.object.MetricForm;
-
 import common.form.ResponseForm;
+import common.orm.query.Storage;
+import common.orm.query.param.DefaultParam;
+import common.orm.query.param.Param;
+import service.metricmanagement.metric.form.MetricForm;
 
 @Controller
 public class MetricController {
 
-	@Autowired
-	private MetricManager metricManager;
+	@Resource(name="${MetricController.storage}")
+	private Storage<MetricForm> storage;
 	
 	@RequestMapping(value = "metric/getAll", method = RequestMethod.GET)
 	public @ResponseBody  ResponseForm<MetricForm> getAll(@RequestParam("offset") String offset, @RequestParam("limit") String limit) throws Exception {
-		ResponseForm<MetricForm> response = new ResponseForm<MetricForm>();
-		response.setStatus(true);
-		response.getData().addAll(metricManager.getAll(offset, limit));
-		return response;
+		return new ResponseForm<MetricForm>(storage.get(new DefaultParam<>(MetricForm.class, offset, limit)));
 	}
 	
 	@RequestMapping(value = "metric/get", method = RequestMethod.GET)
 	public @ResponseBody  ResponseForm<MetricForm> get(@RequestParam("id") String id) throws Exception {
-		ResponseForm<MetricForm> response = new ResponseForm<MetricForm>();
-		response.setStatus(true); 
-		response.getData().add(metricManager.get(id));
-		return response;
+		Param<MetricForm> param = new DefaultParam<>(MetricForm.class, null, "1");
+		param.getModel().setId(id);
+		return new ResponseForm<MetricForm>(storage.get(param).stream().findFirst().get());
 	}
 	
 	@RequestMapping(value = "metric/save", method = RequestMethod.POST)
 	public @ResponseBody  ResponseForm<MetricForm> save(@RequestBody MetricForm form) throws Exception {
-		ResponseForm<MetricForm> response = new ResponseForm<MetricForm>();
-		response.getData().add(metricManager.save(form));
-		return response;
+		return  new ResponseForm<MetricForm>(storage.save(form));
 	}
 	
 	@RequestMapping(value = "metric/remove", method = RequestMethod.POST)
 	public @ResponseBody  ResponseForm<MetricForm> remove(@RequestBody MetricForm form) throws Exception {
-		ResponseForm<MetricForm> response = new ResponseForm<MetricForm>();
-		metricManager.remove(form);
-		response.setStatus(true);
-		return response;
+		Param<MetricForm> param = new DefaultParam<>(MetricForm.class, null, "0");
+		param.getModel().setId(form.getId());
+		storage.remove(storage.get(param).stream().findFirst().get());
+		return new ResponseForm<MetricForm>();
 	}
 }

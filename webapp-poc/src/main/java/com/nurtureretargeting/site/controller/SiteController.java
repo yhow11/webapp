@@ -1,13 +1,10 @@
 package com.nurtureretargeting.site.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,13 +17,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import common.form.ResponseForm;
-import usertracker.browser.service.VisitorLogService;
 
 @Controller
 public class SiteController {
 
-	@Autowired
-	private VisitorLogService visitorLogService;
 
 	@RequestMapping(value = "users", method = RequestMethod.GET)
 	public ModelAndView getUsersView() {

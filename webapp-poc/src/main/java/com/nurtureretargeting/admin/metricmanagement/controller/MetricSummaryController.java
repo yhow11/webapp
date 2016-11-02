@@ -1,29 +1,40 @@
 package com.nurtureretargeting.admin.metricmanagement.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Collections;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nurtureretargeting.admin.metricmanagement.manager.MetricSummaryManager;
-import com.nurtureretargeting.admin.metricmanagement.object.MetricSummaryForm;
-
+import common.form.Page;
 import common.form.ResponseForm;
+import common.orm.query.Book;
+import common.orm.query.Storage;
+import common.orm.query.param.DefaultParam;
+import common.orm.query.param.Param;
+import service.metricmanagement.metricsummary.form.MetricSummaryForm;
 
 @Controller
 public class MetricSummaryController {
 
-	@Autowired
-	private MetricSummaryManager metricSummaryManager;
+	@Resource(name="${MetricSummaryController.storage}")
+	private Storage<MetricSummaryForm> storage;
+	@Resource(name="${MetricSummaryController.book}")
+	private Book<MetricSummaryForm> book;
 	
 	@RequestMapping(value = "metric/summary/getAll", method = RequestMethod.GET)
 	public @ResponseBody  ResponseForm<MetricSummaryForm> getAll(@RequestParam("type") String type, @RequestParam("offset") String offset, @RequestParam("limit") String limit) throws Exception {
-		ResponseForm<MetricSummaryForm> response = new ResponseForm<MetricSummaryForm>();
-		response.setStatus(true);
-		response.getData().addAll(metricSummaryManager.getAll(type, offset, limit));
-		return response;
+		Param<MetricSummaryForm> param = new DefaultParam<>(MetricSummaryForm.class, offset, limit);
+		param.getModel().setMetricType(type);
+		return new ResponseForm<>(storage.get(param));
 	}
-	
+	@RequestMapping(value = "metric/summary/count", method = RequestMethod.GET)
+	public @ResponseBody  Map<String, Object> count() throws Exception {
+		return Collections.singletonMap("count", book.count(new MetricSummaryForm()));
+	}
 }

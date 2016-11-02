@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nurtureretargeting.admin.metricmanagement.object.MetricTypeForm;
 
 import common.form.ResponseForm;
+import service.metricmanagement.metrictype.form.MetricTypeForm;
 
 @Controller
 public class MetricTypeController {

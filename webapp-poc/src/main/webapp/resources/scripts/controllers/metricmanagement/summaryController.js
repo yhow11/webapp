@@ -7,6 +7,12 @@
 angular.module('fingerPrintApp').controller(
 		'SummaryController',
 		function($rootScope, $scope, $state, metricSummaryService) {
+			metricSummaryService.count().then(function(data){
+				if(data.data){
+					$scope.summaryCount = data.count;
+				}
+			});
+			
 			$scope.metricSummaryTable = {
 					searchValue: null,
 					filter: function(){
@@ -39,7 +45,7 @@ angular.module('fingerPrintApp').controller(
 					limitOptions: [5, 10, 15, {
 					    label: 'All',
 					    value: function () {
-					      return $scope.metricSummaryTable.items ? $scope.metricSummaryTable.items.count : 0;
+					      return $scope.summaryCount ? $scope.summaryCount : 0;
 					    }
 				     }],
 					options: {

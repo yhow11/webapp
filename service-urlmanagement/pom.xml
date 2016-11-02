@@ -25,16 +25,25 @@
 			<groupId>com.jofel</groupId>
 			<artifactId>helper-phoenix</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.jofel</groupId>
 			<artifactId>helper-jaxb</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.jofel</groupId>
 			<artifactId>helper-spark</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.jofel</groupId>
+			<artifactId>service-keymanagement</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>

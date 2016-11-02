@@ -5,13 +5,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import com.inctool.management.service.MemberService;
-import com.inctool.management.service.impl.MemberServiceImpl;
-
-import service.membermanagement.service.INCMemberService;
-import service.membermanagement.service.INCWorkerService;
-import service.membermanagement.service.impl.INCMemberMongoServiceImpl;
-import service.membermanagement.service.impl.INCWorkerMongoServiceImpl;
+import inc.member.service.MemberCommandService;
+import inc.member.service.MemberQueryService;
+import inc.member.service.MemberService;
+import inc.member.service.WorkerCommandService;
+import inc.member.service.WorkerQueryService;
+import inc.member.service.WorkerService;
+import inc.member.service.impl.MemberModelSaveCommand;
+import inc.member.service.impl.MemberFormQueryOneByKey;
+import inc.member.service.impl.MemberQueryMongoServiceImpl;
+import inc.member.service.impl.MemberFormQueryOneAdapter;
+import inc.member.service.impl.MemberServiceImpl;
+import inc.member.service.impl.WorkerCommandMongoServiceImpl;
+import inc.member.service.impl.WorkerQueryMongoServiceImpl;
+import inc.member.service.impl.WorkerServiceImpl;
 
 @Configuration
 @PropertySource("classpath:com/inctool/properties/application.properties")
@@ -24,17 +31,38 @@ public class ServiceContext {
 	private MapperContext mapperContext;
 	
 	@Bean
+	public MemberQueryService memberQueryMongoService() throws Exception{
+		return new MemberQueryMongoServiceImpl(mongoContext.mongoTemplate(), mapperContext.memberMapper());
+	}
+	
+	@Bean
+	public MemberQueryService memberQueryTemplateService() throws Exception{
+		return new MemberFormQueryOneAdapter(mongoContext.mongoTemplate(), mapperContext.memberMapper());
+	}
+	
+	@Bean
+	public MemberQueryService memberQueryAdapterService() throws Exception{
+		return new MemberFormQueryOneByKey(memberQueryMongoService(), memberQueryTemplateService());
+	}
+	@Bean
+	public MemberCommandService memberCommandService() throws Exception{
+		return new MemberModelSaveCommand(mongoContext.mongoTemplate(), mapperContext.memberMapper());
+	}
+	@Bean
 	public MemberService memberService() throws Exception{
-		return new MemberServiceImpl(incMemberService(), mapperContext.memberMapper());
+		return new MemberServiceImpl(memberQueryAdapterService(), memberCommandService());
 	}
 	
 	@Bean
-	public INCMemberService incMemberService() throws Exception{
-		return new INCMemberMongoServiceImpl(mongoContext.mongoTemplate());
+	public WorkerQueryService workerQueryService() throws Exception{
+		return new WorkerQueryMongoServiceImpl(mongoContext.mongoTemplate(), mapperContext.workerMapper());
 	}
-	
 	@Bean
-	public INCWorkerService incWorkerService() throws Exception{
-		return new INCWorkerMongoServiceImpl(mongoContext.mongoTemplate());
+	public WorkerCommandService workerCommandService() throws Exception{
+		return new WorkerCommandMongoServiceImpl(mongoContext.mongoTemplate(), mapperContext.workerMapper());
+	}
+	@Bean
+	public WorkerService workerService() throws Exception{
+		return new WorkerServiceImpl(workerQueryService(), workerCommandService());
 	}
 }

@@ -48,7 +48,7 @@
 										</md-menu-item> 
 										<md-menu-divider></md-menu-divider> 
 										<md-menu-item> 
-											<md-button ui-sref="member.list" aria-label="profile">View</md-button> 
+											<md-button ui-sref="member.view" aria-label="profile">View</md-button> 
 										</md-menu-item> 
 									</md-menu-content>
 								</md-menu>
@@ -63,7 +63,7 @@
 											</md-menu-item> 
 											<md-menu-divider></md-menu-divider> 
 											<md-menu-item> 
-												<md-button ui-sref="worker.list" aria-label="profile">View</md-button> 
+												<md-button ui-sref="worker.view" aria-label="profile">View</md-button> 
 											</md-menu-item> 
 										</md-menu-content>
 									</md-menu>
@@ -219,6 +219,8 @@
 		
 	<script src="resources/vendors/oclazyload/dist/ocLazyLoad.min.js"></script>
 	<script src="resources/vendors/iconate/iconate.min.js"></script>
+	<script
+		src="resources/vendors/moment/moment.js"></script>
 	<script src="<c:url value="resources/scripts/app.js"/>"></script>
 	<script
 		src="resources/scripts/directives/charts/chart.js"></script>

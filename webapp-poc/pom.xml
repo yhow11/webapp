@@ -28,6 +28,16 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.jofel</groupId>
+			<artifactId>helper-jaxb</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jofel</groupId>
+			<artifactId>helper-kafka</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jofel</groupId>
 			<artifactId>helper-spring</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -522,7 +532,11 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
-
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>3.0.1</version>
+</dependency>
 		<!-- <dependency>
 		  	<groupId>org.apache.phoenix</groupId>
 			<artifactId>phoenix.client</artifactId>

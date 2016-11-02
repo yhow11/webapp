@@ -1,9 +1,13 @@
 package common.mapper;
 
-public interface Mapper<T, E> {
+import common.CommonInterface;
 
-	public T marshall(E param) throws Exception;
-	public E unmarshall(T param) throws Exception;
-	public T marshall(E e, T target) throws Exception;
-	public E unmarshall(T t, E target) throws Exception;
+public interface Mapper<T, E> extends CommonInterface<T>{
+
+	public T marshall(E source) throws Exception;
+	public E unmarshall(T source) throws Exception;
+	public T marshall(E source, T target) throws Exception;
+	public E unmarshall(T source, E target) throws Exception;
+	
+	
 }

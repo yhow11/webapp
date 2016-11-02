@@ -1,15 +1,23 @@
 package com.nurtureretargeting.config;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+
+    }
+
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { AppContext.class, SecurityContext.class, ServiceContext.class, ManagerContext.class, MapperContext.class, KafkaContext.class, DaoContext.class, WebSocketContext.class, PhoenixContext.class, CronContext.class, StartUpContext.class};
+		return new Class<?>[] { AppContext.class};
 	}
 
 	@Override
@@ -26,5 +34,6 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 	protected Filter[] getServletFilters() {
 		return new Filter[] { new HiddenHttpMethodFilter() };
 	}
+	
 
 }

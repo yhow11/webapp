@@ -3,8 +3,8 @@ package com.nurtureretargeting.tracker.visitor.object;
 import java.util.ArrayList;
 import java.util.List;
 
-import usertracker.browser.model.BrowserFPModel;
-import usertracker.browser.model.DeviceFPModel;
+import usertracker.browser.browserfp.model.BrowserFPModel;
+import usertracker.browser.devicefp.model.DeviceFPModel;
 
 public class AnonymousVisitorDetail {
 

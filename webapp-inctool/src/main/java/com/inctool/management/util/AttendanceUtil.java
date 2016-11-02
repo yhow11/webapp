@@ -7,10 +7,11 @@ import java.util.List;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
-import com.inctool.common.enums.WorshipServiceEnum;
-import com.inctool.common.form.DateForm;
-import com.inctool.management.form.AttendanceForm;
 import com.inctool.management.service.AttendanceService;
+
+import inc.member.enums.WorshipServiceEnum;
+import inc.member.form.SummaryForm;
+import inc.member.form.AttendanceForm;
 
 public class AttendanceUtil {
 
@@ -35,12 +36,12 @@ public class AttendanceUtil {
 		return DateFormatUtils.format(c.getTime(), SIMPLE_DATE_PATTERN);
 	}
 
-	public static List<DateForm> fillSchedule(AttendanceService attendanceService, List<DateForm> dates)
+	public static List<AttendanceForm> fillSchedule(AttendanceService attendanceService, List<AttendanceForm> dates)
 			throws Exception {
 		return attendanceService.fillSchedule(dates);
 	}
 	
-	public static AttendanceForm fillAttendance(AttendanceService attendanceService, AttendanceForm attendanceForm, List<DateForm> dates)
+	public static SummaryForm fillAttendance(AttendanceService attendanceService, SummaryForm attendanceForm, List<AttendanceForm> dates)
 			throws Exception  {
 		return attendanceService.fillAttendance(attendanceForm, dates);
 	}
@@ -61,9 +62,9 @@ public class AttendanceUtil {
 		return c.getTime();
 	}
 	
-	public static DateForm getLastPresentDate(Integer position, List<DateForm> dates) throws Exception{
+	public static AttendanceForm getLastPresentDate(Integer position, List<AttendanceForm> dates) throws Exception{
 		for(Integer x = position; x >= 0; x--){
-			DateForm dateForm = dates.get(x);
+			AttendanceForm dateForm = dates.get(x);
 			if(dateForm.getStatus().equals(WorshipServiceEnum.PRESENT.toString())){
 				return dateForm;
 			}
@@ -71,7 +72,7 @@ public class AttendanceUtil {
 		return null;
 	}
 	
-	public static DateForm supplyCutOffDates(Date date, DateForm dateForm){
+	public static AttendanceForm supplyCutOffDates(Date date, AttendanceForm dateForm){
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		

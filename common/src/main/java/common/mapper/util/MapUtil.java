@@ -62,7 +62,6 @@ public class MapUtil {
 		}
 		return newInstance;
 	}
-	
 	public static void main(String[] args)throws Exception{
 //		MemberForm form  = new MemberForm();
 //		form.setId("wqeqwewq");
