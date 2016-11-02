@@ -44,6 +44,7 @@ public class LogsController {
 		ResponseForm<?> response = new ResponseForm<>();
     	response.setStatus(true);
     	try {
+    		System.out.println(log);
     		queue.send(log);
     	} catch( Exception e) {
     		response.setStatus(false);
