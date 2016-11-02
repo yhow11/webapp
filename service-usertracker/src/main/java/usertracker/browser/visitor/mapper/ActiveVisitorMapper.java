@@ -26,6 +26,7 @@ public class ActiveVisitorMapper extends Mapper<ActiveVisitorModel, ActiveVisito
 		ObjectUtil.isPresent(source.getMetrics(), values -> target.setMetrics(String.join(",", values)));
 		ObjectUtil.isPresent(source.getActivities(), values -> target.setActivities(String.join(",", values)));
 		ObjectUtil.isPresent(source.getTimestamp(), value -> target.setTimestamp(Long.valueOf(value)));
+		ObjectUtil.isPresent(source.getLocation(), value -> target.setLocation(value));
 		return target;
 	}
 
@@ -36,6 +37,7 @@ public class ActiveVisitorMapper extends Mapper<ActiveVisitorModel, ActiveVisito
 		ObjectUtil.isPresent(source.getMetrics(), values -> target.setMetrics(Arrays.asList(values.split(","))));
 		ObjectUtil.isPresent(source.getActivities(), values -> target.setActivities(Arrays.asList(values.split(","))));
 		ObjectUtil.isPresent(source.getTimestamp(), value -> target.setTimestamp(String.valueOf(value)));
+		ObjectUtil.isPresent(source.getLocation(), value -> target.setLocation(value));
 		return target;
 	}
 

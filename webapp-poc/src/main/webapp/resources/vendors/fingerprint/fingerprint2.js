@@ -32,12 +32,14 @@
     function define_wsclientutil(){
     	
     	var WSCLIENTUTIL  = {};
-    	WSCLIENTUTIL.init = function(){
+    	WSCLIENTUTIL.baseURL
+    	WSCLIENTUTIL.init = function(baseURL){
+    		WSCLIENTUTIL.baseURL = baseURL;
     	};
     	WSCLIENTUTIL.send = function(fingerprintdata, type, title, url){
     		var data = fingerprintdata;
     		var xhttp = new XMLHttpRequest();
-    		xhttp.open("POST", 'logs/send', true);
+    		xhttp.open("POST", WSCLIENTUTIL.baseURL+'logs/send', true);
     		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         	xhttp.onreadystatechange = function() {
     			  if (this.readyState == 4 && this.status == 200) {
@@ -244,7 +246,7 @@
         		FingerPrint.setData(fingerPrintData);
         	}, "jsonp");
         	TIMERUTIL.init(baseURL);
-        	WSCLIENTUTIL.init();
+        	WSCLIENTUTIL.init(baseURL);
         	
         	
         	FingerPrint.sendVisitedEvent();

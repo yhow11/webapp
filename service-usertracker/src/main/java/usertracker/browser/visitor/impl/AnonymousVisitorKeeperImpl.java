@@ -64,7 +64,9 @@ public class AnonymousVisitorKeeperImpl implements AnonymousVisitorKeeper {
 		if(model.isPresent()){
 			Param<VisitorModel> visitorParam = new DefaultParam<>(VisitorModel.class);
 			visitorParam.getModel().setID(model.get().getANONYMOUSVISITORID());
-			av = storage.get(visitorParam).stream().findFirst().get();
+			Optional<VisitorModel> visitor = storage.get(visitorParam).stream().findFirst();
+			if(visitor.isPresent())
+				av = visitor.get();
 		}
 		
 		return av;

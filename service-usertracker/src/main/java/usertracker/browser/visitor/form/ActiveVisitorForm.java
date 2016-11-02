@@ -12,7 +12,7 @@ public class ActiveVisitorForm implements Serializable {
 	private String timeago;
 	private List<String> metrics = new ArrayList<>();
 	private List<String> activities = new ArrayList<>();
-	
+	private String location;
 	
 	public String getId() {
 		return id;
@@ -43,5 +43,11 @@ public class ActiveVisitorForm implements Serializable {
 	}
 	public void setTimeago(String timeago) {
 		this.timeago = timeago;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }
