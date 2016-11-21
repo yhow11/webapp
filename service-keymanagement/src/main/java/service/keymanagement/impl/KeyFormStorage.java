@@ -45,9 +45,9 @@ public class KeyFormStorage implements Storage<KeyForm> {
 	}
 
 	@Override
-	public void create() throws Exception {
+	public void createTable() throws Exception {
 		// TODO Auto-generated method stub
-		storage.create();
+		storage.createTable();
 	}
 
 

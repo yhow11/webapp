@@ -37,7 +37,7 @@ public class MetricModelPhoenixStorage extends PhoenixDaoImpl implements Storage
 		super.delete(model);
 	}
 	@Override
-	public void create() throws Exception {
+	public void createTable() throws Exception {
 		// TODO Auto-generated method stub
 		super.createTable(MetricModel.class);
 	}

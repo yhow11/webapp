@@ -39,7 +39,7 @@
     	WSCLIENTUTIL.send = function(fingerprintdata, type, title, url){
     		var data = fingerprintdata;
     		var xhttp = new XMLHttpRequest();
-    		xhttp.open("POST", WSCLIENTUTIL.baseURL+'logs/send', true);
+    		xhttp.open("POST", WSCLIENTUTIL.baseURL+'logs/send', false);
     		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         	xhttp.onreadystatechange = function() {
     			  if (this.readyState == 4 && this.status == 200) {

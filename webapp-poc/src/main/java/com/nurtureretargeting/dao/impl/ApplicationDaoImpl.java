@@ -1,13 +1,10 @@
 package com.nurtureretargeting.dao.impl;
 
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -16,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nurtureretargeting.dao.ApplicationDao;
 
-import common.orm.query.Storage;
-import helper.phoenix.dao.impl.PhoenixDaoImpl;
+import common.orm.query.Table;
 
 @Service("ApplicationDaoImpl")
 @Transactional
@@ -37,12 +33,12 @@ public class ApplicationDaoImpl implements ApplicationDao {
 
 	@PostConstruct
     public final void init() throws IOException {
-		Map<String, Storage> storageMap = context.getBeansOfType(Storage.class);
+		Map<String, Table> tableMap = context.getBeansOfType(Table.class);
 		for(String className: PropertiesLoaderUtils.loadAllProperties("schema.properties").getProperty("auto.create.table.class").split(",")){
-			Storage storage = storageMap.get(className);
+			Table storage = tableMap.get(className);
 			if(storage != null) {
 				try {
-					storage.create();
+					storage.createTable();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -312,6 +312,64 @@ angular
 
 									})
 									.state(
+									'segmentmanagement',
+									{
+										abstract: true,
+										template : '<ui-view  ></ui-view>',
+										url : '/segmentmanagement'
+
+									})
+									.state(
+									'segmentmanagement.addnew',
+									{
+										url : '/segmentmanagement/addnew/:id',
+										controller : 'AddNewController',
+										templateUrl : 'resources/views/segmentmanagement/addnew.html',
+										params: {
+											param: null,
+											id: null
+										},
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+														         	'resources/scripts/services/metricmanagement/metricService.js',
+														         	'resources/scripts/services/segmentmanagement/segmentConditionService.js',
+														         	'resources/scripts/services/segmentmanagement/segmentService.js',
+																	'resources/scripts/controllers/segmentmanagement/addnewController.js'
+
+															]
+														})
+											}
+										}
+
+									})
+									.state(
+									'segmentmanagement.view',
+									{
+										url : '/segmentmanagement/view',
+										controller : 'ViewController',
+										templateUrl : 'resources/views/segmentmanagement/view.html',
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+														         	'resources/scripts/services/segmentmanagement/segmentService.js',
+																	'resources/scripts/controllers/segmentmanagement/viewController.js'
+
+															]
+														})
+											}
+										}
+
+									})
+									.state(
 											'logs',
 											{
 												url : '/logs',

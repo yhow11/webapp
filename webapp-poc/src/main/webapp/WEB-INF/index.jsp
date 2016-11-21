@@ -138,6 +138,20 @@
 						</md-menu-content> 
 					</md-menu> 
 				</md-menu-item>
+				<md-menu-divider></md-menu-divider>
+				<md-menu-item> 
+					<md-menu> 
+						<md-button ng-click="$mdOpenMenu()"> Segment Management </md-button> 
+						<md-menu-content>
+							<md-menu-item> 
+								<md-button ui-sref="segmentmanagement.addnew"> Add New </md-button>
+							</md-menu-item> 
+							<md-menu-item> 
+								<md-button ui-sref="segmentmanagement.view"> View </md-button>  
+							</md-menu-item> 
+						</md-menu-content> 
+					</md-menu> 
+				</md-menu-item>
 				</md-menu-content> 
 			</md-menu> 
 	</md-menu-bar>
@@ -148,7 +162,7 @@
 		ng-show="showLoading" value="{{determinateValue}}"></md-progress-linear>
 	<div ui-view></div>
 
-	<script >
+	<!-- <script >
 		var EventDispatcher = {
 				  listeners: {},
 				  register: function(evt_name, callback) {
@@ -220,7 +234,7 @@
 							});
 				});
 
-	</script>
+	</script> -->
 	<!-- <script src="resources/vendors/fingerprint/client.min.js"></script> -->
 	<script src="resources/vendors/jquery/jquery.min.js"></script>
 	<!-- <script src="resources/vendors/fingerprint/beaverbird.min.js"></script> -->

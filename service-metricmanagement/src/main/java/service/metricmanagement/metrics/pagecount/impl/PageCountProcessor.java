@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import common.LogMetaData;
+import common.Loggable;
 import common.URLUtil;
 import common.orm.query.Storage;
 import common.orm.query.param.DefaultParam;
@@ -35,8 +37,9 @@ public class PageCountProcessor implements MetricProcessor{
 			) {
 	}
 
+	@Loggable
 	@Override
-	public void process(MetricProcessorParam param) {
+	public void process(MetricProcessorParam param, LogMetaData lmd) {
 		// TODO Auto-generated method stub
 		if("VISITED".equalsIgnoreCase(param.getType())){
 			try{
@@ -70,7 +73,6 @@ public class PageCountProcessor implements MetricProcessor{
 					metricSummaryModel.setMETRICTYPE(MetricTypeEnum.PAGE_COUNT.getType());
 					metricSummaryModel.setTVALUES(highest.get().getTVALUES());
 					metricSummaryStorage.save(metricSummaryModel);
-					System.out.println("PageCount saved.");
 				}
 			}catch(Exception e){
 				e.printStackTrace();

@@ -40,7 +40,7 @@ public class AnonymousVisitorModelPhoenixStorage extends PhoenixDaoImpl implemen
 	}
 
 	@Override
-	public void create() throws Exception {
+	public void createTable() throws Exception {
 		// TODO Auto-generated method stub
 		super.createTable(VisitorModel.class);
 	}

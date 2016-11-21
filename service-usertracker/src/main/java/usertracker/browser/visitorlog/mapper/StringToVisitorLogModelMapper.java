@@ -1,17 +1,20 @@
 package usertracker.browser.visitorlog.mapper;
 
+import java.io.Serializable;
+
 import org.springframework.stereotype.Service;
 
 import usertracker.browser.visitorlog.model.VisitorLogModel;
 
 @Service("StringToVisitorLogModelMapper")
-public class StringToVisitorLogModelMapper implements org.apache.spark.api.java.function.Function<String, VisitorLogModel> {
+public class StringToVisitorLogModelMapper implements org.apache.spark.api.java.function.Function<String, VisitorLogModel>, Serializable {
 
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 
 	@Override
 	public VisitorLogModel call(String line) throws Exception {

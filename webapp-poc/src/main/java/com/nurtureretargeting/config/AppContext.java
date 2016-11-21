@@ -20,7 +20,7 @@ public class AppContext extends AppTemplateContext {
 
 	
     public AppContext() throws IOException {
-		super("application.properties","key.properties","url.properties","metric.properties","usertracker.properties");
+		super("application.properties","key.properties","url.properties","metric.properties","usertracker.properties","segment.properties");
 		// TODO Auto-generated constructor stub
 	}
 

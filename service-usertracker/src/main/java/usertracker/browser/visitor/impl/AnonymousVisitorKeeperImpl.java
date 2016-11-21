@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import common.LogMetaData;
+import common.Loggable;
 import common.orm.query.Storage;
 import common.orm.query.param.DefaultParam;
 import common.orm.query.param.Param;
@@ -71,16 +73,18 @@ public class AnonymousVisitorKeeperImpl implements AnonymousVisitorKeeper {
 		
 		return av;
 	}
-
+	@Loggable
 	@Override
-	public VisitorModel getOrCreateAV(String sessionID, String browserFP) throws Exception {
+	public VisitorModel getOrCreateAV(String sessionID, String browserFP, LogMetaData lmd) throws Exception {
 		// TODO Auto-generated method stub
 		VisitorModel av = get(sessionID, browserFP);
 		if (av == null) {
 			av = new VisitorModel();
 			av.setID(UUID.randomUUID().toString());
 			storage.save(av);
-			System.out.println("Created New Anonymous Visitor " + av.getID());
+			lmd.getTransactions().add("Created New Visitor: "+av.getID());
+		} else {
+			lmd.getTransactions().add("Found Visitor: "+av.getID());
 		}
 		return av;
 	}

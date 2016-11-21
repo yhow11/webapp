@@ -46,9 +46,9 @@ public class VisitorLogFormStorage implements Storage<VisitorLogForm> {
 	}
 
 	@Override
-	public void create() throws Exception {
+	public void createTable() throws Exception {
 		// TODO Auto-generated method stub
-		storage.create();
+		storage.createTable();
 	}
 	
 	

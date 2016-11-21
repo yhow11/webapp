@@ -1,0 +1,60 @@
+<div layout="row" layout-align="center">
+	<md-card flex="100" flex-gt-sm="90">
+		 <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline"> Segment Manager </span>
+            <span class="md-subhead">View Segments</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <md-button class="md-primary" ui-sref="segmentmanagement.addnew"  flex-gt-sm>
+		      <md-icon >add_circle</md-icon> <span hide show-gt-sm> Create New </span>
+		    </md-button>
+          </md-card-title-media>
+        </md-card-title>
+		 <md-card-content layout="column" >
+				<md-data-table-toolbar class="toolbar-with-fab"  layout="row" >
+				</md-data-table-toolbar>
+				<md-table-container>
+					  <table data-md-table data-md-row-select="segmentTable.options.rowSelection" multiple="{{segmentTable.options.multiSelect}}" data-ng-model="segmentTable.selected" >
+					    <thead md-head data-md-order="segmentTable.query.order" md-on-reorder="segmentTable.onReorder">
+					      <tr md-row>
+					        <th md-column ><span>ID</span></th>
+					        <th md-column ><span>SEGMENT</span></th>
+					        <th md-column ><span>METRIC NAME</span></th>
+					        <th md-column ><span>FILTER</span></th>
+					        <th md-column ><span>VALUE</span></th>
+					        <th md-column ><span>ACTIONS</span></th>
+					      </tr>
+					    </thead>
+					    <tbody md-body>
+					      <tr md-row md-select="item" md-select-id="id" data-md-on-select="segmentTable.onSelect" md-on-deselect="segmentTable.onDeselect"   data-ng-repeat="item in segmentTable.items" >
+					        <td md-cell>
+					        	<span>{{item.id}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.name}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.metrics[0].name}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.filter.name}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.value}}</span>
+				        	</td>
+				        	<td md-cell >
+				        		<md-button aria-label="Edi3" class="md-icon-button" href="#/segmentmanagement/segmentmanagement/addnew/{{item.id}}" ng-disabled="showLoading">
+							          <md-icon md-svg-icon="resources/img/icons/edit.svg"  ></md-icon>
+							    </md-button>
+				        	</td>
+					      </tr>
+					    </tbody>
+					  </table>
+				</md-table-container>
+
+				<data-md-table-pagination md-limit="segmentTable.query.limit" md-limit-options="segmentTable.limitOptions" md-page="segmentTable.query.page" md-total="{{totalCount}}" md-on-paginate="segmentTable.onPaginate" md-page-select="segmentTable.options.pageSelect" md-boundary-links="segmentTable.options.boundaryLinks"></data-md-table-pagination>
+        </md-card-content>
+	</md-card>
+</div>
+

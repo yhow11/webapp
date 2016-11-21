@@ -62,7 +62,7 @@ public class MetricURLModelSparkStorage  extends SparkSQLTemplate implements Sto
 		throw new Exception("Not Supported.");
 	}
 	@Override
-	public void create() throws Exception {
+	public void createTable() throws Exception {
 		// TODO Auto-generated method stub
 		throw new Exception("Not Supported.");
 	}

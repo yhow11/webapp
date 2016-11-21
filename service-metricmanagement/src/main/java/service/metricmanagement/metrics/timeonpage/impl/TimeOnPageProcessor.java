@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import common.LogMetaData;
+import common.Loggable;
 import common.URLUtil;
 import common.orm.query.Storage;
 import common.orm.query.param.DefaultParam;
@@ -36,8 +38,9 @@ public class TimeOnPageProcessor implements MetricProcessor{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Loggable
 	@Override
-	public void process(MetricProcessorParam param) {
+	public void process(MetricProcessorParam param, LogMetaData lmd) {
 		// TODO Auto-generated method stub
 		if("LEAVED".equalsIgnoreCase(param.getType())){
 			try{

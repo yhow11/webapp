@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import common.form.Page;
 import common.form.ResponseForm;
 import common.orm.query.Book;
 import common.orm.query.Storage;

@@ -3,7 +3,6 @@ package sparkapp.collation.receiver.config;
 import org.apache.phoenix.spark.SparkSqlContextFunctions;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.hive.HiveContext;
 import org.apache.spark.streaming.Duration;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
@@ -22,7 +21,7 @@ public class SparkConfig {
 	@Bean
 	public SparkConf sparkConf(){
 		SparkConf config = new SparkConf().setAppName(appName);
-//		config.setMaster("local");
+		config.setMaster("local");
 		return config;
 	}
 	

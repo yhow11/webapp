@@ -41,9 +41,9 @@ public class MetricFormStorage implements Storage<MetricForm> {
 		storage.remove(mapper.marshall(model));
 	}
 	@Override
-	public void create() throws Exception {
+	public void createTable() throws Exception {
 		// TODO Auto-generated method stub
-		storage.create();
+		storage.createTable();
 	}
 
 }

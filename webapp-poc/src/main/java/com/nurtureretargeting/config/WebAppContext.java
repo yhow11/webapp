@@ -24,6 +24,8 @@ import com.nurtureretargeting.admin.keymanagement.controller.KeyManagementContro
 import com.nurtureretargeting.admin.metricmanagement.controller.MetricController;
 import com.nurtureretargeting.admin.metricmanagement.controller.MetricSummaryController;
 import com.nurtureretargeting.admin.metricmanagement.controller.MetricTypeController;
+import com.nurtureretargeting.admin.segmentmanagement.controller.SegmentController;
+import com.nurtureretargeting.admin.segmentmanagement.controller.SegmentFilterController;
 import com.nurtureretargeting.admin.urlmanagement.controller.URLImportController;
 import com.nurtureretargeting.admin.urlmanagement.controller.URLTaggingController;
 import com.nurtureretargeting.admin.visitormanagement.controller.ActiveVisitorController;
@@ -34,7 +36,7 @@ import com.nurtureretargeting.tracker.log.controller.LogsController;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableWebMvc
-@ComponentScan(basePackages={"com.nurtureretargeting"}, useDefaultFilters=false, includeFilters={@ComponentScan.Filter(type=FilterType.ASSIGNABLE_TYPE, value={KeyManagementController.class,MetricController.class,MetricSummaryController.class,MetricTypeController.class,URLImportController.class,URLTaggingController.class,LogsController.class,SiteController.class,ActiveVisitorController.class })})
+@ComponentScan(basePackages={"com.nurtureretargeting"}, useDefaultFilters=false, includeFilters={@ComponentScan.Filter(type=FilterType.ASSIGNABLE_TYPE, value={KeyManagementController.class,MetricController.class,MetricSummaryController.class,MetricTypeController.class,URLImportController.class,URLTaggingController.class,LogsController.class,SiteController.class,ActiveVisitorController.class,SegmentFilterController.class, SegmentController.class })})
 public class WebAppContext extends WebMvcConfigurerAdapter {
 
 	@Bean

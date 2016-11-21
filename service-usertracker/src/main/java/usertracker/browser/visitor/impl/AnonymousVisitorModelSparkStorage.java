@@ -43,7 +43,7 @@ public class AnonymousVisitorModelSparkStorage extends SparkSQLTemplate implemen
 	}
 
 	@Override
-	public void create() throws Exception {
+	public void createTable() throws Exception {
 		// TODO Auto-generated method stub
 		throw new Exception("Not Supported.");
 	}

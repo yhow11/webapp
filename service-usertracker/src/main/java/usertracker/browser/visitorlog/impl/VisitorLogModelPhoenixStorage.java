@@ -41,7 +41,7 @@ public class VisitorLogModelPhoenixStorage extends PhoenixDaoImpl implements Sto
 	}
 
 	@Override
-	public void create() throws Exception {
+	public void createTable() throws Exception {
 		// TODO Auto-generated method stub
 		super.createTable(VisitorLogModel.class);
 	}

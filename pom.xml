@@ -16,7 +16,7 @@
   <modules>
   	<module>webapp-services</module>
   	<module>webapp-data</module>
-    <module>webapp-inctool</module>
+<!--     <module>webapp-inctool</module> -->
     <module>webapp-object</module>
     <module>webapp-model</module>
     <module>webapp-mapper</module>
@@ -35,9 +35,10 @@
     <module>common</module>
     <module>service-urlmanagement</module>
     <module>helper-jaxb</module>
-    <module>service-membermanagement</module>
+<!--     <module>service-membermanagement</module> -->
     <module>service-metricmanagement</module>
     <module>helper-spark</module>
+    <module>service-segment</module>
   </modules>
   
 </project>

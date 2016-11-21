@@ -1,8 +1,8 @@
 package service.metricmanagement.metrics;
 
+import common.VoidProcessor;
 import service.metricmanagement.metrics.param.MetricProcessorParam;
 
-public interface MetricProcessor {
+public interface MetricProcessor extends VoidProcessor<MetricProcessorParam>{
 
-	public void process(MetricProcessorParam param);
 }

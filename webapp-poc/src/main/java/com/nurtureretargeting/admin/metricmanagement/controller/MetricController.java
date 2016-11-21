@@ -26,6 +26,13 @@ public class MetricController {
 		return new ResponseForm<MetricForm>(storage.get(new DefaultParam<>(MetricForm.class, offset, limit)));
 	}
 	
+	@RequestMapping(value = "metric/search", method = RequestMethod.GET)
+	public @ResponseBody  ResponseForm<MetricForm> search(@RequestParam("query") String query) throws Exception {
+		Param<MetricForm> param = new DefaultParam<>(MetricForm.class);
+		param.getModel().setName("%"+query+"%");
+		return new ResponseForm<MetricForm>(storage.get(param));
+	}
+	
 	@RequestMapping(value = "metric/get", method = RequestMethod.GET)
 	public @ResponseBody  ResponseForm<MetricForm> get(@RequestParam("id") String id) throws Exception {
 		Param<MetricForm> param = new DefaultParam<>(MetricForm.class, null, "1");

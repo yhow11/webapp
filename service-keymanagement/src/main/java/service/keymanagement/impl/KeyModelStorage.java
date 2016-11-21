@@ -40,7 +40,7 @@ public class KeyModelStorage extends PhoenixDaoImpl implements Storage<KeyModel>
 	}
 
 	@Override
-	public void create() throws Exception {
+	public void createTable() throws Exception {
 		// TODO Auto-generated method stub
 		super.createTable(KeyModel.class);
 	}

@@ -2,19 +2,23 @@ package common.orm.query;
 
 import java.util.List;
 
+import common.LogMetaData;
+import common.Loggable;
 import common.orm.query.param.Param;
 
-public interface Storage<T> {
-	public List<T> get(Param<T> param) throws Exception;
-	default T getOrCreate(Param<T> param) throws Exception{
+public interface Storage<T> extends Get<T>, Remove<T>, Save<T>, Table<T>{
+	
+	@Loggable
+	default T getOrCreate(Param<T> param, LogMetaData lmd) throws Exception{
 		List<T> result = get(param);
 		if(result.size() > 0){
+			lmd.getTransactions().add("Found "+param.getModelClass().getSimpleName());
 			return result.get(0);
 		} else {
+			lmd.getTransactions().add("Create New "+param.getModelClass().getSimpleName());
 			return save(param.getModel());
 		}
 	}
-	public T save(T model) throws Exception;
 	default List<T> save(List<T> models) throws Exception{
 		models.forEach(model -> {
 			try {
@@ -27,6 +31,4 @@ public interface Storage<T> {
 		return models;
 	}
 	
-	public void remove(T model) throws Exception;
-	public void create() throws Exception;
 }
