@@ -1,7 +1,9 @@
 package sparkapp.collation.receiver.service;
 
-import common.VoidProcessor;
+import java.util.List;
 
-public interface VisitorProcessor extends VoidProcessor<String>{
+import common.Processor;
+
+public interface VisitorProcessor extends Processor<List<String>, Boolean>{
 
 }

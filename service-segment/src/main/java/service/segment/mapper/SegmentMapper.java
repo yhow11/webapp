@@ -47,6 +47,7 @@ public class SegmentMapper extends Mapper<SegmentModel, SegmentForm>{
 			Param<MetricForm> param = new DefaultParam<>(MetricForm.class);
 			param.getModel().setId(String.valueOf(value));
 			target.setMetrics(metricStorage.get(param));
+			target.setId(String.valueOf(value));
 		});
 		ObjectUtil.isPresent(source.getFILTER(), value -> {
 			Param<FilterForm> param = new DefaultParam<>(FilterForm.class);

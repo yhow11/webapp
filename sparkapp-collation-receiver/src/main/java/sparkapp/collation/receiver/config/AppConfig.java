@@ -20,7 +20,7 @@ import helper.spring.AppTemplateContext;
 public class AppConfig extends AppTemplateContext {
 
 	public AppConfig() throws IOException {
-		super("application.properties","usertracker.properties","metric.properties");
+		super("application.properties","usertracker.properties","metric.properties","segment.properties");
 		// TODO Auto-generated constructor stub
 	}
 	

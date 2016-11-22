@@ -1,5 +1,7 @@
 package service.metricmanagement.metrics.pagecount.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Resource;
@@ -22,32 +24,34 @@ import service.metricmanagement.metricurl.model.MetricURLModel;
 
 @Service("PageCountProcessor")
 @Transactional
-public class PageCountProcessor implements MetricProcessor{
+public class PageCountProcessor implements MetricProcessor {
 
-	@Resource(name="${PageCountProcessor.metricURLStorage}")
+	@Resource(name = "${PageCountProcessor.metricURLStorage}")
 	private Storage<MetricURLModel> metricURLStorage;
-	@Resource(name="${PageCountProcessor.storage}")
+	@Resource(name = "${PageCountProcessor.storage}")
 	private Storage<PageCountModel> storage;
-	@Resource(name="${PageCountProcessor.aggregator}")
+	@Resource(name = "${PageCountProcessor.aggregator}")
 	private Storage<PageCountModel> aggregator;
-	@Resource(name="${PageCountProcessor.metricSummaryStorage}")
+	@Resource(name = "${PageCountProcessor.metricSummaryStorage}")
 	private Storage<MetricSummaryModel> metricSummaryStorage;
-	
-	public PageCountProcessor(
-			) {
+
+	public PageCountProcessor() {
 	}
 
 	@Loggable
 	@Override
-	public void process(MetricProcessorParam param, LogMetaData lmd) {
+	public List<MetricSummaryModel> process(List<MetricProcessorParam> params, LogMetaData lmd) throws Exception {
 		// TODO Auto-generated method stub
-		if("VISITED".equalsIgnoreCase(param.getType())){
-			try{
+
+		List<MetricSummaryModel> summaries = new ArrayList<>();
+
+		for(MetricProcessorParam param: params){
+			if ("VISITED".equalsIgnoreCase(param.getType())) {
 				Param<MetricURLModel> metricURLParam = new DefaultParam<>(MetricURLModel.class);
 				metricURLParam.getModel().setURL(URLUtil.getRealURL(param.getUrl()));
 				metricURLParam.getModel().setMETRICTYPE(MetricTypeEnum.PAGE_COUNT.getType());
-				for(MetricURLModel urlMetricModel: metricURLStorage.get(metricURLParam)){
-					
+				for (MetricURLModel urlMetricModel : metricURLStorage.get(metricURLParam)) {
+
 					Param<PageCountModel> queryParam = new DefaultParam<>(PageCountModel.class);
 					queryParam.getModel().setVISITORID(param.getVisitorID());
 					queryParam.getModel().setTKEY(urlMetricModel.getTKEY());
@@ -55,9 +59,9 @@ public class PageCountProcessor implements MetricProcessor{
 					queryParam.getModel().setURL(urlMetricModel.getURL());
 					queryParam.getModel().setTVALUES(urlMetricModel.getTVALUES());
 					Optional<PageCountModel> pageCountModel = storage.get(queryParam).stream().findFirst();
-					
-					if(pageCountModel.isPresent()){
-						pageCountModel.get().setTCOUNT(pageCountModel.get().getTCOUNT()+1);
+
+					if (pageCountModel.isPresent()) {
+						pageCountModel.get().setTCOUNT(pageCountModel.get().getTCOUNT() + 1);
 						storage.save(pageCountModel.get());
 					} else {
 						queryParam.getModel().setTCOUNT(1L);
@@ -66,18 +70,22 @@ public class PageCountProcessor implements MetricProcessor{
 					Param<PageCountModel> highestParam = new DefaultParam<>(PageCountModel.class);
 					highestParam.getModel().setVISITORID(param.getVisitorID());
 					highestParam.getModel().setMETRIC(queryParam.getModel().getMETRIC());
-					Optional<PageCountModel> highest= aggregator.get(highestParam).stream().findFirst();
+					Optional<PageCountModel> highest = aggregator.get(highestParam).stream().findFirst();
 					MetricSummaryModel metricSummaryModel = new MetricSummaryModel();
 					metricSummaryModel.setVISITORID(param.getVisitorID());
 					metricSummaryModel.setMETRICNAME(queryParam.getModel().getMETRIC());
 					metricSummaryModel.setMETRICTYPE(MetricTypeEnum.PAGE_COUNT.getType());
+					metricSummaryModel.setMETRICID(String.valueOf(urlMetricModel.getMETRICID()));
 					metricSummaryModel.setTVALUES(highest.get().getTVALUES());
 					metricSummaryStorage.save(metricSummaryModel);
+					
+					summaries.add(metricSummaryModel);
 				}
-			}catch(Exception e){
-				e.printStackTrace();
+
 			}
-			
 		}
+		
+
+		return summaries;
 	}
 }

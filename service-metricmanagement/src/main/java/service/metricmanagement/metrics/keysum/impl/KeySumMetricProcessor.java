@@ -1,5 +1,8 @@
 package service.metricmanagement.metrics.keysum.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -40,13 +43,17 @@ public class KeySumMetricProcessor implements MetricProcessor {
 
 	@Loggable
 	@Override
-	public void process(MetricProcessorParam param, LogMetaData lmd) {
+	public List<MetricSummaryModel> process(List<MetricProcessorParam> params, LogMetaData lmd) throws Exception {
 		// TODO Auto-generated method stub
-		if("VISITED".equalsIgnoreCase(param.getType())){
-			try{
+		
+		List<MetricSummaryModel> summaries = new ArrayList<>();
+		
+		for(MetricProcessorParam param: params){
+			if("VISITED".equalsIgnoreCase(param.getType())){
 				Param<MetricURLModel> metricURLParam = new DefaultParam<>(MetricURLModel.class);
 				metricURLParam.getModel().setURL(URLUtil.getRealURL(param.getUrl()));
 				metricURLParam.getModel().setMETRICTYPE(MetricTypeEnum.KEY_SUM.getType());
+				
 				for(MetricURLModel urlMetricModel: metricURLStorage.get(metricURLParam)){
 					
 					Param<KeySumMetricModel> queryParam = new DefaultParam<>(KeySumMetricModel.class);
@@ -66,13 +73,17 @@ public class KeySumMetricProcessor implements MetricProcessor {
 					metricSummaryModel.setVISITORID(param.getVisitorID());
 					metricSummaryModel.setMETRICNAME(queryParam.getModel().getMETRIC());
 					metricSummaryModel.setMETRICTYPE(MetricTypeEnum.KEY_SUM.getType());
+					metricSummaryModel.setMETRICID(String.valueOf(urlMetricModel.getMETRICID()));
 					metricSummaryModel.setTVALUES(String.valueOf(sum));
 					metricSummaryStorage.save(metricSummaryModel);
+					
+					summaries.add(metricSummaryModel);
+					
 				}
-			}catch(Exception e){
-				e.printStackTrace();
-			}
 			
 		}
+		}
+		
+		return summaries;
 	}
 }

@@ -4,6 +4,7 @@ public class MetricURLModel {
 	private String TKEY;
 	private String URL;
 	private String TVALUES;
+	private Long METRICID;
 	private String METRIC;
 	private String METRICTYPE;
 	
@@ -37,5 +38,10 @@ public class MetricURLModel {
 	public void setMETRICTYPE(String mETRICTYPE) {
 		METRICTYPE = mETRICTYPE;
 	}
-	
+	public Long getMETRICID() {
+		return METRICID;
+	}
+	public void setMETRICID(Long mETRICID) {
+		METRICID = mETRICID;
+	}
 }

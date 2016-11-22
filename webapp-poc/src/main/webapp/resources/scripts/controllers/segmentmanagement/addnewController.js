@@ -28,6 +28,7 @@ angular.module('fingerPrintApp').controller(
 							return deferred.promise;
 			            },
 						onAddChip: function($chip){
+							$scope.segments.data.metrictype = $scope.segments.data.metrics[0].types[0].type;
 							segmentConditionService.getAll($scope.segments.data.metrictype).then(function(data){
 								if(data.data){
 									$scope.segments.conditionsfield.filters = data.data.data;

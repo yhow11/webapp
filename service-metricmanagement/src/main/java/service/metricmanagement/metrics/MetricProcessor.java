@@ -1,8 +1,11 @@
 package service.metricmanagement.metrics;
 
-import common.VoidProcessor;
-import service.metricmanagement.metrics.param.MetricProcessorParam;
+import java.util.List;
 
-public interface MetricProcessor extends VoidProcessor<MetricProcessorParam>{
+import common.Processor;
+import service.metricmanagement.metrics.param.MetricProcessorParam;
+import service.metricmanagement.metricsummary.model.MetricSummaryModel;
+
+public interface MetricProcessor extends Processor<List<MetricProcessorParam>, List<MetricSummaryModel>>{
 
 }

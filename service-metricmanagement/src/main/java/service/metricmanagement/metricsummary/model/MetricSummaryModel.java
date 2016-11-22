@@ -12,6 +12,9 @@ public class MetricSummaryModel {
 	private String VISITORID;
 	@PhoenixID
 	@PhoenixColumn(type="VARCHAR(255)")
+	private String METRICID;
+	@PhoenixID
+	@PhoenixColumn(type="VARCHAR(255)")
 	private String METRICNAME;
 	@PhoenixID
 	@PhoenixColumn(type="VARCHAR(255)")
@@ -19,6 +22,13 @@ public class MetricSummaryModel {
 	@PhoenixColumn(type="VARCHAR(255)")
 	private String TVALUES;
 	
+	
+	public String getMETRICID() {
+		return METRICID;
+	}
+	public void setMETRICID(String mETRICID) {
+		METRICID = mETRICID;
+	}
 	public String getVISITORID() {
 		return VISITORID;
 	}

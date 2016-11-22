@@ -1,6 +1,7 @@
 package sparkapp.collation.receiver.service.impl;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -13,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import common.LogMetaData;
 import service.metricmanagement.metrics.MetricProcessor;
 import service.metricmanagement.metrics.param.MetricProcessorParam;
+import service.metricmanagement.metricsummary.model.MetricSummaryModel;
+import service.segment.processor.VisitorSegmentor;
+import service.segment.processor.param.VisitorSegmentorParam;
 import sparkapp.collation.receiver.service.LogProcessor;
 import sparkapp.collation.receiver.service.VisitorProcessor;
 import usertracker.browser.visitorlog.model.VisitorLogModel;
@@ -37,6 +41,9 @@ public class LogReceivedFunction implements VoidFunction<JavaRDD<VisitorLogModel
 	@Resource
 	private List<MetricProcessor> metricProcessors;
 	
+	@Resource(name="${LogReceivedFunction.visitorSegmentor}")
+	private VisitorSegmentor visitorSegmentor;
+	
 	@Override
 	public void call(JavaRDD<VisitorLogModel> rdd) throws Exception {
 		// TODO Auto-generated method stub
@@ -47,12 +54,27 @@ public class LogReceivedFunction implements VoidFunction<JavaRDD<VisitorLogModel
 			
 			List<WebEventModel> webEvents = processor.process(items, lmd);
 			
+			List<MetricProcessorParam> metricProcessorParams = new ArrayList<>();
+			List<String> visitorIDs = new ArrayList<>();
 			for(WebEventModel webEvent: webEvents){
-				for(MetricProcessor processor: metricProcessors){
-					processor.process(new MetricProcessorParam(webEvent.getANONYMOUSVISITORID(), webEvent.getTYPE(), webEvent.getURL(), webEvent.getELAPSEDTIME()), lmd);
-				}
-				visitorProcessor.process(webEvent.getANONYMOUSVISITORID(), lmd);
+				visitorIDs.add(webEvent.getANONYMOUSVISITORID());
+				metricProcessorParams.add(new MetricProcessorParam(webEvent.getANONYMOUSVISITORID(), webEvent.getTYPE(), webEvent.getURL(), webEvent.getELAPSEDTIME()));
 			}
+			
+			List<MetricSummaryModel> summaries = new ArrayList<>();
+			for(MetricProcessor processor: metricProcessors){
+				summaries.addAll(processor.process(metricProcessorParams, lmd));
+			}
+			
+			List<VisitorSegmentorParam> visitorSegmentorParams = new ArrayList<>();
+			for(MetricSummaryModel summary: summaries) {
+				visitorSegmentorParams.add(new VisitorSegmentorParam(summary.getVISITORID(), summary.getMETRICID(), summary.getTVALUES()));
+			}
+			
+			
+			visitorSegmentor.process(visitorSegmentorParams, lmd);
+			visitorProcessor.process(visitorIDs, lmd);
+			
 		}
 		
 	}
