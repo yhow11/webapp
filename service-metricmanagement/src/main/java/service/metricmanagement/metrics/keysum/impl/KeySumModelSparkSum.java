@@ -26,7 +26,7 @@ public class KeySumModelSparkSum extends SparkSQLTemplate implements Sum<KeySumM
 
 	@Autowired
 	public KeySumModelSparkSum(SQLContext sqlContext, ZookeeperContext zookeperContext) throws Exception {
-		super(sqlContext, zookeperContext.getZookeepers(), SparkSQLUtil.getTableName(PageCountModel.class));
+		super(sqlContext, zookeperContext.getZookeepers(), SparkSQLUtil.getTableName(KeySumMetricModel.class));
 		// TODO Auto-generated constructor stub
 	}
 

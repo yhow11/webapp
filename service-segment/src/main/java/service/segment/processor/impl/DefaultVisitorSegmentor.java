@@ -57,8 +57,9 @@ public class DefaultVisitorSegmentor implements VisitorSegmentor {
 				segmentedVisitor.setSEGMENTID(String.valueOf(segment.getID()));
 				segmentedVisitor.setVISITORID(param.getVisitorID());
 				segmentedVisitors.add(segmentedVisitor);
-				
+				System.out.println("ES");
 			}
+			System.out.println(param.getValues()+"ASd"+segment.getTVALUE());
 		}
 		
 		segmentedVisitorStorage.save(segmentedVisitors);
