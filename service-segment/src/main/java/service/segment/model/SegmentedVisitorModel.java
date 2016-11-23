@@ -4,7 +4,7 @@ import helper.phoenix.annotation.entity.PhoenixColumn;
 import helper.phoenix.annotation.entity.PhoenixID;
 import helper.phoenix.annotation.entity.PhoenixTable;
 
-@PhoenixTable(table="segmentQualifiedVisitorModel")
+@PhoenixTable(table="SegmentedVisitorModel")
 public class SegmentedVisitorModel {
 
 	@PhoenixID

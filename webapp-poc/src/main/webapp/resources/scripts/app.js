@@ -348,6 +348,32 @@ angular
 
 									})
 									.state(
+									'segmentmanagement.segmentedvisitor',
+									{
+										url : '/segmentmanagement/segmentedvisitor/:id',
+										controller : 'SegmentedVisitorController',
+										templateUrl : 'resources/views/segmentmanagement/segmentedvisitor.html',
+										params: {
+											param: null,
+											id: null
+										},
+										resolve : {
+											loadMyFiles : function(
+													$ocLazyLoad) {
+												return $ocLazyLoad
+														.load({
+															name : 'fingerPrintApp',
+															files : [
+														         	'resources/scripts/services/segmentmanagement/segmentedVisitorService.js',
+																	'resources/scripts/controllers/segmentmanagement/segmentedvisitorController.js'
+
+															]
+														})
+											}
+										}
+
+									})
+									.state(
 									'segmentmanagement.view',
 									{
 										url : '/segmentmanagement/view',

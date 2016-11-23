@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Tue Nov 22 21:41:35 CST 2016:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0158-8c45-33c4-00000ee49290 
-on database directory C:\Users\User\Documents\GitHub\webapp\sparkapp-collation-receiver\metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@6ef61cd0 
-Loaded from file:/C:/Users/User/.m2/repository/org/apache/derby/derby/10.10.2.0/derby-10.10.2.0.jar
+Wed Nov 23 08:58:28 CST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0158-8eb0-e8ca-000006c6e2b0 
+on database directory C:\projects\NT\source\webapp\sparkapp-collation-receiver\metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@69944a90 
+Loaded from file:/C:/Users/Dirawong-III/.m2/repository/org/apache/derby/derby/10.10.2.0/derby-10.10.2.0.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_91-b14
-user.dir=C:\Users\User\Documents\GitHub\webapp\sparkapp-collation-receiver
-os.name=Windows 8.1
+java.runtime.version=1.8.0_111-b14
+user.dir=C:\projects\NT\source\webapp\sparkapp-collation-receiver
+os.name=Windows 10
 os.arch=amd64
-os.version=6.3
+os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
