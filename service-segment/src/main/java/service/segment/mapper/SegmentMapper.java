@@ -35,6 +35,7 @@ public class SegmentMapper extends Mapper<SegmentModel, SegmentForm>{
 		ObjectUtil.isPresent(source.getMetrics(), value -> target.setMETRICID(Long.valueOf(value.get(0).getId())));
 		ObjectUtil.isPresent(source.getFilter(), value -> target.setFILTER(value.getType()));
 		ObjectUtil.isPresent(source.getValue(), value -> target.setTVALUE(value));
+		ObjectUtil.isPresent(source.getCode(), value -> target.setCODE(value));
 		return target;
 	}
 
@@ -54,6 +55,7 @@ public class SegmentMapper extends Mapper<SegmentModel, SegmentForm>{
 			target.setFilter(filterStorage.get(param).get(0));
 		});
 		ObjectUtil.isPresent(source.getTVALUE(), value -> target.setValue(value));
+		ObjectUtil.isPresent(source.getCODE(), value -> target.setCode(value));
 		return target;
 	}
 

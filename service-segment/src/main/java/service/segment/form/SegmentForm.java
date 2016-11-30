@@ -13,6 +13,7 @@ public class SegmentForm {
 	private List<MetricForm> metrics;
 	private FilterForm filter;
 	private String value;
+	private String code;
 	private List<String> actions = Arrays.asList(new String[]{"EDIT", "VIEW"});
 	
 	public String getId() {
@@ -51,7 +52,12 @@ public class SegmentForm {
 	public void setActions(List<String> actions) {
 		this.actions = actions;
 	}
-	
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
 	
 	
 }

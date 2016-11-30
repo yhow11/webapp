@@ -29,4 +29,10 @@ public class MetricSummaryModelSparkDFStorage extends SparkSQLTemplate implement
 		return super.getDataFrame(param);
 	}
 
+	@Override
+	public void save(DataFrame df) throws Exception {
+		// TODO Auto-generated method stub
+		super.save(df);
+	}
+
 }

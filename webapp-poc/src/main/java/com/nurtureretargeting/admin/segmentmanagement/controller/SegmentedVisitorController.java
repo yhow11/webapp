@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,6 +47,12 @@ public class SegmentedVisitorController {
 		} else {
 			return new ResponseForm<>(false, "No Data.");
 		}
+	}
+	@RequestMapping(value = "segmentedvisitor/getByVisitor", method = RequestMethod.GET)
+	public @ResponseBody  ResponseForm<SegmentedVisitorForm> getByVisitor(@RequestParam("visitorid") String visitorid) throws Exception {
+		Param<SegmentedVisitorForm> param = new DefaultParam<>(SegmentedVisitorForm.class);
+		param.getModel().setVisitorID(visitorid);
+		return new ResponseForm<>(storage.get(param));
 	}
 	@RequestMapping(value = "segmentedvisitor/count", method = RequestMethod.GET)
 	public @ResponseBody  Map<String, Object> count(@RequestParam("segmentID") String segmentID) throws Exception {

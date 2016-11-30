@@ -25,6 +25,9 @@ public class SegmentModel {
 	@PhoenixColumn(type="VARCHAR(100)")
 	protected String TVALUE;
 
+	@PhoenixColumn(type="VARCHAR(200)")
+	protected String CODE;
+	
 	public Long getID() {
 		return ID;
 	}
@@ -65,6 +68,11 @@ public class SegmentModel {
 		TVALUE = vALUE;
 	}
 	
-	
+	public String getCODE() {
+		return CODE;
+	}
+	public void setCODE(String cODE) {
+		CODE = cODE;
+	}
 	
 }

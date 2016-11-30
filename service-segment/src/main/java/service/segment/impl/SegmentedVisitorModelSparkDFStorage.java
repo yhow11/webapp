@@ -1,4 +1,4 @@
-package usertracker.browser.webevent.impl;
+package service.segment.impl;
 
 import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.SQLContext;
@@ -11,20 +11,20 @@ import helper.spark.DFStorage;
 import helper.spark.sql.SparkSQLTemplate;
 import helper.spark.sql.util.SparkSQLUtil;
 import helper.spring.ZookeeperContext;
-import usertracker.browser.webevent.model.WebEventModel;
+import service.segment.model.SegmentedVisitorModel;
 
-@Service("WebEventModelSparkDFStorage")
+@Service("SegmentedVisitorModelSparkDFStorage")
 @Transactional
-public class WebEventModelSparkDFStorage extends SparkSQLTemplate implements DFStorage<WebEventModel> {
+public class SegmentedVisitorModelSparkDFStorage extends SparkSQLTemplate implements DFStorage<SegmentedVisitorModel> {
 
 	@Autowired
-	public WebEventModelSparkDFStorage(SQLContext sqlContext, ZookeeperContext zookeeperContext) throws Exception {
-		super(sqlContext, zookeeperContext.getZookeepers(), SparkSQLUtil.getTableName(WebEventModel.class));
+	public SegmentedVisitorModelSparkDFStorage(SQLContext sqlContext, ZookeeperContext zookeeperContext) throws Exception {
+		super(sqlContext, zookeeperContext.getZookeepers(), SparkSQLUtil.getTableName(SegmentedVisitorModel.class));
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public DataFrame get(Param<WebEventModel> param) throws Exception {
+	public DataFrame get(Param<SegmentedVisitorModel> param) throws Exception {
 		// TODO Auto-generated method stub
 		return super.getDataFrame(param);
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +39,7 @@ public class LogsController {
 		return response;
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value = "logs/send", method = RequestMethod.POST)
 	public @ResponseBody  ResponseForm<?> send(@RequestParam("log") String log) throws Exception {
 		

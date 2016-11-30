@@ -231,6 +231,16 @@
 			WSCLIENTUTIL.send(data,"leaved", document.title, window.location.href);
         };
         FingerPrint.sendVisitedEvent = function(){
+        	var data = FingerPrint.getData();
+			var xhttp = new XMLHttpRequest();
+        	xhttp.onreadystatechange = function() {
+    			  if (this.readyState == 4 && this.status == 200) {
+    				  resolve(JSON.parse(xhttp.responseText).data[0]);
+    			  }
+    			};
+			xhttp.open("GET", baseURL+'segmentedvisitor/getByVisitor?sessionID='+data.sessionID+"&browserFPID="+data.browserFP, true);
+			xhttp.send();
+			
         	TIMERUTIL.getTime(baseURL).then(function(data){
     			TIMERUTIL.currentime = data.trim();
     			COOKIEUTIL.write("starttime", data);
@@ -271,6 +281,7 @@
 				FingerPrint.sendLeavedEvent();
 			}, false);
 
+			
         	console.log("init completed.");
         };
         

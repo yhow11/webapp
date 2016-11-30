@@ -1,71 +1,57 @@
-<div layout="row" layout-align="center">
-		<md-card flex="100" flex-gt-sm="50">
-			 <md-card-title>
-	          <md-card-title-text>
-	            <span class="md-headline"> Segment Manager </span>
-	            <span class="md-subhead">Create New</span>
-	          </md-card-title-text>
-	          <md-card-title-media>
-	            <md-button class="md-primary" ui-sref="segmentmanagement.view"  flex-gt-sm>
-			      <md-icon >list</md-icon> <span hide show-gt-sm> View Segments</span>
-			    </md-button>
-	          </md-card-title-media>
-	        </md-card-title>
-			<form name="form">
-		        <md-card-content layout="column">
-		        	<input type="hidden" ng-model="segments.data.id">
-		            <md-input-container flex>
-						<label>Segment Name</label> <input required validkey="isOnEdit" name="name" ng-model="segments.data.name" >
-						<div ng-messages="form.name.$error">
-				            <div ng-message="required">Please enter Segment Name.</div>
-		                </div>
-					</md-input-container>
-					<div layout flex>
-						<md-chips ng-model="segments.data.metrics" md-max-chips="1" md-on-add="segments.metricnamesfield.onAddChip($chip)" flex>
-				    		<md-autocomplete
-				    			ng-hide="segments.data.metrics.length > 0"
-								md-autofocus="false"
-								md-min-length="0"
-					            md-search-text="segments.metricnamesfield.searchText"
-					            md-items="item in segments.metricnamesfield.search(segments.metricnamesfield.searchText)"
-					            placeholder="Please choose metric.." flex>
-					          <md-item-template>
-					            <span >{{item.name}}</span>
-					          </md-item-template>
-				        	</md-autocomplete>
-				         	<md-chip-template>
-							        <span >
-							          <strong>{{$chip.name}}</strong>
-							        </span>
-					      	</md-chip-template>
-				    	</md-chips>
-						<md-input-container flex>
-							<label>Metric Type</label> <input required validkey="isOnEdit" name="metrictype" ng-model="segments.data.metrictype" ng-disabled="true">
-						</md-input-container>
-					</div>
-					<div layout flex>
-						<md-input-container flex>
-				          <label>Filter</label>
-				          <md-select ng-model="segments.data.filter" ng-model-options="{trackBy: '$value.type'}">
-				            <md-option ng-repeat="filter in segments.conditionsfield.filters" ng-value="filter">
-				              {{filter.name}}
-				            </md-option>
-				          </md-select>
-				        </md-input-container>
-				        <md-input-container flex>
-							<label>Value</label> <input required validkey="isOnEdit" name="value" ng-model="segments.data.value" >
-						</md-input-container>
-					</div>
-					
-		        </md-card-content>
-		        <div layout layout-align="center" style="padding-bottom:25px">
-		        	 <md-button aria-label="Save" ng-click="segments.save(form)" ng-disabled="showLoading" class="md-raised md-primary" flex="20" flex-gt-sm="10">
-				          <md-icon md-svg-icon="resources/img/icons/save.svg" ></md-icon> Submit
-				     </md-button>
-		        </div>
-	        </form>
-		</md-card>
-	
-</div>
+<form layout="row" layout-align="center" name="form">
+	<md-card flex="100" flex-gt-sm="50"> <md-card-title>
+	<md-card-title-text> <span class="md-headline">
+		Segment Manager </span> <span class="md-subhead">Create New</span> </md-card-title-text> <md-card-title-media>
+	<md-button class="md-primary" ui-sref="segmentmanagement.view"
+		flex-gt-sm> <md-icon>list</md-icon> <span hide show-gt-sm>
+		View Segments</span> </md-button> </md-card-title-media> </md-card-title> <md-card-content layout="column"> <input
+		type="hidden" ng-model="segments.data.id"> <md-input-container
+		flex> <label>Segment Name</label> <input required
+		validkey="isOnEdit" name="name" ng-model="segments.data.name">
+	<div ng-messages="form.name.$error">
+		<div ng-message="required">Please enter Segment Name.</div>
+	</div>
+	</md-input-container>
+	<div layout flex>
+		<md-chips ng-model="segments.data.metrics" md-max-chips="1"
+			md-on-add="segments.metricnamesfield.onAddChip($chip)" flex>
+		<md-autocomplete ng-hide="segments.data.metrics.length > 0"
+			md-autofocus="false" md-min-length="0"
+			md-search-text="segments.metricnamesfield.searchText"
+			md-items="item in segments.metricnamesfield.search(segments.metricnamesfield.searchText)"
+			placeholder="Please choose metric.." flex> <md-item-template>
+		<span>{{item.name}}</span> </md-item-template> </md-autocomplete> <md-chip-template> <span>
+			<strong>{{$chip.name}}</strong>
+		</span> </md-chip-template> </md-chips>
+		<md-input-container flex> <label>Metric
+			Type</label> <input required validkey="isOnEdit" name="metrictype"
+			ng-model="segments.data.metrictype" ng-disabled="true"> </md-input-container>
+	</div>
+	<div layout flex>
+		<md-input-container flex> <label>Filter</label> <md-select
+			ng-model="segments.data.filter"
+			ng-model-options="{trackBy: '$value.type'}"> <md-option
+			ng-repeat="filter in segments.conditionsfield.filters"
+			ng-value="filter"> {{filter.name}} </md-option> </md-select> </md-input-container>
+		<md-input-container flex> <label>Value</label> <input
+			required validkey="isOnEdit" name="value"
+			ng-model="segments.data.value"> </md-input-container>
+	</div>
+	<md-input-container flex> <label>Retargeting
+		Code</label> <input required validkey="isOnEdit" name="code"
+		ng-model="segments.data.code">
+	<div ng-messages="form.code.$error">
+		<div ng-message="required">Please enter Retargeting Code.</div>
+	</div>
+	</md-input-container> </md-card-content>
+	<div layout layout-align="center" style="padding-bottom: 25px">
+		<md-button aria-label="Save" ng-click="segments.save(form)"
+			ng-disabled="showLoading" class="md-raised md-primary" flex="20"
+			flex-gt-sm="10"> <md-icon
+			md-svg-icon="resources/img/icons/save.svg"></md-icon> Submit </md-button>
+	</div>
+	</md-card>
+
+</form>
 
 

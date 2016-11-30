@@ -20,7 +20,7 @@ public class ActiveVisitorModel implements Serializable {
 	private Long timestamp;
 	@PhoenixColumn(type="VARCHAR(255)")
 	private String metrics;
-	@PhoenixColumn(type="VARCHAR(255)")
+	@PhoenixColumn(type="VARCHAR(400)")
 	private String activities;
 	@PhoenixColumn(type="VARCHAR(255)")
 	private String location;

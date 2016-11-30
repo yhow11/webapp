@@ -88,6 +88,12 @@ public class AnonymousVisitorKeeperImpl implements AnonymousVisitorKeeper {
 		}
 		return av;
 	}
+
+	@Override
+	public VisitorModel get(String sessionID, String browserFP, LogMetaData lmd) throws Exception {
+		// TODO Auto-generated method stub
+		return get(sessionID, browserFP);
+	}
 	
 
 }

@@ -1,10 +1,7 @@
 package com.nurtureretargeting.admin.visitormanagement.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 

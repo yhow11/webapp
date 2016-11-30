@@ -238,12 +238,23 @@ public class PhoenixUtil {
 		Class<?> clazz = object.getClass();
 
 		String table = clazz.getAnnotation(PhoenixTable.class).table();
-		List<String> primaryKeyFields = findFieldNames(clazz, PhoenixID.class);
+		
+		List<String> columns = findFieldNames(clazz, PhoenixColumn.class);
+		List<String> columnsWithValue = new ArrayList<>();
+		List<String> values = new ArrayList<>();
+		for(String fieldName: columns){
+			String value = getFieldValue(object, fieldName);
+			if(value != null && value != ""){
+				values.add(value);
+				columnsWithValue.add(fieldName);
+			}
+			
+		}
 
 		List<Object> valuesArr = new ArrayList<Object>();
 		valuesArr.add(table);
-		valuesArr.add(String.join(",", primaryKeyFields));
-		valuesArr.add(String.join(",", getFieldValue(object, primaryKeyFields)));
+		valuesArr.add(String.join(",", columns));
+		valuesArr.add(String.join(",", columnsWithValue));
 
 		String userSql = String.format(format, valuesArr.toArray(new Object[valuesArr.size()]));
 		return userSql;

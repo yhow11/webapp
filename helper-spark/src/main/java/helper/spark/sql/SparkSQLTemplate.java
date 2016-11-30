@@ -88,6 +88,10 @@ public abstract class SparkSQLTemplate {
 		return models;
 	}
 	
+	protected void save(DataFrame df) throws Exception{
+		df.write().format("org.apache.phoenix.spark").mode(SaveMode.Overwrite).options(options).save();
+	}
+	
 	protected <T> T insert(T model) throws Exception{
 		for(String field: SparkSQLUtil.findFieldNames(model.getClass(), PhoenixSequence.class)){
 			if(PropertyUtils.getProperty(model, field) == null) {

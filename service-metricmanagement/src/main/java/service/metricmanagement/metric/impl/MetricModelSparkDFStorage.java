@@ -1,4 +1,4 @@
-package usertracker.browser.webevent.impl;
+package service.metricmanagement.metric.impl;
 
 import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.SQLContext;
@@ -11,20 +11,20 @@ import helper.spark.DFStorage;
 import helper.spark.sql.SparkSQLTemplate;
 import helper.spark.sql.util.SparkSQLUtil;
 import helper.spring.ZookeeperContext;
-import usertracker.browser.webevent.model.WebEventModel;
+import service.metricmanagement.metric.model.MetricModel;
 
-@Service("WebEventModelSparkDFStorage")
+@Service("MetricModelSparkDFStorage")
 @Transactional
-public class WebEventModelSparkDFStorage extends SparkSQLTemplate implements DFStorage<WebEventModel> {
+public class MetricModelSparkDFStorage extends SparkSQLTemplate implements DFStorage<MetricModel> {
 
 	@Autowired
-	public WebEventModelSparkDFStorage(SQLContext sqlContext, ZookeeperContext zookeeperContext) throws Exception {
-		super(sqlContext, zookeeperContext.getZookeepers(), SparkSQLUtil.getTableName(WebEventModel.class));
+	public MetricModelSparkDFStorage(SQLContext sqlContext, ZookeeperContext zookeeperContext) throws Exception {
+		super(sqlContext, zookeeperContext.getZookeepers(), SparkSQLUtil.getTableName(MetricModel.class));
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public DataFrame get(Param<WebEventModel> param) throws Exception {
+	public DataFrame get(Param<MetricModel> param) throws Exception {
 		// TODO Auto-generated method stub
 		return super.getDataFrame(param);
 	}
@@ -32,6 +32,7 @@ public class WebEventModelSparkDFStorage extends SparkSQLTemplate implements DFS
 	@Override
 	public void save(DataFrame df) throws Exception {
 		// TODO Auto-generated method stub
-		super.save(df);
+		
 	}
+
 }

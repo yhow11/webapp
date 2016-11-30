@@ -1,5 +1,6 @@
 package com.nurtureretargeting.admin.segmentmanagement.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -7,12 +8,14 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import common.LogMetaData;
 import common.form.Page;
 import common.form.ResponseForm;
 import common.orm.query.Book;
@@ -21,10 +24,19 @@ import common.orm.query.param.DefaultParam;
 import common.orm.query.param.Param;
 import common.orm.query.util.QueryUtil;
 import service.segment.form.SegmentForm;
+import service.segment.model.SegmentModel;
+import service.segment.model.SegmentedVisitorModel;
+import usertracker.browser.visitor.AnonymousVisitorKeeper;
+import usertracker.browser.visitor.model.VisitorModel;
 
 @Controller
 public class SegmentController {
-
+	@Resource(name="${SegmentController.segmentedVisitorStorage}")
+	private Storage<SegmentedVisitorModel> segmentedVisitorStorage;
+	
+	@Resource(name="${SegmentController.visitorKeeper}")
+	private AnonymousVisitorKeeper visitorKeeper;
+	
 	@Resource(name="${SegmentController.storage}")
 	private Storage<SegmentForm> storage;
 	
@@ -46,6 +58,25 @@ public class SegmentController {
 		} else {
 			return new ResponseForm<>(false, "No Data.");
 		}
+	}
+	@CrossOrigin
+	@RequestMapping(value = "segment/getByVisitor", method = RequestMethod.GET)
+	public @ResponseBody  ResponseForm<SegmentForm> getByVisitor(@RequestParam("sessionID") String sessionID,@RequestParam("browserFPID") String browserFPID) throws Exception {
+		VisitorModel visitorModel = visitorKeeper.get(sessionID, browserFPID, new LogMetaData("Get Visitor"));
+		if(visitorModel != null) {
+			Param<SegmentedVisitorModel> param = new DefaultParam<>(SegmentedVisitorModel.class);
+			param.getModel().setVISITORID(visitorModel.getID());
+			List<SegmentForm> segments = new ArrayList<>();
+			for(SegmentedVisitorModel segmented: segmentedVisitorStorage.get(param)){
+				Param<SegmentForm> segmentParam= new DefaultParam<>(SegmentForm.class);
+				segmentParam.getModel().setId(segmented.getSEGMENTID());
+				segments.addAll(storage.get(segmentParam));
+			}
+			return new ResponseForm<>(segments);
+		} else {
+			return new ResponseForm<>(false, "Couldn't find visitor.");
+		}
+	
 	}
 	@RequestMapping(value = "segment/save", method = RequestMethod.POST)
 	public @ResponseBody  ResponseForm<SegmentForm> save(@RequestBody SegmentForm segmentForm) throws Exception {
