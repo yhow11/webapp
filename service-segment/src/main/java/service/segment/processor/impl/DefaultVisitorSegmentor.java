@@ -61,7 +61,7 @@ public class DefaultVisitorSegmentor implements VisitorSegmentor {
 //			segmentedVisitorStorage.remove(model);
 //		}
 		segmentedVisitorStorage.createTable();
-		joinDF.show();
+		
 		segmentedVisitorDFStorage.save(joinDF);
 		//		joinDF.filter(joinDF.col("FILTER").equalTo("EQ")).filter(joinDF.col("METRICVALUE").equalTo(joinDF.col("SEGMENTVALUE")));
 		

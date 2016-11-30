@@ -38,7 +38,6 @@ public class PageCountModelRankedByCountSparkStorage  extends SparkSQLTemplate i
 //		param.getModel().setVISITORID(visitorID);
 //		param.getModel().setMETRIC(metric);
 		DataFrame df = super.getDataFrame(param).orderBy(col("TCOUNT").desc()).limit(1);
-		df.show();
 		Encoder<PageCountModel> encoder = Encoders.bean(PageCountModel.class);
 		Dataset<PageCountModel> dataset = df.as(encoder);
 		sqlContext.dropTempTable(SparkSQLUtil.getTableName(param));

@@ -37,14 +37,14 @@ public class MetricURLModelSparkStorage  extends SparkSQLTemplate implements Sto
 		// TODO Auto-generated method stub
 		options.put(TABLE_PROP_KEY, URLTaggedModel.class.getAnnotation(PhoenixTable.class).table());
 		DataFrame urlTaggedTable = sqlContext.read().format(FORMAT).options(options).load().filter(col("URL").equalTo(param.getModel().getURL()));
-		urlTaggedTable.show();
+		
 		if(urlTaggedTable.count() > 0) {
 			options.put(TABLE_PROP_KEY, MetricModel.class.getAnnotation(PhoenixTable.class).table());
 			DataFrame metricTable = sqlContext.read().format(FORMAT).options(options).load();
 			DataFrame joinTable = urlTaggedTable.join(metricTable, urlTaggedTable.col("TKEY").equalTo(metricTable.col("TKEY")));
 			joinTable = joinTable.filter(metricTable.col("TYPE").equalTo(param.getModel().getMETRICTYPE()))
 			.select(urlTaggedTable.col("URL"), urlTaggedTable.col("TKEY"), urlTaggedTable.col("TVALUES"), metricTable.col("ID").as("METRICID"), metricTable.col("NAME").as("METRIC"),metricTable.col("TYPE").as("METRICTYPE") );
-			joinTable.show();
+			
 			Encoder<MetricURLModel> encoder = Encoders.bean(MetricURLModel.class);
 			Dataset<MetricURLModel> dataset = joinTable.as(encoder);
 			return dataset.collectAsList();

@@ -37,7 +37,6 @@ public class TimeOnPageModelRankedBySparkCount  extends SparkSQLTemplate impleme
 //		param.getModel().setVISITORID(visitorID);
 //		param.getModel().setMETRIC(metric);
 		DataFrame df = super.getDataFrame(param).orderBy(col("TIMEONPAGE").desc()).limit(1);
-		df.show();
 		Encoder<TimeOnPageMetricModel> encoder = Encoders.bean(TimeOnPageMetricModel.class);
 		Dataset<TimeOnPageMetricModel> dataset = df.as(encoder);
 		sqlContext.dropTempTable(SparkSQLUtil.getTableName(param));
