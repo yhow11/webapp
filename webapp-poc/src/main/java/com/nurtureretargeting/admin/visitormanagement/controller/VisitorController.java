@@ -3,6 +3,7 @@ package com.nurtureretargeting.admin.visitormanagement.controller;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,10 +20,11 @@ public class VisitorController {
 	private AnonymousVisitorKeeper keeper;
 	
 	
+	@CrossOrigin
 	@RequestMapping(value = "visitor/get", method = RequestMethod.GET)
-	public @ResponseBody  VisitorModel getPage(@RequestParam("sessionID") String sessionID,
+	public @ResponseBody  VisitorModel get(@RequestParam("sessionID") String sessionID,
 			@RequestParam("browserFP") String browserFP) throws Exception {
-		return keeper.get(sessionID, browserFP, new LogMetaData(""));
+		return keeper.getOrCreateAV(sessionID, browserFP, new LogMetaData(sessionID+"|"+browserFP));
 	}
 	
 }

@@ -38,6 +38,8 @@ public class VisitorLogModel  implements Serializable{
 	private String elapsedTime;
 	@PhoenixColumn(type="VARCHAR(255)")
 	private String country;
+	@PhoenixColumn(type="VARCHAR(255)")
+	private String visitorID;
 	
 	public String getSessionID() {
 		return sessionID;
@@ -109,5 +111,11 @@ public class VisitorLogModel  implements Serializable{
 	}
 	public void setCountry(String country) {
 		this.country = country;
+	}
+	public String getVisitorID() {
+		return visitorID;
+	}
+	public void setVisitorID(String visitorID) {
+		this.visitorID = visitorID;
 	}
 }

@@ -35,6 +35,7 @@ public class StringToVisitorLogModelMapper implements org.apache.spark.api.java.
 			log.setSessionID(raw[7]);
 			log.setElapsedTime(raw[8]);
 			log.setCountry(raw[9]);
+			log.setVisitorID(raw[10]);
 		}
 		return log;
 	}

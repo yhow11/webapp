@@ -50,24 +50,22 @@ public class LogProcessorImpl implements LogProcessor {
 			visitorStorage.save(param);
 			
 			for(VisitorLogModel visitorLogModel : param){
-				VisitorModel visitor = keeper.getOrCreateAV(visitorLogModel.getSessionID(), visitorLogModel.getWebFP(), lmd);
-				
 				Param<SessionModel> sessionParam = new DefaultParam<>(SessionModel.class);
-				sessionParam.getModel().setANONYMOUSVISITORID(visitor.getID());
+				sessionParam.getModel().setANONYMOUSVISITORID(visitorLogModel.getVisitorID());
 				sessionParam.getModel().setID(visitorLogModel.getSessionID());
 				sessionStorage.getOrCreate(sessionParam, lmd);
 				
 				Param<BrowserFPModel> browserFPParam = new DefaultParam<>(BrowserFPModel.class);
-				browserFPParam.getModel().setANONYMOUSVISITORID(visitor.getID());
+				browserFPParam.getModel().setANONYMOUSVISITORID(visitorLogModel.getVisitorID());
 				browserFPParam.getModel().setID(visitorLogModel.getWebFP());
 				browserFPStorage.getOrCreate(browserFPParam, lmd);
 				
 				Param<DeviceFPModel> deviceFPParam = new DefaultParam<>(DeviceFPModel.class);
-				deviceFPParam.getModel().setANONYMOUSVISITORID(visitor.getID());
+				deviceFPParam.getModel().setANONYMOUSVISITORID(visitorLogModel.getVisitorID());
 				deviceFPParam.getModel().setID(visitorLogModel.getWebFP());
 				deviceFPStorage.getOrCreate(deviceFPParam, lmd);
 				
-				WebEventModel webEvent = new VisitorLogModelToWebEventModelMapper(visitor.getID()).apply(visitorLogModel);
+				WebEventModel webEvent = new VisitorLogModelToWebEventModelMapper(visitorLogModel.getVisitorID()).apply(visitorLogModel);
 				System.out.println(webEvent.getTIMESTAMP());
 				webEventStorage.save(webEvent);
 				result.add(webEvent);

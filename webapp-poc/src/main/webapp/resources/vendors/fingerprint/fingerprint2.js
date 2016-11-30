@@ -29,17 +29,17 @@
     	};
     	return COOKIEUTIL;
     }
-    function define_wsclientutil(){
+    function define_clientutil(){
     	
-    	var WSCLIENTUTIL  = {};
-    	WSCLIENTUTIL.baseURL
-    	WSCLIENTUTIL.init = function(baseURL){
-    		WSCLIENTUTIL.baseURL = baseURL;
+    	var CLIENTUTIL  = {};
+    	CLIENTUTIL.baseURL
+    	CLIENTUTIL.init = function(baseURL){
+    		CLIENTUTIL.baseURL = baseURL;
     	};
-    	WSCLIENTUTIL.send = function(fingerprintdata, type, title, url){
+    	CLIENTUTIL.send = function(visitorID, fingerprintdata, type, title, url){
     		var data = fingerprintdata;
     		var xhttp = new XMLHttpRequest();
-    		xhttp.open("POST", WSCLIENTUTIL.baseURL+'logs/send', false);
+    		xhttp.open("POST", CLIENTUTIL.baseURL+'logs/send', false);
     		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         	xhttp.onreadystatechange = function() {
     			  if (this.readyState == 4 && this.status == 200) {
@@ -63,10 +63,12 @@
 					+ "||"
 					+ (data.elapsedtime || 0)
 					+ "||"
-					+ (data.country || "unknown"));
+					+ (data.country || "unknown")
+					+ "||"
+					+ visitorID);
         	
         }
-    	return WSCLIENTUTIL;
+    	return CLIENTUTIL;
     }
     function define_elementutil(){
     	var ELEMENTUTIL  = {};
@@ -147,7 +149,7 @@
     	window.TIMERUTIL = TIMERUTIL;
     	return TIMERUTIL;
     }
-    function define_fingerPrint(COOKIEUTIL, WSCLIENTUTIL, ELEMENTUTIL, UUID, TIMERUTIL){
+    function define_fingerPrint(COOKIEUTIL, CLIENTUTIL, ELEMENTUTIL, UUID, TIMERUTIL){
         var FingerPrint = {};
         FingerPrint.getDeviceFP = function(client){
     		var screenPrint = client.getScreenPrint();
@@ -216,52 +218,91 @@
     		
         };
         FingerPrint.sendClickedEvent = function(e){
-        	var href = e.target.href;
-			var title = e.target.title != ''?  e.target.title:e.target.innerText;;
-			WSCLIENTUTIL.send(FingerPrint.getData(), "hover", title, href);
+        	var visitorID = COOKIEUTIL.read("visitorID");
+        	if(visitorID){
+	        	var href = e.target.href;
+				var title = e.target.title != ''?  e.target.title:e.target.innerText;;
+				CLIENTUTIL.send(visitorID, FingerPrint.getData(), "hover", title, href);
+        	}
         };
         FingerPrint.sendHoverEvent = function(e){
-        	var href = e.target.href;
-			var title = e.target.title != ''?  e.target.title:e.target.innerText;;
-			WSCLIENTUTIL.send(FingerPrint.getData(), "hover", title, href);
+        	var visitorID = COOKIEUTIL.read("visitorID");
+        	if(visitorID){
+	        	var href = e.target.href;
+				var title = e.target.title != ''?  e.target.title:e.target.innerText;;
+				CLIENTUTIL.send(visitorID, FingerPrint.getData(), "hover", title, href);
+        	}
         };
         FingerPrint.sendLeavedEvent = function(){
-        	var data = FingerPrint.getData();
-			data.elapsedtime = TIMERUTIL.getElapsedTime(data.timestamp);
-			WSCLIENTUTIL.send(data,"leaved", document.title, window.location.href);
+        	var visitorID = COOKIEUTIL.read("visitorID");
+        	if(visitorID){
+        		var data = FingerPrint.getData();
+    			data.elapsedtime = TIMERUTIL.getElapsedTime(data.timestamp);
+    			CLIENTUTIL.send(visitorID, data,"leaved", document.title, window.location.href);
+        	}
         };
         FingerPrint.sendVisitedEvent = function(){
-        	var data = FingerPrint.getData();
-			var xhttp = new XMLHttpRequest();
-        	xhttp.onreadystatechange = function() {
-    			  if (this.readyState == 4 && this.status == 200) {
-    				  resolve(JSON.parse(xhttp.responseText).data[0]);
-    			  }
-    			};
-			xhttp.open("GET", baseURL+'segmentedvisitor/getByVisitor?sessionID='+data.sessionID+"&browserFPID="+data.browserFP, true);
-			xhttp.send();
+        	var visitorID = COOKIEUTIL.read("visitorID");
+        	if(visitorID){
+        		TIMERUTIL.getTime(baseURL).then(function(data){
+        			TIMERUTIL.currentime = data.trim();
+        			COOKIEUTIL.write("starttime", data);
+        			CLIENTUTIL.send(visitorID, FingerPrint.getData(),"visited", document.title, window.location.href);
+        		});
+        		
+            	var data = FingerPrint.getData();
+    			var xhttp = new XMLHttpRequest();
+            	xhttp.onreadystatechange = function() {
+        			  if (this.readyState == 4 && this.status == 200) {
+        				  console.log(xhttp.responseText);
+        			  }
+        			};
+    			xhttp.open("GET", baseURL+'segment/getByVisitor?visitorID='+visitorID, true);
+    			xhttp.send();
+        	}
+
 			
-        	TIMERUTIL.getTime(baseURL).then(function(data){
-    			TIMERUTIL.currentime = data.trim();
-    			COOKIEUTIL.write("starttime", data);
-    			WSCLIENTUTIL.send(FingerPrint.getData(),"visited", document.title, window.location.href);
-    		});
+        	
         };
+        FingerPrint.getVisitor = function (baseURL, datas) {
+   		 return new Promise(
+   			        function(resolve, reject) {
+   			        	var visitorID = COOKIEUTIL.read("visitorID");
+   			        	if(visitorID){
+   			        		resolve(visitorID);
+   			        	} else {
+   	   			        	var xhttp = new XMLHttpRequest();
+   	   			        	xhttp.onreadystatechange = function() {
+   	   			    			  if (this.readyState == 4 && this.status == 200) {
+   	   			    				  var ID = JSON.parse(xhttp.responseText).ID;
+   	   			    				  COOKIEUTIL.write('visitorID', ID);
+   	   			    				  resolve(ID);
+   	   			    			  }
+   	   			    			};
+   	   						xhttp.open("GET", baseURL+'visitor/get?sessionID='+data.sessionID+"&browserFPID="+data.browserFP, true);
+   	   						xhttp.send();
+   			        	}
+   			        
+   			        }
+   			    );
+       };
         FingerPrint.init = function(baseURL){
         	
         	FingerPrint.generate();
+        	
         	$.get("http://ipinfo.io", function (response) {
         		var fingerPrintData = FingerPrint.getData();
         		fingerPrintData.country = response.country
         		FingerPrint.setData(fingerPrintData);
         	}, "jsonp");
+        	
+        	
         	TIMERUTIL.init(baseURL);
-        	WSCLIENTUTIL.init(baseURL);
+        	CLIENTUTIL.init(baseURL);
         	
-        	
-        	FingerPrint.sendVisitedEvent();
-
-			
+        	FingerPrint.getVisitor(baseURL, FingerPrint.getData()).then(function(data){
+        		FingerPrint.sendVisitedEvent();
+        	});
 			window.addEventListener("mouseover", function (e) {
 				if (e.target.localName == 'a') {
 					FingerPrint.sendHoverEvent(e);
@@ -293,7 +334,7 @@
     }
     //define globally if it doesn't already exist
     if(typeof(FingerPrint) === 'undefined'){
-        window.FingerPrint = define_fingerPrint(define_cookieutil(), define_wsclientutil(), define_elementutil(), define_uuid(), define_timerutil(define_cookieutil()));
+        window.FingerPrint = define_fingerPrint(define_cookieutil(), define_clientutil(), define_elementutil(), define_uuid(), define_timerutil(define_cookieutil()));
     }
     else{
         console.log("Fingerprint already defined.");
