@@ -467,35 +467,8 @@ angular
 								.position("top right").hideDelay(3000);
 						$mdToast.show(mdToast);
 					};
-					$rootScope.stompReceivers = null;
-					connect();
-					function connect() {
-						var origin = location.protocol + "//" + location.host;
-						var socket = new SockJS(origin+'/webapp-poc/send');
-						var oldInit = window.onbeforeunload;
-						window.onbeforeunload = function (event) {
-							if (oldInit) oldInit(event);
-					    	socket.close();
-					    	console.log("socket closed.");
-						}
-						$rootScope.stompReceivers = Stomp.over(socket);
-						$rootScope.stompReceivers
-								.connect(
-										{},
-										function(frame) {
-											
-											$rootScope.stompReceivers.subscribe('/logs/broadcast', function(
-													data) {
-												var response = JSON.parse(JSON.stringify(data.body));
-												$rootScope.$emit('notifyReceivers', {data: JSON.parse(response)});
-												
-												
-											});
-										});
-					}
 					$rootScope.$on("$routeChangeStart", function(event, next,
 							current) {
-//						connect();
 					});
 				});
 
