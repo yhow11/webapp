@@ -264,7 +264,7 @@
 			
         	
         };
-        FingerPrint.getVisitor = function (baseURL, datas) {
+        FingerPrint.getVisitor = function (baseURL, data) {
    		 return new Promise(
    			        function(resolve, reject) {
    			        	var visitorID = COOKIEUTIL.read("visitorID");
