@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import helper.spring.AppTemplateContext;
 
 @Configuration
+@EnableAspectJAutoProxy
 @EnableTransactionManagement
 @Import({SecurityContext.class, KafkaContext.class, PhoenixContext.class, WebSocketContext.class})
 public class AppContext extends AppTemplateContext {
