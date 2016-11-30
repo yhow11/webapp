@@ -57,7 +57,7 @@
 					+ "||"+type+"||"
 					+ url
 					+ "||"
-					+ title
+					+ "N/A"
 					+ "||"
 					+ data.sessionID
 					+ "||"
@@ -290,11 +290,12 @@
         	
         	FingerPrint.generate();
         	
-        	$.get("http://ipinfo.io", function (response) {
+        	$.getJSON('//ipinfo.io/', function(data) {
+        		 console.log(JSON.stringify(data, null, 2));
         		var fingerPrintData = FingerPrint.getData();
-        		fingerPrintData.country = response.country
-        		FingerPrint.setData(fingerPrintData);
-        	}, "jsonp");
+          		fingerPrintData.country = data.country
+          		FingerPrint.setData(fingerPrintData);
+    		});
         	
         	
         	TIMERUTIL.init(baseURL);

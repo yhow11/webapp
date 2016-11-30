@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Wed Nov 30 12:37:02 CST 2016:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0158-b385-859c-00000c901368 
-on database directory C:\projects\NT\source\webapp\sparkapp-collation-receiver\metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@6cd7dc74 
+Wed Nov 30 16:18:32 CST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0158-b450-5018-00000d650b90 
+on database directory C:\projects\NT\source\webapp\sparkapp-collation-receiver\metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@335896bd 
 Loaded from file:/C:/Users/Dirawong-III/.m2/repository/org/apache/derby/derby/10.10.2.0/derby-10.10.2.0.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_111-b14

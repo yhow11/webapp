@@ -30,12 +30,6 @@ public class LogProcessorImpl implements LogProcessor {
 	
 	@Resource(name="${LogProcessor.keeper}")
 	private AnonymousVisitorKeeper keeper;
-	@Resource(name="${LogProcessor.sessionStorage}")
-	private Storage<SessionModel> sessionStorage;
-	@Resource(name="${LogProcessor.browserFPStorage}")
-	private Storage<BrowserFPModel> browserFPStorage;
-	@Resource(name="${LogProcessor.deviceFPStorage}")
-	private Storage<DeviceFPModel> deviceFPStorage;
 	@Resource(name="${LogProcessor.webEventStorage}")
 	private Storage<WebEventModel> webEventStorage;
 	@Resource(name="${LogProcessor.visitorStorage}")
@@ -50,21 +44,6 @@ public class LogProcessorImpl implements LogProcessor {
 			visitorStorage.save(param);
 			
 			for(VisitorLogModel visitorLogModel : param){
-				Param<SessionModel> sessionParam = new DefaultParam<>(SessionModel.class);
-				sessionParam.getModel().setANONYMOUSVISITORID(visitorLogModel.getVisitorID());
-				sessionParam.getModel().setID(visitorLogModel.getSessionID());
-				sessionStorage.getOrCreate(sessionParam, lmd);
-				
-				Param<BrowserFPModel> browserFPParam = new DefaultParam<>(BrowserFPModel.class);
-				browserFPParam.getModel().setANONYMOUSVISITORID(visitorLogModel.getVisitorID());
-				browserFPParam.getModel().setID(visitorLogModel.getWebFP());
-				browserFPStorage.getOrCreate(browserFPParam, lmd);
-				
-				Param<DeviceFPModel> deviceFPParam = new DefaultParam<>(DeviceFPModel.class);
-				deviceFPParam.getModel().setANONYMOUSVISITORID(visitorLogModel.getVisitorID());
-				deviceFPParam.getModel().setID(visitorLogModel.getWebFP());
-				deviceFPStorage.getOrCreate(deviceFPParam, lmd);
-				
 				WebEventModel webEvent = new VisitorLogModelToWebEventModelMapper(visitorLogModel.getVisitorID()).apply(visitorLogModel);
 				System.out.println(webEvent.getTIMESTAMP());
 				webEventStorage.save(webEvent);
