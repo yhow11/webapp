@@ -37,7 +37,7 @@ import com.nurtureretargeting.tracker.log.controller.LogsController;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableWebMvc
-@ComponentScan(basePackages={"com.nurtureretargeting"}, useDefaultFilters=false, includeFilters={@ComponentScan.Filter(type=FilterType.ASSIGNABLE_TYPE, value={KeyManagementController.class,MetricController.class,MetricSummaryController.class,MetricTypeController.class,URLImportController.class,URLTaggingController.class,LogsController.class,SiteController.class,ActiveVisitorController.class,SegmentFilterController.class, SegmentController.class,SegmentedVisitorController.class })})
+@ComponentScan(basePackages={"com.nurtureretargeting"}, useDefaultFilters=false, includeFilters={@ComponentScan.Filter(type=FilterType.ASSIGNABLE_TYPE, value={KeyManagementController.class,MetricController.class,MetricSummaryController.class,MetricTypeController.class,URLImportController.class,URLTaggingController.class,LogsController.class,SiteController.class,ActiveVisitorController.class,SegmentFilterController.class, SegmentController.class,SegmentedVisitorController.class,VisitorController.class })})
 public class WebAppContext extends WebMvcConfigurerAdapter {
 
 	@Bean
