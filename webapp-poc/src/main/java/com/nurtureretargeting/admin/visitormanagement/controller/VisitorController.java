@@ -23,8 +23,9 @@ public class VisitorController {
 	@CrossOrigin
 	@RequestMapping(value = "visitor/get", method = RequestMethod.GET)
 	public @ResponseBody  VisitorModel get(@RequestParam("sessionID") String sessionID,
-			@RequestParam("browserFP") String browserFP) throws Exception {
-		return keeper.getOrCreateAV(sessionID, browserFP, new LogMetaData(sessionID+"|"+browserFP));
+			@RequestParam("browserFP") String browserFP,
+			@RequestParam("deviceFP") String deviceFP) throws Exception {
+		return keeper.getOrCreateAV(sessionID, browserFP, deviceFP, new LogMetaData(sessionID+"|"+browserFP+"|"+deviceFP));
 	}
 	
 }

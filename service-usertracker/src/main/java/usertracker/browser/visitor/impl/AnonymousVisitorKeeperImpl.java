@@ -14,6 +14,7 @@ import common.orm.query.Storage;
 import common.orm.query.param.DefaultParam;
 import common.orm.query.param.Param;
 import usertracker.browser.browserfp.model.BrowserFPModel;
+import usertracker.browser.devicefp.model.DeviceFPModel;
 import usertracker.browser.session.model.SessionModel;
 import usertracker.browser.visitor.AnonymousVisitorKeeper;
 import usertracker.browser.visitor.model.VisitorModel;
@@ -28,7 +29,9 @@ public class AnonymousVisitorKeeperImpl implements AnonymousVisitorKeeper {
 	@Resource(name="${AnonymousVisitorKeeperImpl.sessionStorage}")
 	private Storage<SessionModel> sessionStorage;
 	@Resource(name="${AnonymousVisitorKeeperImpl.browserFPStorage}")
-	private Storage<BrowserFPModel> browserFPStorage; 
+	private Storage<BrowserFPModel> browserFPStorage;
+	@Resource(name="${AnonymousVisitorKeeperImpl.deviceFPStorage}")
+	private Storage<DeviceFPModel> deviceFPStorage;
 	
 	public AnonymousVisitorKeeperImpl() {
 		// TODO Auto-generated constructor stub
@@ -75,13 +78,29 @@ public class AnonymousVisitorKeeperImpl implements AnonymousVisitorKeeper {
 	}
 	@Loggable
 	@Override
-	public VisitorModel getOrCreateAV(String sessionID, String browserFP, LogMetaData lmd) throws Exception {
+	public VisitorModel getOrCreateAV(String sessionID, String browserFP, String deviceFP, LogMetaData lmd) throws Exception {
 		// TODO Auto-generated method stub
 		VisitorModel av = get(sessionID, browserFP);
 		if (av == null) {
 			av = new VisitorModel();
 			av.setID(UUID.randomUUID().toString());
 			storage.save(av);
+			
+			Param<SessionModel> sessionParam = new DefaultParam<>(SessionModel.class);
+			sessionParam.getModel().setANONYMOUSVISITORID(av.getID());
+			sessionParam.getModel().setID(sessionID);
+			sessionStorage.getOrCreate(sessionParam, lmd);
+			
+			Param<BrowserFPModel> browserFPParam = new DefaultParam<>(BrowserFPModel.class);
+			browserFPParam.getModel().setANONYMOUSVISITORID(av.getID());
+			browserFPParam.getModel().setID(deviceFP);
+			browserFPStorage.getOrCreate(browserFPParam, lmd);
+			
+			Param<DeviceFPModel> deviceFPParam = new DefaultParam<>(DeviceFPModel.class);
+			deviceFPParam.getModel().setANONYMOUSVISITORID(av.getID());
+			deviceFPParam.getModel().setID(browserFP);
+			deviceFPStorage.getOrCreate(deviceFPParam, lmd);
+			
 			lmd.getTransactions().add("Created New Visitor: "+av.getID());
 		} else {
 			lmd.getTransactions().add("Found Visitor: "+av.getID());

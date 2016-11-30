@@ -243,7 +243,7 @@
         };
         FingerPrint.sendVisitedEvent = function(){
         	var visitorID = COOKIEUTIL.read("visitorID");
-        	if(visitorID){
+        	if(typeof visitorID !== 'undefined'){
         		TIMERUTIL.getTime(baseURL).then(function(data){
         			TIMERUTIL.currentime = data.trim();
         			COOKIEUTIL.write("starttime", data);
@@ -274,12 +274,12 @@
    	   			        	var xhttp = new XMLHttpRequest();
    	   			        	xhttp.onreadystatechange = function() {
    	   			    			  if (this.readyState == 4 && this.status == 200) {
-   	   			    				  var ID = JSON.parse(xhttp.responseText).ID;
+   	   			    				  var ID = JSON.parse(xhttp.responseText).id;
    	   			    				  COOKIEUTIL.write('visitorID', ID);
    	   			    				  resolve(ID);
    	   			    			  }
    	   			    			};
-   	   						xhttp.open("GET", baseURL+'visitor/get?sessionID='+data.sessionID+"&browserFPID="+data.browserFP, true);
+   	   						xhttp.open("GET", baseURL+'visitor/get?sessionID='+data.sessionID+"&browserFP="+data.browserFP+"&deviceFP="+data.deviceFP, true);
    	   						xhttp.send();
    			        	}
    			        

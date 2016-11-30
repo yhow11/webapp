@@ -46,7 +46,7 @@ loadScript(fingerprintDir + "client.min.js", function() {
 		loadScript(cryptoDir + 'md5.js', function() {
 			loadScript(websocketDir + "sockjs.js", function() {
 				loadScript(websocketDir + "stomp.js", function() {
-					loadScript(fingerprintDir + "fingerprint2.js", function() {
+					loadScript(fingerprintDir + "fingerprint2.js?version="+new Date().getTime(), function() {
 						FingerPrint.init(baseURL);
 						console.log("fingerprint tracker has been loaded");
 						EventDispatcher.emit('on-fingerprint-loaded', {});
