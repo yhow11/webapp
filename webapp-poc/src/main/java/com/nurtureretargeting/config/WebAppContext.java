@@ -30,6 +30,7 @@ import com.nurtureretargeting.admin.segmentmanagement.controller.SegmentedVisito
 import com.nurtureretargeting.admin.urlmanagement.controller.URLImportController;
 import com.nurtureretargeting.admin.urlmanagement.controller.URLTaggingController;
 import com.nurtureretargeting.admin.visitormanagement.controller.ActiveVisitorController;
+import com.nurtureretargeting.admin.visitormanagement.controller.VisitorController;
 import com.nurtureretargeting.common.interceptor.AccessInterceptor;
 import com.nurtureretargeting.site.controller.SiteController;
 import com.nurtureretargeting.tracker.log.controller.LogsController;
