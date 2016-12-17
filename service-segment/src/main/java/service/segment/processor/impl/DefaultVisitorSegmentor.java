@@ -46,10 +46,11 @@ public class DefaultVisitorSegmentor implements VisitorSegmentor {
 		joinDF = joinDF.withColumn("NE", org.apache.spark.sql.functions.when(joinDF.col("FILTER").equalTo("NE"), 
 				org.apache.spark.sql.functions.when(joinDF.col("METRICVALUE").notEqual(joinDF.col("SEGMENTVALUE")), "TRUE")));
 		joinDF = joinDF.withColumn("GT", org.apache.spark.sql.functions.when(joinDF.col("FILTER").equalTo("GT"), 
-				org.apache.spark.sql.functions.when(joinDF.col("METRICVALUE").gt(joinDF.col("SEGMENTVALUE")), "TRUE")));
+				org.apache.spark.sql.functions.when(joinDF.col("METRICVALUE").cast(DataTypes.LongType).gt(joinDF.col("SEGMENTVALUE").cast(DataTypes.LongType)), "TRUE")));
 		joinDF = joinDF.withColumn("LT", org.apache.spark.sql.functions.when(joinDF.col("FILTER").equalTo("LT"), 
-				org.apache.spark.sql.functions.when(joinDF.col("METRICVALUE").lt(joinDF.col("SEGMENTVALUE")), "TRUE")));
-		
+				org.apache.spark.sql.functions.when(joinDF.col("METRICVALUE").cast(DataTypes.LongType).lt(joinDF.col("SEGMENTVALUE").cast(DataTypes.LongType)), "TRUE")));
+		joinDF.printSchema();
+		joinDF.show();
 		joinDF = joinDF.filter(joinDF.col("EQ").equalTo("TRUE").or(joinDF.col("NE").equalTo("TRUE")).or(joinDF.col("GT").equalTo("TRUE")).or(joinDF.col("LT").equalTo("TRUE")));
 
 		joinDF = joinDF.select(joinDF.col("VISITORID"),joinDF.col("SEGMENTID").cast(DataTypes.StringType));

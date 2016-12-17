@@ -32,7 +32,7 @@ public class SparkConfig {
 	
 	@Bean
 	public JavaStreamingContext javaStreamingContext(){
-		return new JavaStreamingContext(javaSparkContext(), new Duration(5000));
+		return new JavaStreamingContext(javaSparkContext(), new Duration(3000));
 	}
 	
 	@Bean
