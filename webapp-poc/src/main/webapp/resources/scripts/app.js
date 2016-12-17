@@ -97,11 +97,11 @@ angular
 
 									})
 									.state(
-									'keymanagement.addnew',
+									'keymanagement.addnewkey',
 									{
-										url : '/keymanagement/addnew',
-										controller : 'AddNewController',
-										templateUrl : 'resources/views/keymanagement/addnew.html',
+										url : '/addnewkey',
+										controller : 'AddNewKeyController',
+										templateUrl : 'resources/key/addnew.html',
 										params: {
 											param: null
 										},
@@ -112,10 +112,10 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-													         		'resources/scripts/services/keymanagement/keymanagementService.js',
-													         		'resources/scripts/directives/keymanagement/validations/validvalueDirective.js',
-																	'resources/scripts/directives/keymanagement/validations/validkeyDirective.js',
-																	'resources/scripts/controllers/keymanagement/addnewController.js'
+													         		'resources/key/keyService.js',
+													         		'resources/key/validvalueDirective.js',
+																	'resources/key/validkeyDirective.js',
+																	'resources/key/addnewKeyController.js'
 
 															]
 														})
@@ -124,11 +124,11 @@ angular
 
 									})
 									.state(
-									'keymanagement.view',
+									'keymanagement.viewkey',
 									{
-										url : '/keymanagement/view',
-										controller : 'ViewController',
-										templateUrl : 'resources/views/keymanagement/view.html',
+										url : '/viewkeys',
+										controller : 'ViewKeyController',
+										templateUrl : 'resources/key/view.html',
 										resolve : {
 											loadMyFiles : function(
 													$ocLazyLoad) {
@@ -136,9 +136,8 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-														         	'resources/scripts/services/keymanagement/keymanagementService.js',
-																	'resources/scripts/services/keymanagement/keymanagementInfiniteScroll.js',
-																	'resources/scripts/controllers/keymanagement/viewController.js',
+														         	'resources/key/keyService.js',
+																	'resources/key/viewKeyController.js',
 
 															]
 														})
@@ -169,7 +168,7 @@ angular
 															files : [
 														         	'resources/scripts/directives/urlmanagement/mdAutocompleteDirective.js',
 														         	'resources/scripts/directives/urlmanagement/mdChipDirective.js',
-														         	'resources/scripts/services/keymanagement/keymanagementService.js',
+														         	'resources/key/keyService.js',
 														         	'resources/scripts/services/urlmanagement/URLTaggingService.js',
 																	'resources/scripts/controllers/urlmanagement/URLTaggingController.js',
 
@@ -209,11 +208,11 @@ angular
 
 									})
 									.state(
-									'metricmanagement.addnew',
+									'metricmanagement.addnewmetric',
 									{
-										url : '/metricmanagement/addnew/:id',
-										controller : 'AddNewController',
-										templateUrl : 'resources/views/metricmanagement/addnew.html',
+										url : '/addnew/:id',
+										controller : 'AddNewMetricController',
+										templateUrl : 'resources/metric/addnew.html',
 										params: {
 											param: null,
 											id: null
@@ -225,10 +224,10 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-														         	'resources/scripts/services/keymanagement/keymanagementService.js',
-														         	'resources/scripts/services/metricmanagement/metricService.js',
-														         	'resources/scripts/services/metricmanagement/metricTypeService.js',
-																	'resources/scripts/controllers/metricmanagement/addnewController.js'
+														         	'resources/key/keyService.js',
+														         	'resources/metric/metricService.js',
+														         	'resources/metric/metricTypeService.js',
+																	'resources/metric/addnewMetricController.js'
 
 															]
 														})
@@ -237,11 +236,11 @@ angular
 
 									})
 									.state(
-									'metricmanagement.view',
+									'metricmanagement.viewmetric',
 									{
-										url : '/metricmanagement/view',
-										controller : 'ViewController',
-										templateUrl : 'resources/views/metricmanagement/view.html',
+										url : '/view',
+										controller : 'ViewMetricController',
+										templateUrl : 'resources/metric/view.html',
 										resolve : {
 											loadMyFiles : function(
 													$ocLazyLoad) {
@@ -249,9 +248,8 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-														         	'resources/scripts/services/metricmanagement/metricService.js',
-														         	'resources/scripts/services/metricmanagement/metricInfiniteScroll.js',
-																	'resources/scripts/controllers/metricmanagement/viewController.js'
+														         	'resources/metric/metricService.js',
+																	'resources/metric/viewMetricController.js'
 
 															]
 														})
@@ -260,11 +258,11 @@ angular
 
 									})
 									.state(
-									'metricmanagement.summary',
+									'metricmanagement.summarymetric',
 									{
-										url : '/metricmanagement/summary',
-										controller : 'SummaryController',
-										templateUrl : 'resources/views/metricmanagement/summary.html',
+										url : '/summary',
+										controller : 'SummaryMetricController',
+										templateUrl : 'resources/metric/summary.html',
 										resolve : {
 											loadMyFiles : function(
 													$ocLazyLoad) {
@@ -272,8 +270,8 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-														         	'resources/scripts/services/metricmanagement/metricSummaryService.js',
-																	'resources/scripts/controllers/metricmanagement/summaryController.js'
+														         	'resources/metric/metricSummaryService.js',
+																	'resources/metric/summaryMetricController.js'
 
 															]
 														})
@@ -290,11 +288,11 @@ angular
 
 									})
 									.state(
-									'visitormanagement.active',
+									'visitormanagement.activevisitor',
 									{
-										url : '/visitormanagement/active',
-										controller : 'ActiveController',
-										templateUrl : 'resources/views/visitormanagement/active.html',
+										url : '/active',
+										controller : 'ActiveVisitorController',
+										templateUrl : 'resources/visitor/active.html',
 										resolve : {
 											loadMyFiles : function(
 													$ocLazyLoad) {
@@ -302,8 +300,8 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-														         	'resources/scripts/services/visitormanagement/activeVisitorService.js',
-																	'resources/scripts/controllers/visitormanagement/activeController.js'
+														         	'resources/visitor/activeVisitorService.js',
+																	'resources/visitor/activeVisitorController.js'
 
 															]
 														})
@@ -320,11 +318,11 @@ angular
 
 									})
 									.state(
-									'segmentmanagement.addnew',
+									'segmentmanagement.addnewsegment',
 									{
-										url : '/segmentmanagement/addnew/:id',
-										controller : 'AddNewController',
-										templateUrl : 'resources/views/segmentmanagement/addnew.html',
+										url : '/addnew/:id',
+										controller : 'AddNewSegmentController',
+										templateUrl : 'resources/segment/addnew.html',
 										params: {
 											param: null,
 											id: null
@@ -336,10 +334,10 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-														         	'resources/scripts/services/metricmanagement/metricService.js',
-														         	'resources/scripts/services/segmentmanagement/segmentConditionService.js',
-														         	'resources/scripts/services/segmentmanagement/segmentService.js',
-																	'resources/scripts/controllers/segmentmanagement/addnewController.js'
+														         	'resources/metric/metricService.js',
+														         	'resources/segment/segmentConditionService.js',
+														         	'resources/segment/segmentService.js',
+																	'resources/segment/addnewSegmentController.js'
 
 															]
 														})
@@ -350,9 +348,9 @@ angular
 									.state(
 									'segmentmanagement.segmentedvisitor',
 									{
-										url : '/segmentmanagement/segmentedvisitor/:id',
+										url : '/segmentedvisitor/:id',
 										controller : 'SegmentedVisitorController',
-										templateUrl : 'resources/views/segmentmanagement/segmentedvisitor.html',
+										templateUrl : 'resources/segment/segmentedvisitor.html',
 										params: {
 											param: null,
 											id: null
@@ -364,8 +362,8 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-														         	'resources/scripts/services/segmentmanagement/segmentedVisitorService.js',
-																	'resources/scripts/controllers/segmentmanagement/segmentedvisitorController.js'
+														         	'resources/segment/segmentedVisitorService.js',
+																	'resources/segment/segmentedvisitorController.js'
 
 															]
 														})
@@ -374,11 +372,11 @@ angular
 
 									})
 									.state(
-									'segmentmanagement.view',
+									'segmentmanagement.viewsegment',
 									{
-										url : '/segmentmanagement/view',
-										controller : 'ViewController',
-										templateUrl : 'resources/views/segmentmanagement/view.html',
+										url : '/view',
+										controller : 'ViewSegmentController',
+										templateUrl : 'resources/segment/view.html',
 										resolve : {
 											loadMyFiles : function(
 													$ocLazyLoad) {
@@ -386,8 +384,8 @@ angular
 														.load({
 															name : 'fingerPrintApp',
 															files : [
-														         	'resources/scripts/services/segmentmanagement/segmentService.js',
-																	'resources/scripts/controllers/segmentmanagement/viewController.js'
+														         	'resources/segment/segmentService.js',
+																	'resources/segment/viewSegmentController.js'
 
 															]
 														})
