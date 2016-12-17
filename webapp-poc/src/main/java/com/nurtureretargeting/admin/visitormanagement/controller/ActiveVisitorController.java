@@ -6,11 +6,13 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import common.PageRequest;
 import common.form.Page;
 import common.orm.query.Book;
 import common.orm.query.param.DefaultParam;
@@ -26,10 +28,9 @@ public class ActiveVisitorController {
 	private Book<ActiveVisitorForm> book;
 	
 	
-	@RequestMapping(value = "activevisitor/getPage", method = RequestMethod.GET)
-	public @ResponseBody  Page<ActiveVisitorForm> getPage(@RequestParam("value") String value,
-			@RequestParam("page") String page, @RequestParam("limit") String limit) throws Exception {
-		Param<ActiveVisitorForm> param = new DefaultParam<ActiveVisitorForm>(ActiveVisitorForm.class, QueryUtil.getOffset(page, limit).toString(), limit);
+	@RequestMapping(value = "activevisitor/getPage", method = RequestMethod.POST)
+	public @ResponseBody  Page<ActiveVisitorForm> getPage(@RequestParam("value") String value, @RequestBody PageRequest<ActiveVisitorForm> request) throws Exception {
+		Param<ActiveVisitorForm> param = new DefaultParam<ActiveVisitorForm>(ActiveVisitorForm.class, request.getPage(), request.getLimit());
 		if(!value.equals("ALL"))
 			param.getConditions().add(" TIMESTAMP >= "+ActiveVisitorFilterTypeEnum.valueOf(value).getTime());
 		Page<ActiveVisitorForm> pageForm = book.getPage(param);

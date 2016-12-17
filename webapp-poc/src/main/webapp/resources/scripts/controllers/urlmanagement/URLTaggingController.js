@@ -6,7 +6,7 @@
  */
 angular.module('fingerPrintApp').controller(
 		'URLTaggingController',
-		function($rootScope, $scope, $q,  $timeout, $mdDialog, $mdMedia, urlTaggingService, keymanagementService) {
+		function($rootScope, $scope, $q,  $timeout, $mdDialog, $mdMedia, urlTaggingService, keyService) {
 		
 			
 			$scope.$on('show-popover', function(event, args) {
@@ -25,7 +25,7 @@ angular.module('fingerPrintApp').controller(
 					  showPopoverManual: function(x, y, chip) {
 						   if(chip.key != $scope.lastKey){
 							   $scope.lastKey = chip.key;
-							   keymanagementService.getAll(chip.key, '', '').then(function(data){
+							   keyService.getAll(chip.key, '', '').then(function(data){
 								   if(data.data.status){
 									   $scope.valueChip.autoComplete.items = data.data.data[0].values;
 								   }
@@ -48,7 +48,7 @@ angular.module('fingerPrintApp').controller(
 							   if(chipID == currChipID) {
 								   if(item.key != $scope.lastKey){
 									   $scope.lastKey = item.key;
-									   keymanagementService.getAll(item.key, '', '').then(function(data){
+									   keyService.getAll(item.key, '', '').then(function(data){
 										   if(data.data.status){
 											   $scope.valueChip.autoComplete.items = data.data.data[0].values;
 											   $scope.valueChip.options.autofocus = true;
@@ -170,7 +170,7 @@ angular.module('fingerPrintApp').controller(
 					}
 			};
 			
-			keymanagementService.getAll("","", "").then(function(data){
+			keyService.getAll("","", "").then(function(data){
 		    	if(data.data.status){
 		    		$scope.keyChip.autoComplete.allKeys =  data.data.data;
 		    	}

@@ -86,11 +86,11 @@
 						<md-button ng-click="$mdOpenMenu()"> Key Management </md-button> 
 						<md-menu-content>
 							<md-menu-item> 
-								<md-button ui-sref="keymanagement.addnew" aria-label="Profile"> Add New </md-button> 
+								<md-button ui-sref="keymanagement.addnewkey" aria-label="Profile"> Add New </md-button> 
 							</md-menu-item> 
 							<md-menu-divider></md-menu-divider> 
 							<md-menu-item>
-								<md-button ui-sref="keymanagement.view"> View </md-button> </md-menu-item> 
+								<md-button ui-sref="keymanagement.viewkey"> View </md-button> </md-menu-item> 
 						</md-menu-content> 
 					</md-menu> 
 				</md-menu-item> 
@@ -115,14 +115,14 @@
 						<md-button ng-click="$mdOpenMenu()"> Metrics Management </md-button> 
 						<md-menu-content>
 							<md-menu-item> 
-								<md-button ui-sref="metricmanagement.addnew"> Add New </md-button> 
+								<md-button ui-sref="metricmanagement.addnewmetric"> Add New </md-button> 
 							</md-menu-item> 
 							<md-menu-divider></md-menu-divider>
 							<md-menu-item> 
-								<md-button ui-sref="metricmanagement.view"> View </md-button> 
+								<md-button ui-sref="metricmanagement.viewmetric"> View </md-button> 
 							</md-menu-item> 
 							<md-menu-item> 
-								<md-button ui-sref="metricmanagement.summary"> Summary </md-button> 
+								<md-button ui-sref="metricmanagement.summarymetric"> Summary </md-button> 
 							</md-menu-item> 
 						</md-menu-content> 
 					</md-menu> 
@@ -133,7 +133,7 @@
 						<md-button ng-click="$mdOpenMenu()"> Visitor Management </md-button> 
 						<md-menu-content>
 							<md-menu-item> 
-								<md-button ui-sref="visitormanagement.active"> Active Visitor </md-button> 
+								<md-button ui-sref="visitormanagement.activevisitor"> Active Visitor </md-button> 
 							</md-menu-item> 
 						</md-menu-content> 
 					</md-menu> 
@@ -144,10 +144,10 @@
 						<md-button ng-click="$mdOpenMenu()"> Segment Management </md-button> 
 						<md-menu-content>
 							<md-menu-item> 
-								<md-button ui-sref="segmentmanagement.addnew"> Add New </md-button>
+								<md-button ui-sref="segmentmanagement.addnewsegment"> Add New </md-button>
 							</md-menu-item> 
 							<md-menu-item> 
-								<md-button ui-sref="segmentmanagement.view"> View </md-button>  
+								<md-button ui-sref="segmentmanagement.segmentedvisitor"> View </md-button>  
 							</md-menu-item> 
 						</md-menu-content> 
 					</md-menu> 
