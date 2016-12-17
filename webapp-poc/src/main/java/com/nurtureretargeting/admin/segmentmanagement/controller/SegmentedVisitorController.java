@@ -7,11 +7,13 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import common.PageRequest;
 import common.form.Page;
 import common.form.ResponseForm;
 import common.orm.query.Book;
@@ -19,6 +21,7 @@ import common.orm.query.Storage;
 import common.orm.query.param.DefaultParam;
 import common.orm.query.param.Param;
 import common.orm.query.util.QueryUtil;
+import service.keymanagement.form.KeyForm;
 import service.segment.form.SegmentedVisitorForm;
 
 @Controller
@@ -30,10 +33,10 @@ public class SegmentedVisitorController {
 	@Resource(name="${SegmentedVisitorController.book}")
 	private Book<SegmentedVisitorForm> book;
 	
-	@RequestMapping(value = "segmentedvisitor/getBook", method = RequestMethod.GET)
-	public @ResponseBody  Page<SegmentedVisitorForm> getBook(@RequestParam("segmentID") String segmentID, @RequestParam("page") String page, @RequestParam("limit") String limit) throws Exception {
-		Param<SegmentedVisitorForm> param = new DefaultParam<>(SegmentedVisitorForm.class, QueryUtil.getOffset(page, limit).toString(), limit);
-		param.getModel().setSegmentID(segmentID);
+	
+	@RequestMapping(value = "segmentedvisitor/getPage", method = RequestMethod.POST)
+	public @ResponseBody  Page<SegmentedVisitorForm> getAll(@RequestBody PageRequest<SegmentedVisitorForm> request) throws Exception {
+		Param<SegmentedVisitorForm> param = new DefaultParam<SegmentedVisitorForm>(SegmentedVisitorForm.class, request.getPage(), request.getLimit());
 		return book.getPage(param);
 	}
 	@RequestMapping(value = "segmentedvisitor/get", method = RequestMethod.GET)
