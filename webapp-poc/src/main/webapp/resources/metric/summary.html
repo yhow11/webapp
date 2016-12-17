@@ -1,0 +1,49 @@
+<div layout="row" layout-align="center">
+	<md-card flex="100" flex-gt-sm="90">
+		<md-data-table-toolbar class="toolbar-with-fab" layout="row" layout-margin>
+		    <span class="md-subhead" flex="80" flex-gt-sm="95"><md-icon >local_offer</md-icon> &nbsp  Metric Summary</span> 
+		</md-data-table-toolbar>
+		 <md-card-content layout="column" >
+				<md-data-table-toolbar class="toolbar-with-fab"  layout="row" >
+					<md-input-container flex="20">
+         				<label>Filter</label>
+						<md-select ng-model="metricSummaryTable.metricType" class="md-no-underline" >
+				          <md-option ng-repeat="metricType in metricSummaryTable.metricTypeOptions" value="{{metricType.type}}">{{metricType.name}}</md-option>
+				        </md-select>
+			        </md-input-container>
+			        <span flex="10"></span>
+				</md-data-table-toolbar>
+				<md-table-container>
+					  <table data-md-table data-md-row-select="metricSummaryTable.options.rowSelection" multiple="{{metricSummaryTable.options.multiSelect}}" data-ng-model="metricSummaryTable.selected" >
+					    <thead md-head data-md-order="metricSummaryTable.query.order" md-on-reorder="metricSummaryTable.onReorder">
+					      <tr md-row>
+					        <th md-column ><span>VISITOR ID</span></th>
+					        <th md-column ><span>METRIC NAME</span></th>
+					        <th md-column ><span>METRIC TYPE</span></th>
+					        <th md-column ><span>VALUE</span></th>
+					      </tr>
+					    </thead>
+					    <tbody md-body>
+					      <tr md-row md-select="item" md-select-id="id" data-md-on-select="metricSummaryTable.onSelect" md-on-deselect="metricSummaryTable.onDeselect"   data-ng-repeat="item in metricSummaryTable.data.items" >
+					        <td md-cell>
+					        	<span>{{item.visitorID}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.metricName}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.metricType}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.values}}</span>
+				        	</td>
+					      </tr>
+					    </tbody>
+					  </table>
+				</md-table-container>
+
+				<data-md-table-pagination md-limit="metricSummaryTable.query.limit" md-limit-options="metricSummaryTable.limitOptions" md-page="metricSummaryTable.query.page" md-total="{{metricSummaryTable.data.count}}" md-on-paginate="metricSummaryTable.onPaginate" md-page-select="metricSummaryTable.options.pageSelect" md-boundary-links="metricSummaryTable.options.boundaryLinks"></data-md-table-pagination>
+        </md-card-content>
+	</md-card>
+</div>
+

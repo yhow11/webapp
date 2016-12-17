@@ -1,0 +1,63 @@
+<div layout="row" layout-align="center">
+	<md-card flex="100" flex-gt-sm="90">
+		 <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline"> Key Manager </span>
+            <span class="md-subhead">View Keys</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <md-button class="md-primary" ui-sref="keymanagement.addnewkey"  flex-gt-sm>
+		      <md-icon >add_circle</md-icon> <span hide show-gt-sm> Create New </span>
+		    </md-button>
+          </md-card-title-media>
+        </md-card-title>
+		 <md-card-content layout="column" >
+	          	<md-data-table-toolbar class="toolbar-with-fab" ng-hide="search" layout="row">
+				    <span class="md-subhead" flex="85" flex-gt-sm="95"></span>
+				    <span flex-gt-sm></span>
+				    <md-button class="md-icon-button" ng-click="search = true" flex="15" flex-gt-sm="5">
+				      <md-icon>filter_list</md-icon>
+				    </md-button>
+				</md-data-table-toolbar>
+				<md-data-table-toolbar class="toolbar-with-fab" ng-show="search" layout="row" >
+				    <md-input-container class="md-block" flex>
+						<label>Search</label> <input 
+							ng-model="keyTable.searchValue" >
+							<md-icon class="j-cursor-pointer" ng-click="search = false; keyTable.searchValue='' ">close</md-icon>
+					</md-input-container>
+				</md-data-table-toolbar>
+				<md-table-container>
+					  <table data-md-table data-md-row-select="keyTable.options.rowSelection" multiple="{{keyTable.options.multiSelect}}" data-ng-model="keyTable.selected" >
+					    <thead md-head data-md-order="keyTable.query.order" md-on-reorder="keyTable.onReorder">
+					      <tr md-row>
+					        <th md-column ><span>KEY</span></th>
+					        <th md-column ><span>VALUES</span></th>
+					      </tr>
+					    </thead>
+					    <tbody md-body>
+					      <tr md-row md-select="item" md-select-id="id" data-md-on-select="keyTable.onSelect" md-on-deselect="keyTable.onDeselect"   data-ng-repeat="item in keyTable.data.items" >
+					        <td md-cell>
+					        	<span>{{item.key}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{keyTable.getValueStr(item)}}</span>
+				        	</td>
+				        	<td md-cell >
+				        		<md-button aria-label="Edi3" class="md-icon-button" ng-click="goTo('keymanagement.addnewkey', item)" ng-disabled="showLoading">
+							          <md-icon md-svg-icon="resources/img/icons/edit.svg"  ></md-icon>
+							    </md-button>
+						      	<md-button aria-label="Delete" class="md-icon-button" ng-click="remove(item)" ng-disabled="showLoading">
+							          <md-icon md-svg-icon="resources/img/icons/trash.svg" ></md-icon>
+							    </md-button>
+				        	</td>
+					      </tr>
+					    </tbody>
+					  </table>
+				</md-table-container>
+
+				<data-md-table-pagination md-limit="keyTable.query.limit" md-limit-options="keyTable.limitOptions" md-page="keyTable.query.page" md-total="{{keyTable.data.count}}" md-on-paginate="keyTable.onPaginate" md-page-select="keyTable.options.pageSelect" md-boundary-links="keyTable.options.boundaryLinks"></data-md-table-pagination>
+        </md-card-content>
+	</md-card>
+</div>
+
+

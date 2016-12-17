@@ -1,0 +1,119 @@
+<!-- <div layout="row" layout-align="center">
+	<md-card flex="100" flex-gt-sm="90">
+		<md-data-table-toolbar class="toolbar-with-fab" ng-hide="search" layout="row" layout-margin>
+		    <span class="md-subhead" flex="80" flex-gt-sm="95"><md-icon>show_chart</md-icon> &nbsp  Metrics Manager</span>
+		    <span flex-gt-sm></span>
+		    <md-button class="md-primary" ui-sref="metricmanagement.addnew"  flex="15" flex-gt-sm="10">
+		      <md-icon >add_circle</md-icon> <span hide show-gt-sm> Add New</span>
+		    </md-button>
+		</md-data-table-toolbar>
+		 <md-card-content layout="column" >
+	          	<md-data-table-toolbar class="toolbar-with-fab" ng-hide="search" layout="row">
+				    <span class="md-subhead" flex="85" flex-gt-sm="95">List Of Metrics</span>
+				    <span flex-gt-sm></span>
+				    <md-button class="md-icon-button" ng-click="search = true" flex="15" flex-gt-sm="5">
+				      <md-icon>filter_list</md-icon>
+				    </md-button>
+				</md-data-table-toolbar>
+				<md-data-table-toolbar class="toolbar-with-fab" ng-show="search" layout="row" >
+				    <md-input-container class="md-block" flex>
+						<label>Search</label> <input 
+							ng-model="searchValue" >
+							<md-icon class="j-cursor-pointer" ng-click="search = false; searchValue='' ">close</md-icon>
+					</md-input-container>
+				</md-data-table-toolbar>
+				 <md-list layout="column" layout-padding  infinite-scroll='metricInfiniteScroll.nextPage(searchValue || "")' infinite-scroll-disabled='metricInfiniteScroll.busy' infinite-scroll-distance='0.6'>
+				    <md-list-item layout="row" layout-align="center"   ng-repeat='item in metricInfiniteScroll.items | filter:searchValue'>
+				      <span flex-gt-xs="30" hide  show-gt-xs>{{item.name}}</span>
+				      <span flex-gt-xs="25" hide  show-gt-xs>{{item.type}}</span>
+				      <span flex-gt-xs="25" hide  show-gt-xs>{{item.key}}</span>
+				      <span flex="50" hide-gt-xs><h3>{{item.name}}</h3><p>{{item.type}}</p><p>{{item.key}}</p></span>
+				      <span flex="50" flex-gt-xs="20" layout="row" layout-align="center center">
+				      	<md-button aria-label="Edi3" class="md-icon-button" href="#/metricmanagement/metricmanagement/addnew/{{item.id}}"  ng-disabled="showLoading">
+					          <md-icon md-svg-icon="resources/img/icons/edit.svg"  ></md-icon>
+					    </md-button>
+				      	<md-button aria-label="Delete" class="md-icon-button" ng-click="remove(item)" ng-disabled="showLoading">
+					          <md-icon md-svg-icon="resources/img/icons/trash.svg" ></md-icon>
+					    </md-button>
+				      </span>
+				    </md-list-item>
+				    
+				      <div style='clear: both;'></div>		     
+				    <div ng-show='metricInfiniteScroll.busy'>Loading data...</div>
+			    </md-list>
+        </md-card-content>
+	</md-card>
+</div>
+
+
+ -->
+ 
+ <div layout="row" layout-align="center">
+	<md-card flex="100" flex-gt-sm="90">
+		 <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline"> Metric Manager </span>
+            <span class="md-subhead">View Metrics</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <md-button class="md-primary" ui-sref="metricmanagement.addnewmetric"  flex-gt-sm>
+		      <md-icon >add_circle</md-icon> <span hide show-gt-sm> Create New </span>
+		    </md-button>
+          </md-card-title-media>
+        </md-card-title>
+		 <md-card-content layout="column" >
+	          	<md-data-table-toolbar class="toolbar-with-fab" ng-hide="search" layout="row">
+				    <span class="md-subhead" flex="85" flex-gt-sm="95"></span>
+				    <span flex-gt-sm></span>
+				    <md-button class="md-icon-button" ng-click="search = true" flex="15" flex-gt-sm="5">
+				      <md-icon>filter_list</md-icon>
+				    </md-button>
+				</md-data-table-toolbar>
+				<md-data-table-toolbar class="toolbar-with-fab" ng-show="search" layout="row" >
+				    <md-input-container class="md-block" flex>
+						<label>Search</label> <input 
+							ng-model="metricTable.searchValue" >
+							<md-icon class="j-cursor-pointer" ng-click="search = false; metricTable.searchValue='' ">close</md-icon>
+					</md-input-container>
+				</md-data-table-toolbar>
+				<md-table-container>
+					  <table data-md-table data-md-row-select="metricTable.options.rowSelection" multiple="{{metricTable.options.multiSelect}}" data-ng-model="metricTable.selected" >
+					    <thead md-head data-md-order="metricTable.query.order" md-on-reorder="keyTable.onReorder">
+					      <tr md-row>
+					        <th md-column ><span>NAME</span></th>
+					        <th md-column ><span>TYPE</span></th>
+					        <th md-column ><span>KEY</span></th>
+					        <th md-column ><span>ACTIONS</span></th>
+					      </tr>
+					    </thead>
+					    <tbody md-body>
+					      <tr md-row md-select="item" md-select-id="id" data-md-on-select="metricTable.onSelect" md-on-deselect="metricTable.onDeselect"   data-ng-repeat="item in metricTable.data.items" >
+					        <td md-cell>
+					        	<span>{{item.name}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.type}}</span>
+				        	</td>
+				        	<td md-cell >
+					        	<span>{{item.key}}</span>
+				        	</td>
+				        	<td md-cell >
+				        		<md-button aria-label="Edi3" class="md-icon-button" href="#/metricmanagement/addnew/{{item.id}}"  ng-disabled="showLoading">
+							          <md-icon md-svg-icon="resources/img/icons/edit.svg"  ></md-icon>
+							    </md-button>
+						      	<md-button aria-label="Delete" class="md-icon-button" ng-click="remove(item)" ng-disabled="showLoading">
+							          <md-icon md-svg-icon="resources/img/icons/trash.svg" ></md-icon>
+							    </md-button>
+				        	</td>
+					      </tr>
+					    </tbody>
+					  </table>
+				</md-table-container>
+
+				<data-md-table-pagination md-limit="metricTable.query.limit" md-limit-options="metricTable.limitOptions" md-page="metricTable.query.page" md-total="{{metricTable.data.count}}" md-on-paginate="metricTable.onPaginate" md-page-select="metricTable.options.pageSelect" md-boundary-links="metricTable.options.boundaryLinks"></data-md-table-pagination>
+        </md-card-content>
+	</md-card>
+</div>
+
+
+ 

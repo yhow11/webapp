@@ -1,0 +1,35 @@
+<div layout="row" layout-align="center">
+	<md-card flex="100" flex-gt-sm="90">
+		 <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline"> Segment Manager </span>
+            <span class="md-subhead">Segmented Visitor</span>
+          </md-card-title-text>
+          <md-card-title-media>
+          </md-card-title-media>
+        </md-card-title>
+		 <md-card-content layout="column" >
+				<md-data-table-toolbar class="toolbar-with-fab"  layout="row" >
+				</md-data-table-toolbar>
+				<md-table-container>
+					  <table data-md-table data-md-row-select="segmentedvisitorTable.options.rowSelection" multiple="{{segmentedvisitorTable.options.multiSelect}}" data-ng-model="segmentedvisitorTable.selected" >
+					    <thead md-head data-md-order="segmentedvisitorTable.query.order" md-on-reorder="segmentedvisitorTable.onReorder">
+					      <tr md-row>
+					        <th md-column ><span>VISITOR ID</span></th>
+					      </tr>
+					    </thead>
+					    <tbody md-body>
+					      <tr md-row md-select="item" md-select-id="id" data-md-on-select="segmentedvisitorTable.onSelect" md-on-deselect="segmentedvisitorTable.onDeselect"   data-ng-repeat="item in segmentedvisitorTable.data.items" >
+					        <td md-cell>
+					        	<span>{{item.visitorID}}</span>
+				        	</td>
+					      </tr>
+					    </tbody>
+					  </table>
+				</md-table-container>
+
+				<data-md-table-pagination md-limit="segmentedvisitorTable.query.limit" md-limit-options="segmentedvisitorTable.limitOptions" md-page="segmentedvisitorTable.query.page" md-total="{{segmentedvisitorTable.data.count}}" md-on-paginate="segmentedvisitorTable.onPaginate" md-page-select="segmentedvisitorTable.options.pageSelect" md-boundary-links="segmentedvisitorTable.options.boundaryLinks"></data-md-table-pagination>
+        </md-card-content>
+	</md-card>
+</div>
+
